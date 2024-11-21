@@ -2,10 +2,10 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import * as React from "react";
-import Content from "./Content";
-import Header from "./Header";
-import Navigator from "./Navigator";
-import theme from "./theme";
+import Content from "./components/Content";
+import Header from "./components/Header";
+import Navigator from "./components/Navigator";
+import theme from "./components/theme";
 
 const drawerWidth = 256;
 

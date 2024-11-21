@@ -17,9 +17,11 @@
     "react-dom": "latest"
   },
   "devDependencies": {
+    "@types/node": "^22.9.1",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@vitejs/plugin-react": "latest",
+    "terser": "^5.36.0",
     "typescript": "latest",
     "vite": "latest"
   }
