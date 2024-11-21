@@ -1,10 +1,10 @@
 {
-  "name": "mui",
+  "name": "material-ui-vite-ts",
   "private": true,
   "version": "5.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --open",
+    "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -21,7 +21,6 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@vitejs/plugin-react": "latest",
-    "terser": "^5.36.0",
     "typescript": "latest",
     "vite": "latest"
   }
