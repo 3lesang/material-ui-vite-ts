@@ -13,10 +13,13 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@tanstack/react-router": "^1.82.1",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
+    "@tanstack/router-devtools": "^1.82.1",
+    "@tanstack/router-plugin": "^1.81.9",
     "@types/node": "^22.9.1",
     "@types/react": "latest",
     "@types/react-dom": "latest",
