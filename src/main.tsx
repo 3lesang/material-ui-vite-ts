@@ -6,6 +6,7 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import theme from "./theme";
 
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { routeTree } from "./routeTree.gen";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ if (!rootElement.innerHTML) {
         <CssBaseline />
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
     </StrictMode>

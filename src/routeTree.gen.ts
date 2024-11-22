@@ -12,9 +12,9 @@
 
 import { Route as rootRoute } from './pages/__root'
 import { Route as LayoutImport } from './pages/_layout'
-import { Route as IndexImport } from './pages/index'
-import { Route as LayoutContactImport } from './pages/_layout.contact'
-import { Route as LayoutAboutImport } from './pages/_layout.about'
+import { Route as LayoutIndexImport } from './pages/_layout/index'
+import { Route as LayoutContactImport } from './pages/_layout/contact'
+import { Route as LayoutAboutImport } from './pages/_layout/about'
 
 // Create/Update Routes
 
@@ -23,10 +23,10 @@ const LayoutRoute = LayoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
+const LayoutIndexRoute = LayoutIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutContactRoute = LayoutContactImport.update({
@@ -45,13 +45,6 @@ const LayoutAboutRoute = LayoutAboutImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
     '/_layout': {
       id: '/_layout'
       path: ''
@@ -73,6 +66,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutContactImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/': {
+      id: '/_layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutIndexImport
+      parentRoute: typeof LayoutImport
+    }
   }
 }
 
@@ -81,54 +81,58 @@ declare module '@tanstack/react-router' {
 interface LayoutRouteChildren {
   LayoutAboutRoute: typeof LayoutAboutRoute
   LayoutContactRoute: typeof LayoutContactRoute
+  LayoutIndexRoute: typeof LayoutIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutAboutRoute: LayoutAboutRoute,
   LayoutContactRoute: LayoutContactRoute,
+  LayoutIndexRoute: LayoutIndexRoute,
 }
 
 const LayoutRouteWithChildren =
   LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
   '/about': typeof LayoutAboutRoute
   '/contact': typeof LayoutContactRoute
+  '/': typeof LayoutIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof LayoutRouteWithChildren
   '/about': typeof LayoutAboutRoute
   '/contact': typeof LayoutContactRoute
+  '/': typeof LayoutIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
   '/_layout/about': typeof LayoutAboutRoute
   '/_layout/contact': typeof LayoutContactRoute
+  '/_layout/': typeof LayoutIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/about' | '/contact'
+  fullPaths: '' | '/about' | '/contact' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/about' | '/contact'
-  id: '__root__' | '/' | '/_layout' | '/_layout/about' | '/_layout/contact'
+  to: '/about' | '/contact' | '/'
+  id:
+    | '__root__'
+    | '/_layout'
+    | '/_layout/about'
+    | '/_layout/contact'
+    | '/_layout/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
 }
 
@@ -142,26 +146,27 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
         "/_layout"
       ]
-    },
-    "/": {
-      "filePath": "index.tsx"
     },
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/about",
-        "/_layout/contact"
+        "/_layout/contact",
+        "/_layout/"
       ]
     },
     "/_layout/about": {
-      "filePath": "_layout.about.tsx",
+      "filePath": "_layout/about.tsx",
       "parent": "/_layout"
     },
     "/_layout/contact": {
-      "filePath": "_layout.contact.tsx",
+      "filePath": "_layout/contact.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/": {
+      "filePath": "_layout/index.tsx",
       "parent": "/_layout"
     }
   }
