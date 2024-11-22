@@ -1,0 +1,63 @@
+import RefreshIcon from "@mui/icons-material/Refresh";
+import SearchIcon from "@mui/icons-material/Search";
+import AppBar from "@mui/material/AppBar";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid2";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+
+export default function Content() {
+  return (
+    <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
+      <AppBar
+        position="static"
+        color="default"
+        elevation={0}
+        sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
+      >
+        <Toolbar>
+          <Grid
+            container
+            spacing={2}
+            sx={{ alignItems: "center" }}
+            width="100%"
+          >
+            <Grid>
+              <SearchIcon color="inherit" sx={{ display: "block" }} />
+            </Grid>
+            <Grid size="grow">
+              <TextField
+                fullWidth
+                placeholder="Search by email address, phone number, or user UID"
+                slotProps={{
+                  input: {
+                    disableUnderline: true,
+                    sx: { fontSize: "default" },
+                  },
+                }}
+                variant="standard"
+              />
+            </Grid>
+            <Grid>
+              <Button variant="contained" sx={{ mr: 1 }}>
+                Add user
+              </Button>
+              <Tooltip title="Reload">
+                <IconButton>
+                  <RefreshIcon color="inherit" sx={{ display: "block" }} />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+          </Grid>
+        </Toolbar>
+      </AppBar>
+      <Typography align="center" sx={{ color: "text.secondary", my: 5, mx: 2 }}>
+        No users for this project yet
+      </Typography>
+    </Paper>
+  );
+}

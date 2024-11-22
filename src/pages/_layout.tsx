@@ -1,6 +1,8 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
@@ -26,17 +28,22 @@ const navItems = [
 
 function LayoutComponent() {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Stack>
       <AppBar component="nav" elevation={0}>
         <Toolbar variant="dense">
           <Typography
             variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            component={Link}
+            color="inherit"
+            to="/"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              textDecoration: "none",
+            }}
           >
-            MUI
+            Acme
           </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box>
             {navItems.map((item) => (
               <Button
                 key={item.name}
@@ -50,10 +57,12 @@ function LayoutComponent() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box component="main">
+      <Container maxWidth="lg" component="main">
         <Toolbar variant="dense" />
-        <Outlet />
-      </Box>
-    </Box>
+        <Box p={4}>
+          <Outlet />
+        </Box>
+      </Container>
+    </Stack>
   );
 }
