@@ -1,4 +1,3 @@
 {
-  "autoCodeSplitting": true,
-  "routesDirectory": "src/pages"
+  "autoCodeSplitting": true
 }

@@ -10,11 +10,13 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './pages/__root'
-import { Route as LayoutImport } from './pages/_layout'
-import { Route as LayoutIndexImport } from './pages/_layout/index'
-import { Route as LayoutContactImport } from './pages/_layout/contact'
-import { Route as LayoutAboutImport } from './pages/_layout/about'
+import { Route as rootRoute } from './routes/__root'
+import { Route as LayoutImport } from './routes/_layout'
+import { Route as LayoutIndexImport } from './routes/_layout/index'
+import { Route as LayoutContactImport } from './routes/_layout/contact'
+import { Route as LayoutAboutImport } from './routes/_layout/about'
+import { Route as LayoutProductIndexImport } from './routes/_layout/product/index'
+import { Route as LayoutProductIdImport } from './routes/_layout/product/$id'
 
 // Create/Update Routes
 
@@ -38,6 +40,18 @@ const LayoutContactRoute = LayoutContactImport.update({
 const LayoutAboutRoute = LayoutAboutImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutProductIndexRoute = LayoutProductIndexImport.update({
+  id: '/product/',
+  path: '/product/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutProductIdRoute = LayoutProductIdImport.update({
+  id: '/product/$id',
+  path: '/product/$id',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -73,6 +87,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/product/$id': {
+      id: '/_layout/product/$id'
+      path: '/product/$id'
+      fullPath: '/product/$id'
+      preLoaderRoute: typeof LayoutProductIdImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/product/': {
+      id: '/_layout/product/'
+      path: '/product'
+      fullPath: '/product'
+      preLoaderRoute: typeof LayoutProductIndexImport
+      parentRoute: typeof LayoutImport
+    }
   }
 }
 
@@ -82,12 +110,16 @@ interface LayoutRouteChildren {
   LayoutAboutRoute: typeof LayoutAboutRoute
   LayoutContactRoute: typeof LayoutContactRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutProductIdRoute: typeof LayoutProductIdRoute
+  LayoutProductIndexRoute: typeof LayoutProductIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutAboutRoute: LayoutAboutRoute,
   LayoutContactRoute: LayoutContactRoute,
   LayoutIndexRoute: LayoutIndexRoute,
+  LayoutProductIdRoute: LayoutProductIdRoute,
+  LayoutProductIndexRoute: LayoutProductIndexRoute,
 }
 
 const LayoutRouteWithChildren =
@@ -98,12 +130,16 @@ export interface FileRoutesByFullPath {
   '/about': typeof LayoutAboutRoute
   '/contact': typeof LayoutContactRoute
   '/': typeof LayoutIndexRoute
+  '/product/$id': typeof LayoutProductIdRoute
+  '/product': typeof LayoutProductIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/about': typeof LayoutAboutRoute
   '/contact': typeof LayoutContactRoute
   '/': typeof LayoutIndexRoute
+  '/product/$id': typeof LayoutProductIdRoute
+  '/product': typeof LayoutProductIndexRoute
 }
 
 export interface FileRoutesById {
@@ -112,19 +148,23 @@ export interface FileRoutesById {
   '/_layout/about': typeof LayoutAboutRoute
   '/_layout/contact': typeof LayoutContactRoute
   '/_layout/': typeof LayoutIndexRoute
+  '/_layout/product/$id': typeof LayoutProductIdRoute
+  '/_layout/product/': typeof LayoutProductIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/about' | '/contact' | '/'
+  fullPaths: '' | '/about' | '/contact' | '/' | '/product/$id' | '/product'
   fileRoutesByTo: FileRoutesByTo
-  to: '/about' | '/contact' | '/'
+  to: '/about' | '/contact' | '/' | '/product/$id' | '/product'
   id:
     | '__root__'
     | '/_layout'
     | '/_layout/about'
     | '/_layout/contact'
     | '/_layout/'
+    | '/_layout/product/$id'
+    | '/_layout/product/'
   fileRoutesById: FileRoutesById
 }
 
@@ -154,7 +194,9 @@ export const routeTree = rootRoute
       "children": [
         "/_layout/about",
         "/_layout/contact",
-        "/_layout/"
+        "/_layout/",
+        "/_layout/product/$id",
+        "/_layout/product/"
       ]
     },
     "/_layout/about": {
@@ -167,6 +209,14 @@ export const routeTree = rootRoute
     },
     "/_layout/": {
       "filePath": "_layout/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/product/$id": {
+      "filePath": "_layout/product/$id.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/product/": {
+      "filePath": "_layout/product/index.tsx",
       "parent": "/_layout"
     }
   }

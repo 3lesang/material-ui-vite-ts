@@ -24,6 +24,10 @@ const navItems = [
     name: "Contact",
     to: "/contact",
   },
+  {
+    name: "Product",
+    to: "/product",
+  },
 ];
 
 function LayoutComponent() {
