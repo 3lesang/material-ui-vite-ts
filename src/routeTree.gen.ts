@@ -11,169 +11,245 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as LayoutImport } from './routes/_layout'
-import { Route as LayoutIndexImport } from './routes/_layout/index'
-import { Route as LayoutContactImport } from './routes/_layout/contact'
-import { Route as LayoutAboutImport } from './routes/_layout/about'
-import { Route as LayoutProductIndexImport } from './routes/_layout/product/index'
-import { Route as LayoutProductIdImport } from './routes/_layout/product/$id'
+import { Route as AdminImport } from './routes/_admin'
+import { Route as AdminIndexImport } from './routes/_admin/index'
+import { Route as AuthRegisterImport } from './routes/auth/register'
+import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as AdminContactImport } from './routes/_admin/contact'
+import { Route as AdminAboutImport } from './routes/_admin/about'
+import { Route as AdminProductIndexImport } from './routes/_admin/product/index'
+import { Route as AdminProductCreateImport } from './routes/_admin/product/create'
+import { Route as AdminProductIdImport } from './routes/_admin/product/$id'
 
 // Create/Update Routes
 
-const LayoutRoute = LayoutImport.update({
-  id: '/_layout',
+const AdminRoute = AdminImport.update({
+  id: '/_admin',
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutIndexRoute = LayoutIndexImport.update({
+const AdminIndexRoute = AdminIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 
-const LayoutContactRoute = LayoutContactImport.update({
+const AuthRegisterRoute = AuthRegisterImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminContactRoute = AdminContactImport.update({
   id: '/contact',
   path: '/contact',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 
-const LayoutAboutRoute = LayoutAboutImport.update({
+const AdminAboutRoute = AdminAboutImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 
-const LayoutProductIndexRoute = LayoutProductIndexImport.update({
+const AdminProductIndexRoute = AdminProductIndexImport.update({
   id: '/product/',
   path: '/product/',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 
-const LayoutProductIdRoute = LayoutProductIdImport.update({
+const AdminProductCreateRoute = AdminProductCreateImport.update({
+  id: '/product/create',
+  path: '/product/create',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminProductIdRoute = AdminProductIdImport.update({
   id: '/product/$id',
   path: '/product/$id',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_layout': {
-      id: '/_layout'
+    '/_admin': {
+      id: '/_admin'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof LayoutImport
+      preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
-    '/_layout/about': {
-      id: '/_layout/about'
+    '/_admin/about': {
+      id: '/_admin/about'
       path: '/about'
       fullPath: '/about'
-      preLoaderRoute: typeof LayoutAboutImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof AdminAboutImport
+      parentRoute: typeof AdminImport
     }
-    '/_layout/contact': {
-      id: '/_layout/contact'
+    '/_admin/contact': {
+      id: '/_admin/contact'
       path: '/contact'
       fullPath: '/contact'
-      preLoaderRoute: typeof LayoutContactImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof AdminContactImport
+      parentRoute: typeof AdminImport
     }
-    '/_layout/': {
-      id: '/_layout/'
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/_admin/': {
+      id: '/_admin/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof LayoutIndexImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof AdminIndexImport
+      parentRoute: typeof AdminImport
     }
-    '/_layout/product/$id': {
-      id: '/_layout/product/$id'
+    '/_admin/product/$id': {
+      id: '/_admin/product/$id'
       path: '/product/$id'
       fullPath: '/product/$id'
-      preLoaderRoute: typeof LayoutProductIdImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof AdminProductIdImport
+      parentRoute: typeof AdminImport
     }
-    '/_layout/product/': {
-      id: '/_layout/product/'
+    '/_admin/product/create': {
+      id: '/_admin/product/create'
+      path: '/product/create'
+      fullPath: '/product/create'
+      preLoaderRoute: typeof AdminProductCreateImport
+      parentRoute: typeof AdminImport
+    }
+    '/_admin/product/': {
+      id: '/_admin/product/'
       path: '/product'
       fullPath: '/product'
-      preLoaderRoute: typeof LayoutProductIndexImport
-      parentRoute: typeof LayoutImport
+      preLoaderRoute: typeof AdminProductIndexImport
+      parentRoute: typeof AdminImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface LayoutRouteChildren {
-  LayoutAboutRoute: typeof LayoutAboutRoute
-  LayoutContactRoute: typeof LayoutContactRoute
-  LayoutIndexRoute: typeof LayoutIndexRoute
-  LayoutProductIdRoute: typeof LayoutProductIdRoute
-  LayoutProductIndexRoute: typeof LayoutProductIndexRoute
+interface AdminRouteChildren {
+  AdminAboutRoute: typeof AdminAboutRoute
+  AdminContactRoute: typeof AdminContactRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminProductIdRoute: typeof AdminProductIdRoute
+  AdminProductCreateRoute: typeof AdminProductCreateRoute
+  AdminProductIndexRoute: typeof AdminProductIndexRoute
 }
 
-const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutAboutRoute: LayoutAboutRoute,
-  LayoutContactRoute: LayoutContactRoute,
-  LayoutIndexRoute: LayoutIndexRoute,
-  LayoutProductIdRoute: LayoutProductIdRoute,
-  LayoutProductIndexRoute: LayoutProductIndexRoute,
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAboutRoute: AdminAboutRoute,
+  AdminContactRoute: AdminContactRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminProductIdRoute: AdminProductIdRoute,
+  AdminProductCreateRoute: AdminProductCreateRoute,
+  AdminProductIndexRoute: AdminProductIndexRoute,
 }
 
-const LayoutRouteWithChildren =
-  LayoutRoute._addFileChildren(LayoutRouteChildren)
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '': typeof LayoutRouteWithChildren
-  '/about': typeof LayoutAboutRoute
-  '/contact': typeof LayoutContactRoute
-  '/': typeof LayoutIndexRoute
-  '/product/$id': typeof LayoutProductIdRoute
-  '/product': typeof LayoutProductIndexRoute
+  '': typeof AdminRouteWithChildren
+  '/about': typeof AdminAboutRoute
+  '/contact': typeof AdminContactRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/': typeof AdminIndexRoute
+  '/product/$id': typeof AdminProductIdRoute
+  '/product/create': typeof AdminProductCreateRoute
+  '/product': typeof AdminProductIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/about': typeof LayoutAboutRoute
-  '/contact': typeof LayoutContactRoute
-  '/': typeof LayoutIndexRoute
-  '/product/$id': typeof LayoutProductIdRoute
-  '/product': typeof LayoutProductIndexRoute
+  '/about': typeof AdminAboutRoute
+  '/contact': typeof AdminContactRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/': typeof AdminIndexRoute
+  '/product/$id': typeof AdminProductIdRoute
+  '/product/create': typeof AdminProductCreateRoute
+  '/product': typeof AdminProductIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/_layout': typeof LayoutRouteWithChildren
-  '/_layout/about': typeof LayoutAboutRoute
-  '/_layout/contact': typeof LayoutContactRoute
-  '/_layout/': typeof LayoutIndexRoute
-  '/_layout/product/$id': typeof LayoutProductIdRoute
-  '/_layout/product/': typeof LayoutProductIndexRoute
+  '/_admin': typeof AdminRouteWithChildren
+  '/_admin/about': typeof AdminAboutRoute
+  '/_admin/contact': typeof AdminContactRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
+  '/_admin/': typeof AdminIndexRoute
+  '/_admin/product/$id': typeof AdminProductIdRoute
+  '/_admin/product/create': typeof AdminProductCreateRoute
+  '/_admin/product/': typeof AdminProductIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/about' | '/contact' | '/' | '/product/$id' | '/product'
+  fullPaths:
+    | ''
+    | '/about'
+    | '/contact'
+    | '/auth/login'
+    | '/auth/register'
+    | '/'
+    | '/product/$id'
+    | '/product/create'
+    | '/product'
   fileRoutesByTo: FileRoutesByTo
-  to: '/about' | '/contact' | '/' | '/product/$id' | '/product'
+  to:
+    | '/about'
+    | '/contact'
+    | '/auth/login'
+    | '/auth/register'
+    | '/'
+    | '/product/$id'
+    | '/product/create'
+    | '/product'
   id:
     | '__root__'
-    | '/_layout'
-    | '/_layout/about'
-    | '/_layout/contact'
-    | '/_layout/'
-    | '/_layout/product/$id'
-    | '/_layout/product/'
+    | '/_admin'
+    | '/_admin/about'
+    | '/_admin/contact'
+    | '/auth/login'
+    | '/auth/register'
+    | '/_admin/'
+    | '/_admin/product/$id'
+    | '/_admin/product/create'
+    | '/_admin/product/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  LayoutRoute: typeof LayoutRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  LayoutRoute: LayoutRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
 }
 
 export const routeTree = rootRoute
@@ -186,38 +262,51 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/_layout"
+        "/_admin",
+        "/auth/login",
+        "/auth/register"
       ]
     },
-    "/_layout": {
-      "filePath": "_layout.tsx",
+    "/_admin": {
+      "filePath": "_admin.tsx",
       "children": [
-        "/_layout/about",
-        "/_layout/contact",
-        "/_layout/",
-        "/_layout/product/$id",
-        "/_layout/product/"
+        "/_admin/about",
+        "/_admin/contact",
+        "/_admin/",
+        "/_admin/product/$id",
+        "/_admin/product/create",
+        "/_admin/product/"
       ]
     },
-    "/_layout/about": {
-      "filePath": "_layout/about.tsx",
-      "parent": "/_layout"
+    "/_admin/about": {
+      "filePath": "_admin/about.tsx",
+      "parent": "/_admin"
     },
-    "/_layout/contact": {
-      "filePath": "_layout/contact.tsx",
-      "parent": "/_layout"
+    "/_admin/contact": {
+      "filePath": "_admin/contact.tsx",
+      "parent": "/_admin"
     },
-    "/_layout/": {
-      "filePath": "_layout/index.tsx",
-      "parent": "/_layout"
+    "/auth/login": {
+      "filePath": "auth/login.tsx"
     },
-    "/_layout/product/$id": {
-      "filePath": "_layout/product/$id.tsx",
-      "parent": "/_layout"
+    "/auth/register": {
+      "filePath": "auth/register.tsx"
     },
-    "/_layout/product/": {
-      "filePath": "_layout/product/index.tsx",
-      "parent": "/_layout"
+    "/_admin/": {
+      "filePath": "_admin/index.tsx",
+      "parent": "/_admin"
+    },
+    "/_admin/product/$id": {
+      "filePath": "_admin/product/$id.tsx",
+      "parent": "/_admin"
+    },
+    "/_admin/product/create": {
+      "filePath": "_admin/product/create.tsx",
+      "parent": "/_admin"
+    },
+    "/_admin/product/": {
+      "filePath": "_admin/product/index.tsx",
+      "parent": "/_admin"
     }
   }
 }

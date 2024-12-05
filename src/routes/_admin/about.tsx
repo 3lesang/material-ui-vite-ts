@@ -1,10 +1,10 @@
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import { createFileRoute } from "@tanstack/react-router";
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/_layout/about")({
+export const Route = createFileRoute('/_admin/about')({
   component: About,
-});
+})
 
 function About() {
   return (
@@ -46,5 +46,5 @@ function About() {
         aut sapiente modi nesciunt.
       </Typography>
     </Container>
-  );
+  )
 }

@@ -9,5 +9,8 @@ interface ProductParams {
   limit: number;
 }
 
-export const getProducts = async (data?: ProductType) =>
-  axiosClient.get("/products", { params: data?.params });
+export const getProducts = async (args?: ProductType) =>
+  axiosClient.get("/products", { params: args?.params });
+
+export const getProduct = async (id: number) =>
+  axiosClient.get(`/products/${id}`);

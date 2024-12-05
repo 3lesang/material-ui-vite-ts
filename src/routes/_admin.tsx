@@ -1,34 +1,34 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import Stack from '@mui/material/Stack'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/_layout")({
+export const Route = createFileRoute('/_admin')({
   component: LayoutComponent,
-});
+})
 
 const navItems = [
   {
-    name: "Home",
-    to: "/",
+    name: 'Home',
+    to: '/',
   },
   {
-    name: "About",
-    to: "/about",
+    name: 'About',
+    to: '/about',
   },
   {
-    name: "Contact",
-    to: "/contact",
+    name: 'Contact',
+    to: '/contact',
   },
   {
-    name: "Product",
-    to: "/product",
+    name: 'Product',
+    to: '/product',
   },
-];
+]
 
 function LayoutComponent() {
   return (
@@ -41,8 +41,8 @@ function LayoutComponent() {
             color="inherit"
             to="/"
             sx={{
-              display: { xs: "none", sm: "block" },
-              textDecoration: "none",
+              display: { xs: 'none', sm: 'block' },
+              textDecoration: 'none',
             }}
           >
             Acme
@@ -51,7 +51,7 @@ function LayoutComponent() {
             {navItems.map((item) => (
               <Button
                 key={item.name}
-                sx={{ color: "#fff" }}
+                sx={{ color: '#fff' }}
                 component={Link}
                 to={`/${item.to}`}
               >
@@ -68,5 +68,5 @@ function LayoutComponent() {
         </Box>
       </Container>
     </Stack>
-  );
+  )
 }
