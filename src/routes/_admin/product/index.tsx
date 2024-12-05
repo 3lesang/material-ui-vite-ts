@@ -188,7 +188,7 @@ function Index() {
       width: 100,
     },
     {
-      field: "updated_at",
+      field: "UpdatedAt",
       headerName: "Last Updated",
       type: "date",
       width: 200,
@@ -233,6 +233,7 @@ function Index() {
     <Paper>
       <Header />
       <StyledDataGrid
+        getRowId={(row) => row.ID}
         rows={rows}
         columns={columns}
         checkboxSelection
