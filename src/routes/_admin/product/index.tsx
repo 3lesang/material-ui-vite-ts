@@ -1,4 +1,4 @@
-import { getProducts } from "@/api/product";
+import { deleteProduct, getProducts } from "@/api/product";
 import { StyledDataGrid } from "@/components/ui/StyledDataGrid";
 import AddIcon from "@mui/icons-material/Add";
 import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
@@ -19,7 +19,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { GridActionsCellItem, GridColDef, GridRowId } from "@mui/x-data-grid";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { formatRelative } from "date-fns/formatRelative";
 import * as React from "react";
@@ -131,13 +131,24 @@ function Header() {
 function Index() {
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["products"],
     queryFn: () => getProducts({ params: { page: 1, limit: 10 } }),
   });
 
-  const viewDetail = (id: GridRowId) => () => {
+  const { mutate } = useMutation({
+    mutationFn: (id: number) => deleteProduct(id),
+    onSuccess() {
+      refetch();
+    },
+  });
+
+  const handleView = (id: GridRowId) => () => {
     navigate({ to: `/product/${id}` });
+  };
+
+  const handleDelete = (id: GridRowId) => () => {
+    mutate(Number(id));
   };
 
   const rows = data?.data?.data;
@@ -198,10 +209,14 @@ function Index() {
       type: "actions",
       width: 100,
       getActions: (params) => [
-        <GridActionsCellItem icon={<DeleteIcon />} label="Delete" />,
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={handleDelete(params.id)}
+        />,
         <GridActionsCellItem
           icon={<AutoAwesomeMotionIcon />}
-          onClick={viewDetail(params.id)}
+          onClick={handleView(params.id)}
           label="View detail"
           showInMenu
         />,

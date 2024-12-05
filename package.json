@@ -13,6 +13,7 @@
     "@emotion/styled": "latest",
     "@hookform/resolvers": "^3.9.1",
     "@mui/icons-material": "latest",
+    "@mui/lab": "^6.0.0-beta.18",
     "@mui/material": "latest",
     "@mui/x-data-grid": "^7.23.0",
     "@tanstack/react-query": "^5.61.0",

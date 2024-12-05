@@ -1,6 +1,7 @@
-import { getProduct } from "@/api/product";
+import { getProduct, updateProduct, UpdateProductBody } from "@/api/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   Box,
   Button,
@@ -16,7 +17,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -48,6 +49,11 @@ function RouteComponent() {
 
   const result = data?.data;
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: UpdateProductBody) => updateProduct(Number(id), data),
+    onSuccess() {},
+  });
+
   const {
     handleSubmit,
     control,
@@ -59,8 +65,8 @@ function RouteComponent() {
       name: "",
       description: "",
       price: 0,
-      category: "",
-      imageUrl: "",
+      category: "electronics",
+      imageUrl: "https://mui.com/material-ui/api/loading-button/",
       inStock: false,
     },
   });
@@ -70,7 +76,11 @@ function RouteComponent() {
   };
 
   const onSubmit = (data: FormSchema) => {
-    console.log("Form Data:", data);
+    const payload: UpdateProductBody = {
+      name: data.name,
+      description: data.description,
+    };
+    mutate(payload);
   };
 
   useEffect(() => {
@@ -117,7 +127,7 @@ function RouteComponent() {
                 label="Description"
                 margin="normal"
                 multiline
-                rows={4}
+                rows={8}
               />
             )}
           />
@@ -195,16 +205,17 @@ function RouteComponent() {
             )}
           />
 
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
+            loading={isPending}
             size="large"
             sx={{ mt: 3 }}
           >
             Update Product
-          </Button>
+          </LoadingButton>
         </Box>
       </Paper>
     </Container>
