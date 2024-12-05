@@ -9,7 +9,6 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import SearchIcon from "@mui/icons-material/Search";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
@@ -156,7 +155,7 @@ function Index() {
     {
       field: "name",
       headerName: "Product Name",
-      minWidth: 150,
+      minWidth: 300,
     },
     {
       field: "price",
@@ -165,43 +164,12 @@ function Index() {
       width: 120,
     },
     {
-      field: "category",
-      headerName: "Category",
-      width: 130,
-    },
-    {
-      field: "inStock",
-      headerName: "Stock Status",
-      width: 130,
-      renderCell: (params) => (
-        <Chip
-          label={params.value ? "In Stock" : "Out of Stock"}
-          color={params.value ? "success" : "error"}
-          size="small"
-        />
-      ),
-    },
-    {
-      field: "quantity",
-      headerName: "Quantity",
-      type: "number",
-      width: 100,
-    },
-    {
       field: "UpdatedAt",
       headerName: "Last Updated",
       type: "date",
       width: 200,
-      valueFormatter: (value: any) => {
-        if (!value) return "";
-        return formatRelative(new Date(value), new Date());
-      },
-    },
-    {
-      field: "rating",
-      headerName: "Rating",
-      type: "number",
-      width: 100,
+      valueFormatter: (value: any) =>
+        formatRelative(new Date(value), new Date()),
     },
     {
       headerName: "Action",
