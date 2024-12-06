@@ -1,5 +1,10 @@
-import { deleteProductHttp, getProductsHttp } from "@/api/product";
+import {
+  deleteManyProductHttp,
+  deleteOneProductHttp,
+  getProductsHttp,
+} from "@/api/product";
 import { StyledDataGrid } from "@/components/ui/StyledDataGrid";
+import { idsAtom } from "@/stores/product";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,6 +12,7 @@ import FileCopyIcon from "@mui/icons-material/FileCopy";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import SearchIcon from "@mui/icons-material/Search";
+import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Dialog,
@@ -30,6 +36,7 @@ import {
   GridColDef,
   GridPaginationModel,
   GridRowId,
+  GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -39,6 +46,7 @@ import {
 } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { formatRelative } from "date-fns/formatRelative";
+import { useAtom } from "jotai";
 import * as React from "react";
 import { useState } from "react";
 import { z } from "zod";
@@ -96,11 +104,31 @@ function BasicPopover() {
   );
 }
 
-function Header() {
+interface HeaderProps {
+  onDeleteSuccess?: () => void;
+}
+
+function Header(props: HeaderProps) {
   const navigate = useNavigate();
+
+  const [ids] = useAtom(idsAtom);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (ids: number[]) =>
+      deleteManyProductHttp({
+        ids,
+      }),
+    onSuccess() {
+      props?.onDeleteSuccess?.();
+    },
+  });
 
   const handleCreateClick = () => {
     navigate({ to: "/product/create" });
+  };
+
+  const handleDeleteMany = () => {
+    mutate(ids);
   };
 
   return (
@@ -132,7 +160,15 @@ function Header() {
             />
           </Grid>
           <Grid>
-            <Button>Delete</Button>
+            {ids.length > 0 && (
+              <LoadingButton
+                onClick={handleDeleteMany}
+                color="error"
+                loading={isPending}
+              >
+                Delete
+              </LoadingButton>
+            )}
           </Grid>
           <Grid>
             <Button
@@ -211,6 +247,8 @@ function Index() {
 
   const { page, limit, order } = useSearch({ from: "/_admin/product/" });
 
+  const [_, setIds] = useAtom(idsAtom);
+
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["products", page, limit, order],
     queryFn: () =>
@@ -220,7 +258,7 @@ function Index() {
   });
 
   const { mutate } = useMutation({
-    mutationFn: (id: number) => deleteProductHttp(id),
+    mutationFn: (id: number) => deleteOneProductHttp(id),
     onSuccess() {
       refetch();
     },
@@ -280,6 +318,12 @@ function Index() {
       width: 120,
       sortable: false,
       disableColumnMenu: true,
+      valueFormatter: (value: number) =>
+        value.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+          maximumFractionDigits: 0,
+        }),
     },
     {
       field: "UpdatedAt",
@@ -288,7 +332,7 @@ function Index() {
       sortable: false,
       disableColumnMenu: true,
       width: 200,
-      valueFormatter: (value: any) =>
+      valueFormatter: (value: string) =>
         formatRelative(new Date(value), new Date()),
     },
     {
@@ -319,9 +363,14 @@ function Index() {
     });
   };
 
+  const handleRowSelectionModelChange = (model: GridRowSelectionModel) => {
+    const ids = Array.from(model).map(Number);
+    setIds(ids);
+  };
+
   return (
     <Paper>
-      <Header />
+      <Header onDeleteSuccess={refetch} />
       <StyledDataGrid
         getRowId={(row) => row.ID}
         rows={rows}
@@ -334,6 +383,7 @@ function Index() {
           pagination: { paginationModel: { page: page - 1, pageSize: limit } },
         }}
         onPaginationModelChange={handlePaginationModelChange}
+        onRowSelectionModelChange={handleRowSelectionModelChange}
       />
     </Paper>
   );

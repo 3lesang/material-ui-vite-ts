@@ -26,5 +26,8 @@ export const updateProductHttp = async (
   payload?: UpdateFormSchema
 ) => axiosClient.put(`/products/${id}`, payload);
 
-export const deleteProductHttp = async (id: number) =>
+export const deleteOneProductHttp = async (id: number) =>
   axiosClient.delete(`/products/${id}`);
+
+export const deleteManyProductHttp = async (payload: { ids: number[] }) =>
+  axiosClient.delete("/products", { data: payload });

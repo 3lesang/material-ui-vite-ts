@@ -26,7 +26,7 @@ import { z } from "zod";
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  price: z.number().optional(),
+  price: z.coerce.number().optional(),
   category: z.string().min(1, "Category is required"),
   imageUrl: z.string().url("Must be a valid URL").optional(),
   inStock: z.boolean().optional(),

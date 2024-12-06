@@ -29,7 +29,7 @@ export const Route = createFileRoute("/_admin/product/create")({
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  price: z.number().optional(),
+  price: z.coerce.number().optional(),
   category: z.string().min(1, "Category is required"),
   imageUrl: z.string().url("Must be a valid URL").optional(),
   inStock: z.boolean().optional(),
@@ -58,9 +58,9 @@ function RouteComponent() {
   } = useForm<CreateFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      price: 30,
+      name: "test",
+      description: "test",
+      price: 30000,
       category: "electronics",
       imageUrl: "https://mui.com/material-ui/api/loading-button/",
       inStock: false,
