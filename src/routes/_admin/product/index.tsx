@@ -1,12 +1,20 @@
-import { deleteProduct, getProducts } from "@/api/product";
+import { deleteProductHttp, getProductsHttp } from "@/api/product";
 import { StyledDataGrid } from "@/components/ui/StyledDataGrid";
 import AddIcon from "@mui/icons-material/Add";
-import AutoAwesomeMotionIcon from "@mui/icons-material/AutoAwesomeMotion";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import SearchIcon from "@mui/icons-material/Search";
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid2";
@@ -17,14 +25,33 @@ import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { GridActionsCellItem, GridColDef, GridRowId } from "@mui/x-data-grid";
+import {
+  GridActionsCellItem,
+  GridColDef,
+  GridPaginationModel,
+  GridRowId,
+} from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  useSearch,
+} from "@tanstack/react-router";
+import { zodValidator } from "@tanstack/zod-adapter";
 import { formatRelative } from "date-fns/formatRelative";
 import * as React from "react";
+import { useState } from "react";
+import { z } from "zod";
+
+const SearchSchema = z.object({
+  page: z.number().default(1),
+  limit: z.number().default(25),
+  order: z.string().default("created_at desc"),
+});
 
 export const Route = createFileRoute("/_admin/product/")({
   component: Index,
+  validateSearch: zodValidator(SearchSchema),
 });
 
 function BasicPopover() {
@@ -127,16 +154,73 @@ function Header() {
   );
 }
 
+interface DeleteActionProps {
+  onDelete?: () => void;
+}
+
+function DeleteAction(props: DeleteActionProps) {
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+
+  const handleConfirmDelete = () => {
+    props.onDelete?.();
+    setOpenConfirmDialog(false);
+  };
+
+  const handleCancelDelete = () => {
+    setOpenConfirmDialog(false);
+  };
+
+  const handleDeleteClick = () => {
+    setOpenConfirmDialog(true);
+  };
+
+  return (
+    <React.Fragment>
+      <GridActionsCellItem
+        icon={<DeleteIcon />}
+        label="Delete"
+        onClick={handleDeleteClick}
+      />
+      <Dialog
+        open={openConfirmDialog}
+        onClose={handleCancelDelete}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this row?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete}>Cancel</Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
+  );
+}
+
 function Index() {
-  const navigate = useNavigate();
+  const navigate = useNavigate({
+    from: Route.fullPath,
+  });
+
+  const { page, limit, order } = useSearch({ from: "/_admin/product/" });
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => getProducts({ params: { page: 1, limit: 10 } }),
+    queryKey: ["products", page, limit, order],
+    queryFn: () =>
+      getProductsHttp({
+        params: { page, limit, order },
+      }),
   });
 
   const { mutate } = useMutation({
-    mutationFn: (id: number) => deleteProduct(id),
+    mutationFn: (id: number) => deleteProductHttp(id),
     onSuccess() {
       refetch();
     },
@@ -151,22 +235,58 @@ function Index() {
   };
 
   const rows = data?.data?.data;
+  const meta = data?.data?.meta;
+
   const columns: GridColDef[] = [
+    {
+      field: "url",
+      headerName: "",
+      sortable: false,
+      disableColumnMenu: true,
+      width: 100,
+      renderCell: () => (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Box
+            component="img"
+            width={40}
+            height={40}
+            borderRadius={2}
+            sx={{
+              objectFit: "cover",
+            }}
+            src="https://via.placeholder.com/40"
+            alt="Example"
+          />
+        </Box>
+      ),
+    },
     {
       field: "name",
       headerName: "Product Name",
-      minWidth: 300,
+      width: 500,
+      sortable: false,
+      disableColumnMenu: true,
     },
     {
       field: "price",
       headerName: "Price",
-      type: "number",
       width: 120,
+      sortable: false,
+      disableColumnMenu: true,
     },
     {
       field: "UpdatedAt",
       headerName: "Last Updated",
       type: "date",
+      sortable: false,
+      disableColumnMenu: true,
       width: 200,
       valueFormatter: (value: any) =>
         formatRelative(new Date(value), new Date()),
@@ -177,25 +297,27 @@ function Index() {
       type: "actions",
       width: 100,
       getActions: (params) => [
+        <DeleteAction onDelete={handleDelete(params.id)} />,
         <GridActionsCellItem
-          icon={<DeleteIcon />}
-          label="Delete"
-          onClick={handleDelete(params.id)}
-        />,
-        <GridActionsCellItem
-          icon={<AutoAwesomeMotionIcon />}
+          icon={<EditIcon />}
           onClick={handleView(params.id)}
-          label="View detail"
+          label="Edit"
           showInMenu
         />,
         <GridActionsCellItem
           icon={<FileCopyIcon />}
-          label="Duplicate User"
+          label="Duplicate"
           showInMenu
         />,
       ],
     },
   ];
+
+  const handlePaginationModelChange = (model: GridPaginationModel) => {
+    navigate({
+      search: (prev) => ({ page: model.page + 1, limit: model.pageSize }),
+    });
+  };
 
   return (
     <Paper>
@@ -206,6 +328,12 @@ function Index() {
         columns={columns}
         checkboxSelection
         loading={isLoading}
+        paginationMode="server"
+        rowCount={meta?.total}
+        initialState={{
+          pagination: { paginationModel: { page: page - 1, pageSize: limit } },
+        }}
+        onPaginationModelChange={handlePaginationModelChange}
       />
     </Paper>
   );

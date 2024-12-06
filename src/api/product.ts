@@ -1,28 +1,30 @@
+import { UpdateFormSchema } from "@/routes/_admin/product/$id";
+import { CreateFormSchema } from "@/routes/_admin/product/create";
 import { axiosClient } from "./axios";
 
 interface ProductParams {
   page: number;
   limit: number;
-}
-
-export interface UpdateProductBody {
-  name?: string;
-  description?: string;
-  price?: number;
+  order?: string;
 }
 
 interface ProductArgs {
   params?: ProductParams;
 }
 
-export const getProducts = async (args?: ProductArgs) =>
+export const getProductsHttp = async (args?: ProductArgs) =>
   axiosClient.get("/products", { params: args?.params });
 
-export const getProduct = async (id: number) =>
+export const getProductHttp = async (id: number) =>
   axiosClient.get(`/products/${id}`);
 
-export const updateProduct = async (id: number, payload?: UpdateProductBody) =>
-  axiosClient.put(`/products/${id}`, payload);
+export const createProductHttp = async (payload: CreateFormSchema) =>
+  axiosClient.post("/products", payload);
 
-export const deleteProduct = async (id: number) =>
+export const updateProductHttp = async (
+  id: number,
+  payload?: UpdateFormSchema
+) => axiosClient.put(`/products/${id}`, payload);
+
+export const deleteProductHttp = async (id: number) =>
   axiosClient.delete(`/products/${id}`);

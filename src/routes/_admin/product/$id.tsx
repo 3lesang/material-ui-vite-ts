@@ -1,4 +1,4 @@
-import { getProduct, updateProduct, UpdateProductBody } from "@/api/product";
+import { getProductHttp, updateProductHttp } from "@/api/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -26,13 +26,13 @@ import { z } from "zod";
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  price: z.number().positive("Price must be a positive number"),
+  price: z.number().optional(),
   category: z.string().min(1, "Category is required"),
   imageUrl: z.string().url("Must be a valid URL").optional(),
   inStock: z.boolean().optional(),
 });
 
-type FormSchema = z.infer<typeof formSchema>;
+export type UpdateFormSchema = z.infer<typeof formSchema>;
 
 export const Route = createFileRoute("/_admin/product/$id")({
   component: RouteComponent,
@@ -42,15 +42,19 @@ function RouteComponent() {
   const { id } = Route.useParams();
   const { history } = useRouter();
 
+  const handleBack = () => {
+    history.go(-1);
+  };
+
   const { data } = useQuery({
     queryKey: ["products", id],
-    queryFn: () => getProduct(Number(id)),
+    queryFn: () => getProductHttp(Number(id)),
   });
 
   const result = data?.data;
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: UpdateProductBody) => updateProduct(Number(id), data),
+  const { mutate, isPending, isSuccess } = useMutation({
+    mutationFn: (data: UpdateFormSchema) => updateProductHttp(Number(id), data),
     onSuccess() {},
   });
 
@@ -58,29 +62,21 @@ function RouteComponent() {
     handleSubmit,
     control,
     reset,
-    formState: { errors },
-  } = useForm<FormSchema>({
+    formState: { errors, isDirty, isValid },
+  } = useForm<UpdateFormSchema>({
+    mode: "onChange",
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
-      price: 0,
       category: "electronics",
       imageUrl: "https://mui.com/material-ui/api/loading-button/",
       inStock: false,
     },
   });
 
-  const handleBack = () => {
-    history.go(-1);
-  };
-
-  const onSubmit = (data: FormSchema) => {
-    const payload: UpdateProductBody = {
-      name: data.name,
-      description: data.description,
-    };
-    mutate(payload);
+  const onSubmit = (data: UpdateFormSchema) => {
+    mutate(data);
   };
 
   useEffect(() => {
@@ -110,7 +106,10 @@ function RouteComponent() {
               <TextField
                 {...field}
                 fullWidth
+                size="small"
                 label="Product Name"
+                multiline
+                rows={3}
                 error={!!errors.name}
                 helperText={errors.name?.message}
               />
@@ -124,6 +123,7 @@ function RouteComponent() {
               <TextField
                 {...field}
                 fullWidth
+                size="small"
                 label="Description"
                 margin="normal"
                 multiline
@@ -139,15 +139,18 @@ function RouteComponent() {
               <TextField
                 {...field}
                 fullWidth
+                size="small"
                 label="Price"
                 type="number"
                 margin="normal"
                 error={!!errors.price}
                 helperText={errors.price?.message}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  },
                 }}
               />
             )}
@@ -159,7 +162,12 @@ function RouteComponent() {
             render={({ field }) => (
               <FormControl fullWidth margin="normal">
                 <InputLabel>Category</InputLabel>
-                <Select {...field} label="Category" error={!!errors.category}>
+                <Select
+                  {...field}
+                  label="Category"
+                  error={!!errors.category}
+                  size="small"
+                >
                   <MenuItem value="">Select a category</MenuItem>
                   <MenuItem value="electronics">Electronics</MenuItem>
                   <MenuItem value="clothing">Clothing</MenuItem>
@@ -181,6 +189,7 @@ function RouteComponent() {
             render={({ field }) => (
               <TextField
                 {...field}
+                size="small"
                 fullWidth
                 label="Image URL"
                 type="url"
@@ -197,7 +206,12 @@ function RouteComponent() {
             render={({ field }) => (
               <FormControlLabel
                 control={
-                  <Checkbox {...field} checked={field.value} color="primary" />
+                  <Checkbox
+                    {...field}
+                    checked={field.value}
+                    color="primary"
+                    size="small"
+                  />
                 }
                 label="In Stock"
                 sx={{ mt: 2 }}
@@ -210,6 +224,7 @@ function RouteComponent() {
             variant="contained"
             color="primary"
             fullWidth
+            disabled={!isDirty || !isValid || isSuccess}
             loading={isPending}
             size="large"
             sx={{ mt: 3 }}

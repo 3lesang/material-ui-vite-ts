@@ -1,4 +1,7 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { createProductHttp } from "@/api/product";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   Box,
   Button,
@@ -13,21 +16,60 @@ import {
   Select,
   TextField,
   Typography,
-} from '@mui/material'
-import { createFileRoute, useRouter } from '@tanstack/react-router'
+} from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
-export const Route = createFileRoute('/_admin/product/create')({
+export const Route = createFileRoute("/_admin/product/create")({
   component: RouteComponent,
-})
+});
+
+const formSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().optional(),
+  price: z.number().optional(),
+  category: z.string().min(1, "Category is required"),
+  imageUrl: z.string().url("Must be a valid URL").optional(),
+  inStock: z.boolean().optional(),
+});
+
+export type CreateFormSchema = z.infer<typeof formSchema>;
 
 function RouteComponent() {
-  const { history } = useRouter()
-
-  const handleSubmit = () => {}
+  const { history } = useRouter();
 
   const handleBack = () => {
-    history.go(-1)
-  }
+    history.go(-1);
+  };
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: CreateFormSchema) => createProductHttp(data),
+    onSuccess() {
+      handleBack();
+    },
+  });
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<CreateFormSchema>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      price: 30,
+      category: "electronics",
+      imageUrl: "https://mui.com/material-ui/api/loading-button/",
+      inStock: false,
+    },
+  });
+
+  const onSubmit = (data: CreateFormSchema) => {
+    mutate(data);
+  };
 
   return (
     <Container maxWidth="sm">
@@ -39,78 +81,140 @@ function RouteComponent() {
           Create New Product
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-          <TextField
-            fullWidth
-            label="Product Name"
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
+          <Controller
             name="name"
-            margin="normal"
-            required
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                size="small"
+                label="Product Name"
+                multiline
+                rows={3}
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+            )}
           />
 
-          <TextField
-            fullWidth
-            label="Description"
+          <Controller
             name="description"
-            margin="normal"
-            required
-            multiline
-            rows={4}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                size="small"
+                label="Description"
+                margin="normal"
+                multiline
+                rows={8}
+              />
+            )}
           />
 
-          <TextField
-            fullWidth
-            label="Price"
+          <Controller
             name="price"
-            type="number"
-            margin="normal"
-            required
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
-                ),
-              },
-            }}
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                size="small"
+                label="Price"
+                type="number"
+                margin="normal"
+                error={!!errors.price}
+                helperText={errors.price?.message}
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  },
+                }}
+              />
+            )}
           />
 
-          <FormControl fullWidth margin="normal" required>
-            <InputLabel>Category</InputLabel>
-            <Select name="category" label="Category">
-              <MenuItem value="">Select a category</MenuItem>
-              <MenuItem value="electronics">Electronics</MenuItem>
-              <MenuItem value="clothing">Clothing</MenuItem>
-              <MenuItem value="books">Books</MenuItem>
-              <MenuItem value="home">Home & Garden</MenuItem>
-            </Select>
-          </FormControl>
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <FormControl fullWidth margin="normal">
+                <InputLabel>Category</InputLabel>
+                <Select
+                  {...field}
+                  label="Category"
+                  error={!!errors.category}
+                  size="small"
+                >
+                  <MenuItem value="">Select a category</MenuItem>
+                  <MenuItem value="electronics">Electronics</MenuItem>
+                  <MenuItem value="clothing">Clothing</MenuItem>
+                  <MenuItem value="books">Books</MenuItem>
+                  <MenuItem value="home">Home & Garden</MenuItem>
+                </Select>
+                {errors.category && (
+                  <Typography variant="caption" color="error">
+                    {errors.category.message}
+                  </Typography>
+                )}
+              </FormControl>
+            )}
+          />
 
-          <TextField
-            fullWidth
-            label="Image URL"
+          <Controller
             name="imageUrl"
-            margin="normal"
-            type="url"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                size="small"
+                fullWidth
+                label="Image URL"
+                type="url"
+                margin="normal"
+                error={!!errors.imageUrl}
+                helperText={errors.imageUrl?.message}
+              />
+            )}
           />
 
-          <FormControlLabel
-            control={<Checkbox name="inStock" color="primary" />}
-            label="In Stock"
-            sx={{ mt: 2 }}
+          <Controller
+            name="inStock"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={field.value}
+                    color="primary"
+                    size="small"
+                  />
+                }
+                label="In Stock"
+                sx={{ mt: 2 }}
+              />
+            )}
           />
 
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
+            loading={isPending}
             size="large"
             sx={{ mt: 3 }}
           >
             Create Product
-          </Button>
+          </LoadingButton>
         </Box>
       </Paper>
     </Container>
-  )
+  );
 }
