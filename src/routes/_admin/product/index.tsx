@@ -3,7 +3,7 @@ import {
   deleteOneProductHttp,
   getProductsHttp,
 } from "@/api/product";
-import { StyledDataGrid } from "@/components/ui/StyledDataGrid";
+import { useApp } from "@/contexts/app";
 import { idsAtom } from "@/stores/product";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,16 +12,9 @@ import FileCopyIcon from "@mui/icons-material/FileCopy";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import SearchIcon from "@mui/icons-material/Search";
-import { LoadingButton } from "@mui/lab";
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
@@ -32,6 +25,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import {
+  DataGrid,
   GridActionsCellItem,
   GridColDef,
   GridPaginationModel,
@@ -48,12 +42,12 @@ import { zodValidator } from "@tanstack/zod-adapter";
 import { formatRelative } from "date-fns/formatRelative";
 import { useAtom } from "jotai";
 import * as React from "react";
-import { useState } from "react";
 import { z } from "zod";
 
 const SearchSchema = z.object({
   page: z.number().default(1),
   limit: z.number().default(25),
+  search: z.string().optional(),
   order: z.string().default("created_at desc"),
 });
 
@@ -109,8 +103,8 @@ interface HeaderProps {
 }
 
 function Header(props: HeaderProps) {
-  const navigate = useNavigate();
-
+  const navigate = useNavigate({ from: Route.fullPath });
+  const { confirm } = useApp();
   const [ids] = useAtom(idsAtom);
 
   const { mutate, isPending } = useMutation({
@@ -127,8 +121,21 @@ function Header(props: HeaderProps) {
     navigate({ to: "/product/create" });
   };
 
-  const handleDeleteMany = () => {
-    mutate(ids);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    navigate({
+      search: (prev) => ({ ...prev, search: e.target.value }),
+    });
+  };
+
+  const handleDeleteManyClick = async () => {
+    const confirmed = await confirm({
+      title: "Are you sure?",
+      description:
+        "This action cannot be undone. This will permanently delete items.",
+    });
+    if (confirmed) {
+      mutate(ids);
+    }
   };
 
   return (
@@ -149,6 +156,7 @@ function Header(props: HeaderProps) {
           <Grid size="grow">
             <TextField
               fullWidth
+              onChange={handleSearch}
               placeholder="Search by email address, phone number, or user UID"
               slotProps={{
                 input: {
@@ -162,7 +170,8 @@ function Header(props: HeaderProps) {
           <Grid>
             {ids.length > 0 && (
               <LoadingButton
-                onClick={handleDeleteMany}
+                variant="contained"
+                onClick={handleDeleteManyClick}
                 color="error"
                 loading={isPending}
               >
@@ -195,48 +204,24 @@ interface DeleteActionProps {
 }
 
 function DeleteAction(props: DeleteActionProps) {
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
-
-  const handleConfirmDelete = () => {
-    props.onDelete?.();
-    setOpenConfirmDialog(false);
-  };
-
-  const handleCancelDelete = () => {
-    setOpenConfirmDialog(false);
-  };
-
-  const handleDeleteClick = () => {
-    setOpenConfirmDialog(true);
+  const { confirm } = useApp();
+  const handleDeleteClick = async () => {
+    const confirmed = await confirm({
+      title: "Are you sure?",
+      description:
+        "This action cannot be undone. This will permanently delete the item.",
+    });
+    if (confirmed) {
+      props?.onDelete?.();
+    }
   };
 
   return (
-    <React.Fragment>
-      <GridActionsCellItem
-        icon={<DeleteIcon />}
-        label="Delete"
-        onClick={handleDeleteClick}
-      />
-      <Dialog
-        open={openConfirmDialog}
-        onClose={handleCancelDelete}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this row?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancelDelete}>Cancel</Button>
-          <Button onClick={handleConfirmDelete} color="error" autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+    <GridActionsCellItem
+      icon={<DeleteIcon />}
+      label="Delete"
+      onClick={handleDeleteClick}
+    />
   );
 }
 
@@ -245,7 +230,9 @@ function Index() {
     from: Route.fullPath,
   });
 
-  const { page, limit, order } = useSearch({ from: "/_admin/product/" });
+  const { page, limit, order, search } = useSearch({
+    from: "/_admin/product/",
+  });
 
   const [_, setIds] = useAtom(idsAtom);
 
@@ -371,7 +358,7 @@ function Index() {
   return (
     <Paper>
       <Header onDeleteSuccess={refetch} />
-      <StyledDataGrid
+      <DataGrid
         getRowId={(row) => row.ID}
         rows={rows}
         columns={columns}

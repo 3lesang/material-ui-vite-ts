@@ -7,6 +7,7 @@ import ReactDOM from "react-dom/client";
 import theme from "./theme";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { AppProvider } from "./contexts/app";
 import { routeTree } from "./routeTree.gen";
 
 const queryClient = new QueryClient();
@@ -27,7 +28,9 @@ if (!rootElement.innerHTML) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
+          <AppProvider>
+            <RouterProvider router={router} />
+          </AppProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
