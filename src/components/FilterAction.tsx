@@ -60,19 +60,34 @@ function Filter() {
           horizontal: "left",
         }}
       >
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-          <InputLabel id="demo-select-small-label">Last Updated</InputLabel>
-          <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            value={order}
-            label="Last Updated"
-            onChange={handleChange}
-          >
-            <MenuItem value="created_at desc">Lasted</MenuItem>
-            <MenuItem value="created_at asc">Oldest</MenuItem>
-          </Select>
-        </FormControl>
+        <Box>
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="demo-select-small-label">Last Updated</InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={order}
+              label="Last Updated"
+              onChange={handleChange}
+            >
+              <MenuItem value="created_at desc">Lasted</MenuItem>
+              <MenuItem value="created_at asc">Oldest</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <InputLabel id="demo-select-small-label">Price</InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={order}
+              label="Price"
+              onChange={handleChange}
+            >
+              <MenuItem value="created_at desc">Lasted</MenuItem>
+              <MenuItem value="created_at asc">Oldest</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
       </Popover>
     </Box>
   );
