@@ -39,6 +39,7 @@ import {
   useSearch,
 } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
+import { useDebounce } from "@uidotdev/usehooks";
 import { formatRelative } from "date-fns/formatRelative";
 import { useAtom } from "jotai";
 import * as React from "react";
@@ -56,7 +57,7 @@ export const Route = createFileRoute("/_admin/product/")({
   validateSearch: zodValidator(SearchSchema),
 });
 
-function BasicPopover() {
+function Filter() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -73,10 +74,11 @@ function BasicPopover() {
   const id = open ? "simple-popover" : undefined;
 
   return (
-    <div>
+    <Box>
       <Button
         aria-describedby={id}
-        variant="text"
+        variant="contained"
+        color="inherit"
         onClick={handleClick}
         startIcon={<FilterListIcon />}
       >
@@ -94,7 +96,7 @@ function BasicPopover() {
       >
         <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
       </Popover>
-    </div>
+    </Box>
   );
 }
 
@@ -103,7 +105,9 @@ interface HeaderProps {
 }
 
 function Header(props: HeaderProps) {
+  const [searchTerm, setSearchTerm] = React.useState("");
   const navigate = useNavigate({ from: Route.fullPath });
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const { confirm } = useApp();
   const [ids] = useAtom(idsAtom);
 
@@ -122,9 +126,7 @@ function Header(props: HeaderProps) {
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    navigate({
-      search: (prev) => ({ ...prev, search: e.target.value }),
-    });
+    setSearchTerm(e.target.value);
   };
 
   const handleDeleteManyClick = async () => {
@@ -138,6 +140,12 @@ function Header(props: HeaderProps) {
     }
   };
 
+  React.useEffect(() => {
+    navigate({
+      search: (prev) => ({ ...prev, search: debouncedSearchTerm }),
+    });
+  }, [debouncedSearchTerm]);
+
   return (
     <AppBar
       position="static"
@@ -148,7 +156,7 @@ function Header(props: HeaderProps) {
       <Toolbar>
         <Grid container spacing={2} sx={{ alignItems: "center" }} width="100%">
           <Grid>
-            <BasicPopover />
+            <Filter />
           </Grid>
           <Grid>
             <SearchIcon color="inherit" sx={{ display: "block" }} />
@@ -229,18 +237,18 @@ function Index() {
   const navigate = useNavigate({
     from: Route.fullPath,
   });
-
+  const [_, setIds] = useAtom(idsAtom);
   const { page, limit, order, search } = useSearch({
     from: "/_admin/product/",
   });
 
-  const [_, setIds] = useAtom(idsAtom);
+  const filter = search ? `name~${search}` : "";
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["products", page, limit, order],
+    queryKey: ["products", page, limit, order, filter],
     queryFn: () =>
       getProductsHttp({
-        params: { page, limit, order },
+        params: { page, limit, order, filter },
       }),
   });
 
@@ -346,7 +354,11 @@ function Index() {
 
   const handlePaginationModelChange = (model: GridPaginationModel) => {
     navigate({
-      search: (prev) => ({ page: model.page + 1, limit: model.pageSize }),
+      search: (prev) => ({
+        ...prev,
+        page: model.page + 1,
+        limit: model.pageSize,
+      }),
     });
   };
 

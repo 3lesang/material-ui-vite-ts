@@ -6,6 +6,7 @@ interface ProductParams {
   page: number;
   limit: number;
   order?: string;
+  filter?: string;
 }
 
 interface ProductArgs {
