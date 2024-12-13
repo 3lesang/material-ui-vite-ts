@@ -126,7 +126,7 @@ function Index() {
         }),
     },
     {
-      field: "UpdatedAt",
+      field: "updated_at",
       headerName: "Last Updated",
       type: "date",
       sortable: false,
@@ -176,7 +176,6 @@ function Index() {
     <Paper>
       <Header onDeleteSuccess={refetch} />
       <DataGrid
-        getRowId={(row) => row.ID}
         rows={rows}
         columns={columns}
         checkboxSelection
