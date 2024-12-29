@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { createContext, ReactNode, useContext, useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 interface ConfirmDialogOptions {
   title: string;
@@ -83,6 +84,7 @@ export function AppProvider({ children }: AppProviderProps) {
           </Button>
         </DialogActions>
       </Dialog>
+      <Toaster position="top-right" reverseOrder={false} />
     </AppContext.Provider>
   );
 }

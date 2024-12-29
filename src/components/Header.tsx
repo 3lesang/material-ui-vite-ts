@@ -24,7 +24,8 @@ interface HeaderProps {
 }
 
 function Header(props: HeaderProps) {
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = React.useState<string | undefined>();
+
   const navigate = useNavigate({ from: "/product" });
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const { confirm } = useApp();
@@ -60,9 +61,16 @@ function Header(props: HeaderProps) {
   };
 
   React.useEffect(() => {
-    navigate({
-      search: (prev) => ({ ...prev, search: debouncedSearchTerm }),
-    });
+    if (debouncedSearchTerm != undefined) {
+      navigate({
+        search: (prev) => {
+          const { search, ...rest } = prev;
+          return debouncedSearchTerm
+            ? { ...prev, search: debouncedSearchTerm }
+            : rest;
+        },
+      });
+    }
   }, [debouncedSearchTerm]);
 
   return (

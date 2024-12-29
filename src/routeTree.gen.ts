@@ -8,6 +8,8 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
@@ -18,14 +20,30 @@ import { Route as AuthLoginImport } from './routes/auth/login'
 import { Route as AdminContactImport } from './routes/_admin/contact'
 import { Route as AdminAboutImport } from './routes/_admin/about'
 import { Route as AdminProductIndexImport } from './routes/_admin/product/index'
+import { Route as AdminSettingSettingImport } from './routes/_admin/setting/_setting'
 import { Route as AdminProductCreateImport } from './routes/_admin/product/create'
 import { Route as AdminProductIdImport } from './routes/_admin/product/$id'
+import { Route as AdminSettingSettingIndexImport } from './routes/_admin/setting/_setting/index'
+import { Route as AdminSettingSettingUserIndexImport } from './routes/_admin/setting/_setting/user/index'
+import { Route as AdminSettingSettingRoleIndexImport } from './routes/_admin/setting/_setting/role/index'
+import { Route as AdminSettingSettingUserIdImport } from './routes/_admin/setting/_setting/user/$id'
+import { Route as AdminSettingSettingRoleIdImport } from './routes/_admin/setting/_setting/role/$id'
+
+// Create Virtual Routes
+
+const AdminSettingImport = createFileRoute('/_admin/setting')()
 
 // Create/Update Routes
 
 const AdminRoute = AdminImport.update({
   id: '/_admin',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AdminSettingRoute = AdminSettingImport.update({
+  id: '/setting',
+  path: '/setting',
+  getParentRoute: () => AdminRoute,
 } as any)
 
 const AdminIndexRoute = AdminIndexImport.update({
@@ -64,6 +82,11 @@ const AdminProductIndexRoute = AdminProductIndexImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
+const AdminSettingSettingRoute = AdminSettingSettingImport.update({
+  id: '/_setting',
+  getParentRoute: () => AdminSettingRoute,
+} as any)
+
 const AdminProductCreateRoute = AdminProductCreateImport.update({
   id: '/product/create',
   path: '/product/create',
@@ -74,6 +97,38 @@ const AdminProductIdRoute = AdminProductIdImport.update({
   id: '/product/$id',
   path: '/product/$id',
   getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminSettingSettingIndexRoute = AdminSettingSettingIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminSettingSettingRoute,
+} as any)
+
+const AdminSettingSettingUserIndexRoute =
+  AdminSettingSettingUserIndexImport.update({
+    id: '/user/',
+    path: '/user/',
+    getParentRoute: () => AdminSettingSettingRoute,
+  } as any)
+
+const AdminSettingSettingRoleIndexRoute =
+  AdminSettingSettingRoleIndexImport.update({
+    id: '/role/',
+    path: '/role/',
+    getParentRoute: () => AdminSettingSettingRoute,
+  } as any)
+
+const AdminSettingSettingUserIdRoute = AdminSettingSettingUserIdImport.update({
+  id: '/user/$id',
+  path: '/user/$id',
+  getParentRoute: () => AdminSettingSettingRoute,
+} as any)
+
+const AdminSettingSettingRoleIdRoute = AdminSettingSettingRoleIdImport.update({
+  id: '/role/$id',
+  path: '/role/$id',
+  getParentRoute: () => AdminSettingSettingRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -136,6 +191,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProductCreateImport
       parentRoute: typeof AdminImport
     }
+    '/_admin/setting': {
+      id: '/_admin/setting'
+      path: '/setting'
+      fullPath: '/setting'
+      preLoaderRoute: typeof AdminSettingImport
+      parentRoute: typeof AdminImport
+    }
+    '/_admin/setting/_setting': {
+      id: '/_admin/setting/_setting'
+      path: '/setting'
+      fullPath: '/setting'
+      preLoaderRoute: typeof AdminSettingSettingImport
+      parentRoute: typeof AdminSettingRoute
+    }
     '/_admin/product/': {
       id: '/_admin/product/'
       path: '/product'
@@ -143,10 +212,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProductIndexImport
       parentRoute: typeof AdminImport
     }
+    '/_admin/setting/_setting/': {
+      id: '/_admin/setting/_setting/'
+      path: '/'
+      fullPath: '/setting/'
+      preLoaderRoute: typeof AdminSettingSettingIndexImport
+      parentRoute: typeof AdminSettingSettingImport
+    }
+    '/_admin/setting/_setting/role/$id': {
+      id: '/_admin/setting/_setting/role/$id'
+      path: '/role/$id'
+      fullPath: '/setting/role/$id'
+      preLoaderRoute: typeof AdminSettingSettingRoleIdImport
+      parentRoute: typeof AdminSettingSettingImport
+    }
+    '/_admin/setting/_setting/user/$id': {
+      id: '/_admin/setting/_setting/user/$id'
+      path: '/user/$id'
+      fullPath: '/setting/user/$id'
+      preLoaderRoute: typeof AdminSettingSettingUserIdImport
+      parentRoute: typeof AdminSettingSettingImport
+    }
+    '/_admin/setting/_setting/role/': {
+      id: '/_admin/setting/_setting/role/'
+      path: '/role'
+      fullPath: '/setting/role'
+      preLoaderRoute: typeof AdminSettingSettingRoleIndexImport
+      parentRoute: typeof AdminSettingSettingImport
+    }
+    '/_admin/setting/_setting/user/': {
+      id: '/_admin/setting/_setting/user/'
+      path: '/user'
+      fullPath: '/setting/user'
+      preLoaderRoute: typeof AdminSettingSettingUserIndexImport
+      parentRoute: typeof AdminSettingSettingImport
+    }
   }
 }
 
 // Create and export the route tree
+
+interface AdminSettingSettingRouteChildren {
+  AdminSettingSettingIndexRoute: typeof AdminSettingSettingIndexRoute
+  AdminSettingSettingRoleIdRoute: typeof AdminSettingSettingRoleIdRoute
+  AdminSettingSettingUserIdRoute: typeof AdminSettingSettingUserIdRoute
+  AdminSettingSettingRoleIndexRoute: typeof AdminSettingSettingRoleIndexRoute
+  AdminSettingSettingUserIndexRoute: typeof AdminSettingSettingUserIndexRoute
+}
+
+const AdminSettingSettingRouteChildren: AdminSettingSettingRouteChildren = {
+  AdminSettingSettingIndexRoute: AdminSettingSettingIndexRoute,
+  AdminSettingSettingRoleIdRoute: AdminSettingSettingRoleIdRoute,
+  AdminSettingSettingUserIdRoute: AdminSettingSettingUserIdRoute,
+  AdminSettingSettingRoleIndexRoute: AdminSettingSettingRoleIndexRoute,
+  AdminSettingSettingUserIndexRoute: AdminSettingSettingUserIndexRoute,
+}
+
+const AdminSettingSettingRouteWithChildren =
+  AdminSettingSettingRoute._addFileChildren(AdminSettingSettingRouteChildren)
+
+interface AdminSettingRouteChildren {
+  AdminSettingSettingRoute: typeof AdminSettingSettingRouteWithChildren
+}
+
+const AdminSettingRouteChildren: AdminSettingRouteChildren = {
+  AdminSettingSettingRoute: AdminSettingSettingRouteWithChildren,
+}
+
+const AdminSettingRouteWithChildren = AdminSettingRoute._addFileChildren(
+  AdminSettingRouteChildren,
+)
 
 interface AdminRouteChildren {
   AdminAboutRoute: typeof AdminAboutRoute
@@ -154,6 +289,7 @@ interface AdminRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   AdminProductIdRoute: typeof AdminProductIdRoute
   AdminProductCreateRoute: typeof AdminProductCreateRoute
+  AdminSettingRoute: typeof AdminSettingRouteWithChildren
   AdminProductIndexRoute: typeof AdminProductIndexRoute
 }
 
@@ -163,6 +299,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   AdminProductIdRoute: AdminProductIdRoute,
   AdminProductCreateRoute: AdminProductCreateRoute,
+  AdminSettingRoute: AdminSettingRouteWithChildren,
   AdminProductIndexRoute: AdminProductIndexRoute,
 }
 
@@ -177,7 +314,13 @@ export interface FileRoutesByFullPath {
   '/': typeof AdminIndexRoute
   '/product/$id': typeof AdminProductIdRoute
   '/product/create': typeof AdminProductCreateRoute
+  '/setting': typeof AdminSettingSettingRouteWithChildren
   '/product': typeof AdminProductIndexRoute
+  '/setting/': typeof AdminSettingSettingIndexRoute
+  '/setting/role/$id': typeof AdminSettingSettingRoleIdRoute
+  '/setting/user/$id': typeof AdminSettingSettingUserIdRoute
+  '/setting/role': typeof AdminSettingSettingRoleIndexRoute
+  '/setting/user': typeof AdminSettingSettingUserIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -188,7 +331,12 @@ export interface FileRoutesByTo {
   '/': typeof AdminIndexRoute
   '/product/$id': typeof AdminProductIdRoute
   '/product/create': typeof AdminProductCreateRoute
+  '/setting': typeof AdminSettingSettingIndexRoute
   '/product': typeof AdminProductIndexRoute
+  '/setting/role/$id': typeof AdminSettingSettingRoleIdRoute
+  '/setting/user/$id': typeof AdminSettingSettingUserIdRoute
+  '/setting/role': typeof AdminSettingSettingRoleIndexRoute
+  '/setting/user': typeof AdminSettingSettingUserIndexRoute
 }
 
 export interface FileRoutesById {
@@ -201,7 +349,14 @@ export interface FileRoutesById {
   '/_admin/': typeof AdminIndexRoute
   '/_admin/product/$id': typeof AdminProductIdRoute
   '/_admin/product/create': typeof AdminProductCreateRoute
+  '/_admin/setting': typeof AdminSettingRouteWithChildren
+  '/_admin/setting/_setting': typeof AdminSettingSettingRouteWithChildren
   '/_admin/product/': typeof AdminProductIndexRoute
+  '/_admin/setting/_setting/': typeof AdminSettingSettingIndexRoute
+  '/_admin/setting/_setting/role/$id': typeof AdminSettingSettingRoleIdRoute
+  '/_admin/setting/_setting/user/$id': typeof AdminSettingSettingUserIdRoute
+  '/_admin/setting/_setting/role/': typeof AdminSettingSettingRoleIndexRoute
+  '/_admin/setting/_setting/user/': typeof AdminSettingSettingUserIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -215,7 +370,13 @@ export interface FileRouteTypes {
     | '/'
     | '/product/$id'
     | '/product/create'
+    | '/setting'
     | '/product'
+    | '/setting/'
+    | '/setting/role/$id'
+    | '/setting/user/$id'
+    | '/setting/role'
+    | '/setting/user'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/about'
@@ -225,7 +386,12 @@ export interface FileRouteTypes {
     | '/'
     | '/product/$id'
     | '/product/create'
+    | '/setting'
     | '/product'
+    | '/setting/role/$id'
+    | '/setting/user/$id'
+    | '/setting/role'
+    | '/setting/user'
   id:
     | '__root__'
     | '/_admin'
@@ -236,7 +402,14 @@ export interface FileRouteTypes {
     | '/_admin/'
     | '/_admin/product/$id'
     | '/_admin/product/create'
+    | '/_admin/setting'
+    | '/_admin/setting/_setting'
     | '/_admin/product/'
+    | '/_admin/setting/_setting/'
+    | '/_admin/setting/_setting/role/$id'
+    | '/_admin/setting/_setting/user/$id'
+    | '/_admin/setting/_setting/role/'
+    | '/_admin/setting/_setting/user/'
   fileRoutesById: FileRoutesById
 }
 
@@ -275,6 +448,7 @@ export const routeTree = rootRoute
         "/_admin/",
         "/_admin/product/$id",
         "/_admin/product/create",
+        "/_admin/setting",
         "/_admin/product/"
       ]
     },
@@ -304,9 +478,47 @@ export const routeTree = rootRoute
       "filePath": "_admin/product/create.tsx",
       "parent": "/_admin"
     },
+    "/_admin/setting": {
+      "filePath": "_admin/setting",
+      "parent": "/_admin",
+      "children": [
+        "/_admin/setting/_setting"
+      ]
+    },
+    "/_admin/setting/_setting": {
+      "filePath": "_admin/setting/_setting.tsx",
+      "parent": "/_admin/setting",
+      "children": [
+        "/_admin/setting/_setting/",
+        "/_admin/setting/_setting/role/$id",
+        "/_admin/setting/_setting/user/$id",
+        "/_admin/setting/_setting/role/",
+        "/_admin/setting/_setting/user/"
+      ]
+    },
     "/_admin/product/": {
       "filePath": "_admin/product/index.tsx",
       "parent": "/_admin"
+    },
+    "/_admin/setting/_setting/": {
+      "filePath": "_admin/setting/_setting/index.tsx",
+      "parent": "/_admin/setting/_setting"
+    },
+    "/_admin/setting/_setting/role/$id": {
+      "filePath": "_admin/setting/_setting/role/$id.tsx",
+      "parent": "/_admin/setting/_setting"
+    },
+    "/_admin/setting/_setting/user/$id": {
+      "filePath": "_admin/setting/_setting/user/$id.tsx",
+      "parent": "/_admin/setting/_setting"
+    },
+    "/_admin/setting/_setting/role/": {
+      "filePath": "_admin/setting/_setting/role/index.tsx",
+      "parent": "/_admin/setting/_setting"
+    },
+    "/_admin/setting/_setting/user/": {
+      "filePath": "_admin/setting/_setting/user/index.tsx",
+      "parent": "/_admin/setting/_setting"
     }
   }
 }

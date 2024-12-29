@@ -6,6 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Popover from "@mui/material/Popover";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Stack from "@mui/material/Stack";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import * as React from "react";
 
@@ -43,8 +44,7 @@ function Filter() {
     <Box>
       <Button
         aria-describedby={id}
-        variant="contained"
-        color="inherit"
+        variant="text"
         onClick={handleClick}
         startIcon={<FilterListIcon />}
       >
@@ -59,34 +59,42 @@ function Filter() {
           vertical: "bottom",
           horizontal: "left",
         }}
+        sx={{}}
       >
-        <Box>
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="demo-select-small-label">Last Updated</InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={order}
-              label="Last Updated"
-              onChange={handleChange}
-            >
-              <MenuItem value="created_at desc">Lasted</MenuItem>
-              <MenuItem value="created_at asc">Oldest</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="demo-select-small-label">Price</InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={order}
-              label="Price"
-              onChange={handleChange}
-            >
-              <MenuItem value="created_at desc">Lasted</MenuItem>
-              <MenuItem value="created_at asc">Oldest</MenuItem>
-            </Select>
-          </FormControl>
+        <Box
+          sx={{
+            p: 2,
+            width: 300,
+          }}
+        >
+          <Stack spacing={2}>
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+              <InputLabel id="demo-select-small-label">Last Updated</InputLabel>
+              <Select
+                labelId="demo-select-small-label"
+                id="demo-select-small"
+                value={order}
+                label="Last Updated"
+                onChange={handleChange}
+              >
+                <MenuItem value="created_at desc">Lasted</MenuItem>
+                <MenuItem value="created_at asc">Oldest</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+              <InputLabel id="demo-select-small-label">Price</InputLabel>
+              <Select
+                labelId="demo-select-small-label"
+                id="demo-select-small"
+                value={order}
+                label="Price"
+                onChange={handleChange}
+              >
+                <MenuItem value="created_at desc">Latest</MenuItem>
+                <MenuItem value="created_at asc">Oldest</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
         </Box>
       </Popover>
     </Box>

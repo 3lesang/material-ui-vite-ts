@@ -13,6 +13,7 @@ import {
   GridPaginationModel,
   GridRowId,
   GridRowSelectionModel,
+  GridSortModel,
 } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -116,7 +117,7 @@ function Index() {
       field: "price",
       headerName: "Price",
       width: 120,
-      sortable: false,
+      sortable: true,
       disableColumnMenu: true,
       valueFormatter: (value: number) =>
         value.toLocaleString("vi-VN", {
@@ -129,7 +130,7 @@ function Index() {
       field: "updated_at",
       headerName: "Last Updated",
       type: "date",
-      sortable: false,
+      sortable: true,
       disableColumnMenu: true,
       width: 200,
       valueFormatter: (value: string) =>
@@ -171,6 +172,9 @@ function Index() {
     const ids = Array.from(model).map(Number);
     setIds(ids);
   };
+  const handleSortModelChange = (sortModel: GridSortModel) => {
+    console.log(sortModel);
+  };
 
   return (
     <Paper>
@@ -187,6 +191,8 @@ function Index() {
         }}
         onPaginationModelChange={handlePaginationModelChange}
         onRowSelectionModelChange={handleRowSelectionModelChange}
+        sortingMode="server"
+        onSortModelChange={handleSortModelChange}
       />
     </Paper>
   );

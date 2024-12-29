@@ -8,6 +8,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
+          border: 0,
           "& .MuiDataGrid-columnSeparator": {
             display: "none",
           },
