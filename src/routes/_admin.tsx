@@ -54,9 +54,7 @@ function LayoutComponent() {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Box pt={1}>
-        <Outlet />
-      </Box>
+      <Outlet />
     </Container>
   );
 }

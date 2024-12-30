@@ -53,10 +53,7 @@ function Index() {
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["products", page, limit, order, filter],
-    queryFn: () =>
-      getProductsHttp({
-        params: { page, limit, order, filter },
-      }),
+    queryFn: () => getProductsHttp({ page, limit, order, filter }),
   });
 
   const { mutate } = useMutation({

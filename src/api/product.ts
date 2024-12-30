@@ -1,20 +1,10 @@
 import { UpdateFormSchema } from "@/routes/_admin/product/$id";
 import { CreateFormSchema } from "@/routes/_admin/product/create";
 import { axiosClient } from "./axios";
+import { QueryParams } from "./type";
 
-interface ProductParams {
-  page: number;
-  limit: number;
-  order?: string;
-  filter?: string;
-}
-
-interface ProductArgs {
-  params?: ProductParams;
-}
-
-export const getProductsHttp = async (args?: ProductArgs) =>
-  axiosClient.get("/products", { params: args?.params });
+export const getProductsHttp = async (params?: QueryParams) =>
+  axiosClient.get("/products", { params });
 
 export const getProductHttp = async (id: number) =>
   axiosClient.get(`/products/${id}`);
