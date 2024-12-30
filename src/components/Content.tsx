@@ -62,7 +62,7 @@ export default function Content() {
               />
             </Grid>
             <Grid>
-              <Button variant="contained" sx={{ mr: 1 }}>
+              <Button variant="contained" sx={{ mr: 1 }} size="small">
                 Add user
               </Button>
               <Tooltip title="Reload">

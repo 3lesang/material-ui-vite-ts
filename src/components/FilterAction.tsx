@@ -46,6 +46,7 @@ function Filter() {
         aria-describedby={id}
         variant="text"
         onClick={handleClick}
+        size="small"
         startIcon={<FilterListIcon />}
       >
         Filter

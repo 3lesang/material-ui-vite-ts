@@ -74,13 +74,8 @@ function Header(props: HeaderProps) {
   }, [debouncedSearchTerm]);
 
   return (
-    <AppBar
-      position="static"
-      color="default"
-      elevation={0}
-      sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
-    >
-      <Toolbar>
+    <AppBar position="static" color="transparent" elevation={0}>
+      <Toolbar variant="dense" disableGutters>
         <Grid container spacing={1} sx={{ alignItems: "center" }} width="100%">
           <Grid>
             <FilterAction />
@@ -109,6 +104,7 @@ function Header(props: HeaderProps) {
                 onClick={handleDeleteManyClick}
                 color="error"
                 loading={isPending}
+                size="small"
               >
                 Delete
               </LoadingButton>
@@ -118,12 +114,13 @@ function Header(props: HeaderProps) {
             <Button
               variant="contained"
               startIcon={<AddIcon />}
+              size="small"
               onClick={handleCreateClick}
             >
               New item
             </Button>
             <Tooltip title="Reload">
-              <IconButton>
+              <IconButton size="small">
                 <RefreshIcon color="inherit" />
               </IconButton>
             </Tooltip>
