@@ -84,7 +84,7 @@ export function AppProvider({ children }: AppProviderProps) {
           </Button>
         </DialogActions>
       </Dialog>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="bottom-center" reverseOrder={false} />
     </AppContext.Provider>
   );
 }

@@ -1,4 +1,4 @@
-import { useApp } from "@/contexts/app";
+import { useApp } from "@/context/app";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 

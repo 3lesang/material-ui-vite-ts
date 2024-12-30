@@ -7,13 +7,13 @@ import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_admin/setting/_setting/role/$id')({
+export const Route = createFileRoute('/_admin/setting/_layout/user/$id')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   return (
-    <Grid2 container spacing={2}>
+    <Grid2 container spacing={1}>
       <Grid2 size={12}>
         <Card>
           <CardHeader title="User details" />

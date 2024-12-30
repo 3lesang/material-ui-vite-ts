@@ -1,3 +1,4 @@
+import pages from "@/data/page";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -6,49 +7,32 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useNavigate,
+} from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_admin")({
   component: LayoutComponent,
 });
 
-const pages = [
-  {
-    name: "Home",
-    to: "/",
-  },
-  {
-    name: "About",
-    to: "/about",
-  },
-  {
-    name: "Contact",
-    to: "/contact",
-  },
-  {
-    name: "Product",
-    to: "/product",
-  },
-  {
-    name: "Setting",
-    to: "/setting",
-  },
-];
-
 function LayoutComponent() {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate({ to: "/profile" });
+  };
   return (
-    <>
-      <AppBar component="nav" position="static">
-        <Toolbar>
+    <Container disableGutters>
+      <AppBar component="nav" position="sticky" elevation={0} color="inherit">
+        <Toolbar variant="dense" disableGutters>
           <Typography
             variant="h6"
             component={Link}
             color="inherit"
             to="/"
-            sx={{
-              display: { xs: "none", sm: "block" },
-              textDecoration: "none",
-            }}
+            sx={{ textDecoration: "none" }}
           >
             Acme
           </Typography>
@@ -56,22 +40,23 @@ function LayoutComponent() {
             {pages.map((item) => (
               <Button
                 key={item.name}
-                sx={{ color: "#fff" }}
                 component={Link}
-                to={`/${item.to}`}
+                to={item.to}
+                color="inherit"
+                size="small"
               >
                 {item.name}
               </Button>
             ))}
           </Box>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={handleClick}>
             <AccountCircleIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Container component="main" disableGutters>
+      <Box pt={1}>
         <Outlet />
-      </Container>
-    </>
+      </Box>
+    </Container>
   );
 }

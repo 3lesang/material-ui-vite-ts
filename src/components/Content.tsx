@@ -1,6 +1,7 @@
 import RefreshIcon from "@mui/icons-material/Refresh";
 import SearchIcon from "@mui/icons-material/Search";
 import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
@@ -35,17 +36,12 @@ const rows = [
 
 export default function Content() {
   return (
-    <Paper sx={{ maxWidth: 936, margin: "auto", overflow: "hidden" }}>
-      <AppBar
-        position="static"
-        color="default"
-        elevation={0}
-        sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
-      >
-        <Toolbar>
+    <Box>
+      <AppBar position="static" color="transparent" elevation={0}>
+        <Toolbar variant="dense" disableGutters>
           <Grid
             container
-            spacing={2}
+            spacing={1}
             sx={{ alignItems: "center" }}
             width="100%"
           >
@@ -104,6 +100,6 @@ export default function Content() {
           </TableBody>
         </Table>
       </TableContainer>
-    </Paper>
+    </Box>
   );
 }

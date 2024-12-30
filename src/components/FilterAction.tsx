@@ -67,7 +67,7 @@ function Filter() {
             width: 300,
           }}
         >
-          <Stack spacing={2}>
+          <Stack spacing={1}>
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
               <InputLabel id="demo-select-small-label">Last Updated</InputLabel>
               <Select

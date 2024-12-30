@@ -7,7 +7,7 @@ import ReactDOM from "react-dom/client";
 import theme from "./theme";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AppProvider } from "./contexts/app";
+import { AppProvider } from "./context/app";
 import { routeTree } from "./routeTree.gen";
 
 const queryClient = new QueryClient();

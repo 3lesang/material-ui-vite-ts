@@ -8,7 +8,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [TanStackRouterVite(), react()],
   server: {
-    port: 3000,
+    port: 5500,
     open: true,
   },
   resolve: {

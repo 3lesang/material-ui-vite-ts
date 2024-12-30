@@ -1,5 +1,5 @@
 import { loginHttp } from "@/api/auth";
-import { notify } from "@/components/CustomToast";
+import { notify } from "@/components/ui/Toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { CardActions } from "@mui/material";
@@ -39,10 +39,7 @@ function RouteComponent() {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: LoginFormSchema) => loginHttp(data),
     onSuccess() {
-      notify({
-        message: "Login successfully",
-        severity: "success",
-      });
+      notify("Login successfully");
     },
   });
 

@@ -1,7 +1,7 @@
 import { deleteManyProductHttp } from "@/api/product";
 import FilterAction from "@/components/FilterAction";
-import { useApp } from "@/contexts/app";
-import { idsAtom } from "@/stores/product";
+import { useApp } from "@/context/app";
+import { idsAtom } from "@/store/product";
 import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import SearchIcon from "@mui/icons-material/Search";
@@ -81,7 +81,7 @@ function Header(props: HeaderProps) {
       sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}
     >
       <Toolbar>
-        <Grid container spacing={2} sx={{ alignItems: "center" }} width="100%">
+        <Grid container spacing={1} sx={{ alignItems: "center" }} width="100%">
           <Grid>
             <FilterAction />
           </Grid>

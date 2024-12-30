@@ -1,10 +1,10 @@
 import { loginHttp } from "@/api/auth";
-import { notify } from "@/components/CustomToast";
+import { notify } from "@/components/ui/Toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { CardActions } from "@mui/material";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Stack from "@mui/material/Stack";
@@ -44,8 +44,7 @@ function RouteComponent() {
     onSuccess(res) {
       saveUser(res?.data?.user);
       saveToken(res?.data?.token);
-      notify({
-        message: "Login successfully",
+      notify("Login successfully", {
         severity: "success",
       });
       navigate({ to: "/" });
