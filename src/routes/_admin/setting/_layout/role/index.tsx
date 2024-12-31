@@ -1,4 +1,4 @@
-import data from "@/data/role";
+import { getRolesHttp } from "@/api/role";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -8,6 +8,7 @@ import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
 import { GridColDef } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_admin/setting/_layout/role/")({
@@ -49,6 +50,12 @@ function RouteComponent() {
     },
   ];
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["roles"],
+    queryFn: () => getRolesHttp(),
+    retry: false,
+  });
+
   return (
     <Card>
       <CardHeader
@@ -64,7 +71,13 @@ function RouteComponent() {
           </Button>
         }
       />
-      <DataGrid columns={columns} rows={data} hideFooter rowSelection={false} />
+      <DataGrid
+        loading={isLoading}
+        columns={columns}
+        rows={data?.data}
+        hideFooter
+        rowSelection={false}
+      />
     </Card>
   );
 }

@@ -45,7 +45,7 @@ function RouteComponent() {
       saveUser(res?.data?.user);
       saveToken(res?.data?.token);
       notify("Login successfully", {
-        severity: "success",
+        variant: "success",
       });
       navigate({ to: "/" });
     },

@@ -2,7 +2,7 @@ import { Alert, Snackbar } from "@mui/material";
 import { toast } from "react-hot-toast";
 
 interface NotifyOptions {
-  severity: "success" | "error" | "info" | "warning";
+  variant: "success" | "error" | "info" | "warning";
 }
 
 export const notify = (message: string, opts?: NotifyOptions) => {
@@ -13,7 +13,7 @@ export const notify = (message: string, opts?: NotifyOptions) => {
       onClose={() => toast.dismiss(t.id)}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
     >
-      <Alert onClose={() => toast.dismiss(t.id)} severity={opts?.severity}>
+      <Alert onClose={() => toast.dismiss(t.id)} severity={opts?.variant}>
         {message}
       </Alert>
     </Snackbar>
