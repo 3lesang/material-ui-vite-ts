@@ -1,4 +1,4 @@
-import { deleteManyProductHttp } from "@/api/product";
+import { axiosClient } from "@/axios";
 import FilterAction from "@/components/FilterAction";
 import { useApp } from "@/context/app";
 import { idsAtom } from "@/store/product";
@@ -31,11 +31,11 @@ function Header(props: HeaderProps) {
   const { confirm } = useApp();
   const [ids] = useAtom(idsAtom);
 
+  const url = "/products";
+  const data = { ids };
+
   const { mutate, isPending } = useMutation({
-    mutationFn: (ids: number[]) =>
-      deleteManyProductHttp({
-        ids,
-      }),
+    mutationFn: (ids: number[]) => axiosClient.delete(url, { data }),
     onSuccess() {
       props?.onDeleteSuccess?.();
     },

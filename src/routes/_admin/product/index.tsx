@@ -1,4 +1,4 @@
-import { deleteOneProductHttp, getProductsHttp } from "@/api/product";
+import { axiosClient } from "@/axios";
 import DeleteAction from "@/components/DeleteAction";
 import Header from "@/components/Header";
 import { idsAtom } from "@/store/product";
@@ -27,7 +27,7 @@ import { formatRelative } from "date-fns/formatRelative";
 import { useAtom } from "jotai";
 import { z } from "zod";
 
-const SearchSchema = z.object({
+const QuerySchema = z.object({
   page: z.number().default(1),
   limit: z.number().default(25),
   search: z.string().optional(),
@@ -37,7 +37,7 @@ const SearchSchema = z.object({
 
 export const Route = createFileRoute("/_admin/product/")({
   component: Index,
-  validateSearch: zodValidator(SearchSchema),
+  validateSearch: zodValidator(QuerySchema),
 });
 
 function Index() {
@@ -49,15 +49,21 @@ function Index() {
     from: "/_admin/product/",
   });
 
-  const filter = search ? `name~${search}` : "";
+  const url = "/products";
+  const params = {
+    page,
+    limit,
+    order,
+    filter: search ? `name~${search}` : "",
+  };
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["products", page, limit, order, filter],
-    queryFn: () => getProductsHttp({ page, limit, order, filter }),
+    queryKey: [url, page, limit, order, params.filter],
+    queryFn: () => axiosClient.get("/products", { params }),
   });
 
   const { mutate } = useMutation({
-    mutationFn: (id: number) => deleteOneProductHttp(id),
+    mutationFn: (id: number) => axiosClient.delete(`/products/${id}`),
     onSuccess() {
       refetch();
     },

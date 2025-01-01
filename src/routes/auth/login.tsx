@@ -1,4 +1,4 @@
-import { loginHttp } from "@/api/auth";
+import { axiosClient } from "@/axios";
 import { notify } from "@/components/ui/Toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -40,7 +40,8 @@ function RouteComponent() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: LoginFormSchema) => loginHttp(data),
+    mutationFn: (data: LoginFormSchema) =>
+      axiosClient.post("/auth/login", data),
     onSuccess(res) {
       saveUser(res?.data?.user);
       saveToken(res?.data?.token);

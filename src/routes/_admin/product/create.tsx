@@ -1,10 +1,9 @@
-import { createProductHttp } from '@/api/product'
-import { zodResolver } from '@hookform/resolvers/zod'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import LoadingButton from '@mui/lab/LoadingButton'
+import { axiosClient } from "@/axios";
+import BackButton from "@/components/BackButton";
+import { zodResolver } from "@hookform/resolvers/zod";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   Box,
-  Button,
   Checkbox,
   Container,
   FormControl,
@@ -16,40 +15,42 @@ import {
   Select,
   TextField,
   Typography,
-} from '@mui/material'
-import { useMutation } from '@tanstack/react-query'
-import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { Controller, useForm } from 'react-hook-form'
-import { z } from 'zod'
+} from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
-export const Route = createFileRoute('/_admin/product/create')({
+export const Route = createFileRoute("/_admin/product/create")({
   component: RouteComponent,
-})
+});
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   price: z.coerce.number().optional(),
-  category: z.string().min(1, 'Category is required'),
-  imageUrl: z.string().url('Must be a valid URL').optional(),
+  category: z.string().min(1, "Category is required"),
+  imageUrl: z.string().url("Must be a valid URL").optional(),
   inStock: z.boolean().optional(),
-})
+});
 
-export type CreateFormSchema = z.infer<typeof formSchema>
+export type CreateFormSchema = z.infer<typeof formSchema>;
 
 function RouteComponent() {
-  const { history } = useRouter()
+  const { history } = useRouter();
 
   const handleBack = () => {
-    history.go(-1)
-  }
+    history.go(-1);
+  };
+
+  const url = "/products";
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: CreateFormSchema) => createProductHttp(data),
+    mutationFn: (data: CreateFormSchema) => axiosClient.post(url, data),
     onSuccess() {
-      handleBack()
+      handleBack();
     },
-  })
+  });
 
   const {
     handleSubmit,
@@ -58,25 +59,23 @@ function RouteComponent() {
   } = useForm<CreateFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: 'test',
-      description: 'test',
+      name: "test",
+      description: "test",
       price: 30000,
-      category: 'electronics',
-      imageUrl: 'https://mui.com/material-ui/api/loading-button/',
+      category: "electronics",
+      imageUrl: "https://mui.com/material-ui/api/loading-button/",
       inStock: false,
     },
-  })
+  });
 
   const onSubmit = (data: CreateFormSchema) => {
-    mutate(data)
-  }
+    mutate(data);
+  };
 
   return (
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
-        <Button startIcon={<ArrowBackIcon />} onClick={handleBack}>
-          Back
-        </Button>
+        <BackButton />
         <Typography variant="h5" component="h1" gutterBottom>
           Create New Product
         </Typography>
@@ -216,5 +215,5 @@ function RouteComponent() {
         </Box>
       </Paper>
     </Container>
-  )
+  );
 }

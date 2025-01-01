@@ -1,7 +1,7 @@
-import { getProductHttp, updateProductHttp } from '@/api/product'
-import { zodResolver } from '@hookform/resolvers/zod'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import LoadingButton from '@mui/lab/LoadingButton'
+import { axiosClient } from "@/axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
   Box,
   Button,
@@ -16,47 +16,49 @@ import {
   Select,
   TextField,
   Typography,
-} from '@mui/material'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { useEffect } from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import { z } from 'zod'
+} from "@mui/material";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   price: z.coerce.number().optional(),
-  category: z.string().min(1, 'Category is required'),
-  imageUrl: z.string().url('Must be a valid URL').optional(),
+  category: z.string().min(1, "Category is required"),
+  imageUrl: z.string().url("Must be a valid URL").optional(),
   inStock: z.boolean().optional(),
-})
+});
 
-export type UpdateFormSchema = z.infer<typeof formSchema>
+export type UpdateFormSchema = z.infer<typeof formSchema>;
 
-export const Route = createFileRoute('/_admin/product/$id')({
+export const Route = createFileRoute("/_admin/product/$id")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  const { id } = Route.useParams()
-  const { history } = useRouter()
+  const { id } = Route.useParams();
+  const { history } = useRouter();
 
   const handleBack = () => {
-    history.go(-1)
-  }
+    history.go(-1);
+  };
+
+  const url = `/products/${id}`;
 
   const { data } = useQuery({
-    queryKey: ['products', id],
-    queryFn: () => getProductHttp(Number(id)),
-  })
+    queryKey: [url],
+    queryFn: () => axiosClient.get(url),
+  });
 
-  const result = data?.data
+  const result = data?.data;
 
   const { mutate, isPending, isSuccess } = useMutation({
-    mutationFn: (data: UpdateFormSchema) => updateProductHttp(Number(id), data),
+    mutationFn: (data: UpdateFormSchema) => axiosClient.patch(url, data),
     onSuccess() {},
-  })
+  });
 
   const {
     handleSubmit,
@@ -64,26 +66,26 @@ function RouteComponent() {
     reset,
     formState: { errors, isDirty, isValid },
   } = useForm<UpdateFormSchema>({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      description: '',
-      category: 'electronics',
-      imageUrl: 'https://mui.com/material-ui/api/loading-button/',
+      name: "",
+      description: "",
+      category: "electronics",
+      imageUrl: "https://mui.com/material-ui/api/loading-button/",
       inStock: false,
     },
-  })
+  });
 
   const onSubmit = (data: UpdateFormSchema) => {
-    mutate(data)
-  }
+    mutate(data);
+  };
 
   useEffect(() => {
     if (result) {
-      reset(result)
+      reset(result);
     }
-  }, [reset, result])
+  }, [reset, result]);
 
   return (
     <Container maxWidth="sm">
@@ -234,5 +236,5 @@ function RouteComponent() {
         </Box>
       </Paper>
     </Container>
-  )
+  );
 }

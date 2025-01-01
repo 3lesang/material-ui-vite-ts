@@ -1,6 +1,5 @@
 import { SettingsOutlined } from "@mui/icons-material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Card from "@mui/material/Card";
 import Grid2 from "@mui/material/Grid2";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -17,29 +16,27 @@ function RouteComponent() {
   return (
     <Grid2 container spacing={1}>
       <Grid2 size={3}>
-        <Card>
-          <List dense disablePadding>
-            <ListItem>
-              <ListItemText>Setting</ListItemText>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton dense component={Link} to="/setting/user">
-                <ListItemIcon>
-                  <AccountCircleIcon />
-                </ListItemIcon>
-                <ListItemText>User</ListItemText>
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={Link} to="/setting/role">
-                <ListItemIcon>
-                  <SettingsOutlined />
-                </ListItemIcon>
-                <ListItemText>Role</ListItemText>
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </Card>
+        <List dense disablePadding>
+          <ListItem disablePadding>
+            <ListItemText>Auth</ListItemText>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton dense component={Link} to="/setting/user">
+              <ListItemIcon>
+                <AccountCircleIcon />
+              </ListItemIcon>
+              <ListItemText>User</ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/setting/role">
+              <ListItemIcon>
+                <SettingsOutlined />
+              </ListItemIcon>
+              <ListItemText>Role</ListItemText>
+            </ListItemButton>
+          </ListItem>
+        </List>
       </Grid2>
       <Grid2 size={9}>
         <Outlet />

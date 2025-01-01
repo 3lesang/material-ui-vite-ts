@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_admin")({
 function LayoutComponent() {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate({ to: "/profile" });
+    navigate({ to: "/auth/login" });
   };
   return (
     <Container disableGutters>
@@ -49,7 +49,7 @@ function LayoutComponent() {
               </Button>
             ))}
           </Box>
-          <IconButton color="inherit" onClick={handleClick}>
+          <IconButton color="inherit" onClick={handleClick} size="small">
             <AccountCircleIcon />
           </IconButton>
         </Toolbar>

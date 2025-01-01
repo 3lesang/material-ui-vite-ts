@@ -7,10 +7,10 @@ export default [
     name: "Contact",
     to: "/contact",
   },
-  {
-    name: "Product",
-    to: "/product",
-  },
+  // {
+  //   name: "Product",
+  //   to: "/product",
+  // },
   {
     name: "Setting",
     to: "/setting",
