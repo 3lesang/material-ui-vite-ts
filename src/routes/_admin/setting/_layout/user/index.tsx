@@ -82,7 +82,12 @@ function RouteComponent() {
       <Grid2 size={12}>
         <Stack alignItems="flex-end">
           <Box>
-            <Button startIcon={<EmailIcon />} size="small">
+            <Button
+              startIcon={<EmailIcon />}
+              size="small"
+              variant="contained"
+              disableElevation
+            >
               Invite new user
             </Button>
           </Box>

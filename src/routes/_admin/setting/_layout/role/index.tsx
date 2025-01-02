@@ -74,6 +74,8 @@ function RouteComponent() {
               to="/setting/role/new"
               startIcon={<AddOutlinedIcon />}
               size="small"
+              variant="contained"
+              disableElevation
             >
               Add new item
             </Button>

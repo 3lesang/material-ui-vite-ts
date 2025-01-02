@@ -1,42 +1,35 @@
-import { SettingsOutlined } from "@mui/icons-material";
+import AppList, { AppListItemProps } from "@/components/ui/AppList";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Grid2 from "@mui/material/Grid2";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_admin/setting/_layout")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const items: AppListItemProps[] = [
+    {
+      title: "User & Role",
+      type: "group",
+    },
+    {
+      title: "User",
+      to: "/setting/user",
+      icon: <AccountCircleIcon />,
+    },
+    {
+      title: "Role",
+      to: "/setting/role",
+      icon: <SettingsOutlinedIcon />,
+    },
+  ];
+
   return (
     <Grid2 container spacing={1}>
       <Grid2 size={3}>
-        <List dense disablePadding>
-          <ListItem disablePadding>
-            <ListItemText>Auth</ListItemText>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton dense component={Link} to="/setting/user">
-              <ListItemIcon>
-                <AccountCircleIcon />
-              </ListItemIcon>
-              <ListItemText>User</ListItemText>
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component={Link} to="/setting/role">
-              <ListItemIcon>
-                <SettingsOutlined />
-              </ListItemIcon>
-              <ListItemText>Role</ListItemText>
-            </ListItemButton>
-          </ListItem>
-        </List>
+        <AppList items={items} />
       </Grid2>
       <Grid2 size={9}>
         <Outlet />
