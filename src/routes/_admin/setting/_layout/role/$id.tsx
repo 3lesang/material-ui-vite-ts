@@ -1,9 +1,9 @@
 import { axiosClient } from "@/axios";
 import BackButton from "@/components/BackButton";
+import PermissionForm from "@/components/PermissionForm";
 import { notify } from "@/components/ui/Toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIcon from "@mui/icons-material/Check";
-import { Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -112,7 +112,7 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
           </Card>
         </Grid2>
         <Grid2 size={12}>
-          <Box component={Paper} pt={2}></Box>
+          <PermissionForm />
         </Grid2>
       </Grid2>
     </Box>
