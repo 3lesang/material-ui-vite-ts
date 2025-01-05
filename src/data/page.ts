@@ -4,15 +4,7 @@ export default [
     to: "/about",
   },
   {
-    name: "Contact",
-    to: "/contact",
-  },
-  // {
-  //   name: "Product",
-  //   to: "/product",
-  // },
-  {
     name: "Setting",
-    to: "/setting",
+    to: "/setting/user",
   },
 ];

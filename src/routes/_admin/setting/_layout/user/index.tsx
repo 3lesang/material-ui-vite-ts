@@ -96,6 +96,8 @@ function RouteComponent() {
       <Grid2 size={12}>
         <Card>
           <DataGrid
+            columnHeaderHeight={40}
+            rowHeight={40}
             loading={isLoading}
             columns={columns}
             rows={data?.data?.data}

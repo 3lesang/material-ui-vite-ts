@@ -18,7 +18,6 @@ import { Route as AdminIndexImport } from './routes/_admin/index'
 import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as AuthLoginImport } from './routes/auth/login'
 import { Route as AdminProfileImport } from './routes/_admin/profile'
-import { Route as AdminContactImport } from './routes/_admin/contact'
 import { Route as AdminAboutImport } from './routes/_admin/about'
 import { Route as AdminProductIndexImport } from './routes/_admin/product/index'
 import { Route as AdminSettingLayoutImport } from './routes/_admin/setting/_layout'
@@ -69,12 +68,6 @@ const AuthLoginRoute = AuthLoginImport.update({
 const AdminProfileRoute = AdminProfileImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => AdminRoute,
-} as any)
-
-const AdminContactRoute = AdminContactImport.update({
-  id: '/contact',
-  path: '/contact',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -161,13 +154,6 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AdminAboutImport
-      parentRoute: typeof AdminImport
-    }
-    '/_admin/contact': {
-      id: '/_admin/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof AdminContactImport
       parentRoute: typeof AdminImport
     }
     '/_admin/profile': {
@@ -315,7 +301,6 @@ const AdminSettingRouteWithChildren = AdminSettingRoute._addFileChildren(
 
 interface AdminRouteChildren {
   AdminAboutRoute: typeof AdminAboutRoute
-  AdminContactRoute: typeof AdminContactRoute
   AdminProfileRoute: typeof AdminProfileRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminProductIdRoute: typeof AdminProductIdRoute
@@ -326,7 +311,6 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAboutRoute: AdminAboutRoute,
-  AdminContactRoute: AdminContactRoute,
   AdminProfileRoute: AdminProfileRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminProductIdRoute: AdminProductIdRoute,
@@ -340,7 +324,6 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 export interface FileRoutesByFullPath {
   '': typeof AdminRouteWithChildren
   '/about': typeof AdminAboutRoute
-  '/contact': typeof AdminContactRoute
   '/profile': typeof AdminProfileRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -359,7 +342,6 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/about': typeof AdminAboutRoute
-  '/contact': typeof AdminContactRoute
   '/profile': typeof AdminProfileRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -379,7 +361,6 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_admin': typeof AdminRouteWithChildren
   '/_admin/about': typeof AdminAboutRoute
-  '/_admin/contact': typeof AdminContactRoute
   '/_admin/profile': typeof AdminProfileRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -402,7 +383,6 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/about'
-    | '/contact'
     | '/profile'
     | '/auth/login'
     | '/auth/register'
@@ -420,7 +400,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/about'
-    | '/contact'
     | '/profile'
     | '/auth/login'
     | '/auth/register'
@@ -438,7 +417,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_admin'
     | '/_admin/about'
-    | '/_admin/contact'
     | '/_admin/profile'
     | '/auth/login'
     | '/auth/register'
@@ -488,7 +466,6 @@ export const routeTree = rootRoute
       "filePath": "_admin.tsx",
       "children": [
         "/_admin/about",
-        "/_admin/contact",
         "/_admin/profile",
         "/_admin/",
         "/_admin/product/$id",
@@ -499,10 +476,6 @@ export const routeTree = rootRoute
     },
     "/_admin/about": {
       "filePath": "_admin/about.tsx",
-      "parent": "/_admin"
-    },
-    "/_admin/contact": {
-      "filePath": "_admin/contact.tsx",
       "parent": "/_admin"
     },
     "/_admin/profile": {
