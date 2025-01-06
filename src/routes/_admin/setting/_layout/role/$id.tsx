@@ -24,6 +24,7 @@ export const Route = createFileRoute("/_admin/setting/_layout/role/$id")({
 });
 
 const FormSchema = z.object({
+  id: z.number(),
   name: z.string(),
   description: z.string().optional(),
   permissions: z.any().array(),
@@ -43,11 +44,49 @@ function formatPermissions(data: any[]) {
       ...prev,
       [current.module]: {
         ...prev[current.module],
-        [current.code]: current,
+        [current.action]: current,
       },
     };
   }, {});
 }
+
+const columns: PermissionColumnsProps[] = [
+  {
+    field: "module",
+    headerName: "Module",
+    type: "string",
+  },
+  {
+    field: "read",
+    headerName: "View",
+    align: "center",
+    type: "checkbox",
+  },
+  {
+    field: "create",
+    headerName: "Create",
+    align: "center",
+    type: "checkbox",
+  },
+  {
+    field: "update",
+    headerName: "Edit",
+    align: "center",
+    type: "checkbox",
+  },
+  {
+    field: "delete",
+    headerName: "Delete",
+    align: "center",
+    type: "checkbox",
+  },
+  {
+    field: "assign",
+    headerName: "Assign",
+    align: "center",
+    type: "checkbox",
+  },
+];
 
 export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
   const {
@@ -59,50 +98,14 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
     resolver: zodResolver(FormSchema),
   });
 
-  const rows = formatPermissions(defaultValues?.permissions || []);
+  const url = `/roles/${defaultValues?.id}/permissions`;
 
-  console.log(rows);
-  const columns: PermissionColumnsProps[] = [
-    {
-      field: "module",
-      headerName: "Module",
-      type: "string",
-    },
-    {
-      field: "read",
-      headerName: "View",
-      align: "center",
-      type: "checkbox",
-    },
-    {
-      field: "create",
-      headerName: "Create",
-      align: "center",
-      type: "checkbox",
-    },
-    {
-      field: "update",
-      headerName: "Edit",
-      align: "center",
-      type: "checkbox",
-    },
-    {
-      field: "delete",
-      headerName: "Delete",
-      align: "center",
-      type: "checkbox",
-    },
-    {
-      field: "assign",
-      headerName: "Assign",
-      align: "center",
-      type: "checkbox",
-    },
-  ];
-  return null;
-  return (
-    <PermissionTable onChange={(value) => {}} columns={columns} rows={rows} />
-  );
+  const { data } = useQuery({
+    queryKey: [url],
+    queryFn: () => axiosClient.get(url),
+  });
+
+  const rows = formatPermissions(data?.data || []);
 
   return (
     <>

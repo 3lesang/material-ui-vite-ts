@@ -21,9 +21,11 @@ interface Props {
 }
 
 function PermissionTable(props: Props) {
-  const handleCheckboxChange = (id: number): void => {
-    console.log(id);
+  const handleCheckboxChange = (permission: any): void => {
+    console.log(permission);
   };
+
+  const rows = Object.entries(props.rows || {});
 
   return (
     <Card>
@@ -48,20 +50,22 @@ function PermissionTable(props: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props?.rows?.map((row, index) => (
+          {rows?.map((row, index) => (
             <TableRow key={index}>
               {props?.columns?.map((column, index) => {
                 const renderValue = () => {
                   switch (column.type) {
                     case "string":
-                      return row[column.field];
+                      return row[0];
                     case "checkbox":
                       return (
                         <Checkbox
                           size="small"
-                          checked={row[column.field]}
+                          defaultChecked={row[1][column.field]?.id}
                           sx={{ padding: 0.5 }}
-                          onChange={() => handleCheckboxChange(row.id)}
+                          onChange={() =>
+                            handleCheckboxChange(row[1][column.field])
+                          }
                         />
                       );
                   }
