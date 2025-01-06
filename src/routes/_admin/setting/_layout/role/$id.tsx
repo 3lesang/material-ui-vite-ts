@@ -38,7 +38,7 @@ interface FormProps {
   actionText?: string;
 }
 
-function formatPermissions(data: any[]) {
+export function formatPermissions(data: any[]) {
   return data.reduce((prev, current) => {
     return {
       ...prev,

@@ -1,3 +1,5 @@
+import { axiosClient } from "@/axios";
+import { formatPermissions } from "@/routes/_admin/setting/_layout/role/$id";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import Checkbox from "@mui/material/Checkbox";
@@ -6,6 +8,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell, { TableCellProps } from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { useQuery } from "@tanstack/react-query";
 
 export interface PermissionColumnsProps {
   field: string;
@@ -21,11 +24,18 @@ interface Props {
 }
 
 function PermissionTable(props: Props) {
+  const page = 1;
+  const limit = 10;
+  const { data } = useQuery({
+    queryKey: ["permissions", page, limit],
+    queryFn: () => axiosClient.get("/permissions", { params: { page, limit } }),
+  });
+
+  const rows = Object.entries(formatPermissions(data?.data?.data || []));
+
   const handleCheckboxChange = (permission: any): void => {
     console.log(permission);
   };
-
-  const rows = Object.entries(props.rows || {});
 
   return (
     <Card>
@@ -50,24 +60,25 @@ function PermissionTable(props: Props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows?.map((row, index) => (
+          {rows?.map((row: [string, any], index) => (
             <TableRow key={index}>
               {props?.columns?.map((column, index) => {
                 const renderValue = () => {
                   switch (column.type) {
                     case "string":
                       return row[0];
-                    case "checkbox":
+                    case "checkbox": {
+                      if (!row[1][column.field]?.id) return null;
                       return (
                         <Checkbox
                           size="small"
-                          defaultChecked={row[1][column.field]?.id}
                           sx={{ padding: 0.5 }}
                           onChange={() =>
                             handleCheckboxChange(row[1][column.field])
                           }
                         />
                       );
+                    }
                   }
                 };
                 return (
