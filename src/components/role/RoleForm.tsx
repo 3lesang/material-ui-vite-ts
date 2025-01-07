@@ -49,6 +49,8 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
     reset(defaultValues, { keepValues: true });
   };
 
+  const isSupperAdmin = defaultValues?.id == 1;
+
   return (
     <Box component="form" onSubmit={handleSubmit(beforeSubmit)}>
       <Grid2 container spacing={1}>
@@ -116,13 +118,15 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
             </CardContent>
           </Card>
         </Grid2>
-        <Grid2 size={12}></Grid2>
+        <Grid2 size={12}>
+          <PermissionTable
+            disable={isSupperAdmin}
+            value={defaultValues?.permissions}
+            columns={columns}
+            onChange={handlePermissionChange}
+          />
+        </Grid2>
       </Grid2>
-      <PermissionTable
-        value={defaultValues?.permissions}
-        columns={columns}
-        onChange={handlePermissionChange}
-      />
     </Box>
   );
 }

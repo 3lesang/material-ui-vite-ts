@@ -21,6 +21,7 @@ interface Props {
   onChange?: (data: any) => void;
   columns?: PermissionColumnsProps[];
   value?: any[];
+  disable?: boolean;
 }
 
 const page = 1;
@@ -86,6 +87,7 @@ function PermissionTable(props: Props) {
                       return (
                         <Checkbox
                           size="small"
+                          disabled={props?.disable}
                           sx={{ padding: 0.5 }}
                           defaultChecked={checked}
                           onChange={() =>

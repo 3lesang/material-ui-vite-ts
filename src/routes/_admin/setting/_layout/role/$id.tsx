@@ -32,7 +32,7 @@ function RouteComponent() {
   });
 
   const defaultValues: RoleSchema = {
-    id: 1,
+    id: data?.data?.id,
     name: data?.data?.name,
     description: data?.data?.description,
     permissions: permissionData?.data,
