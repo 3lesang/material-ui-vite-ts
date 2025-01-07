@@ -1,10 +1,10 @@
 import { axiosClient } from "@/axios";
 import BackButton from "@/components/BackButton";
+import { RoleForm, RoleSchema } from "@/components/role/RoleForm";
 import { notify } from "@/components/ui/Toast";
 import Grid2 from "@mui/material/Grid2";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { RoleForm, RoleSchema } from "./$id";
 
 export const Route = createFileRoute("/_admin/setting/_layout/role/new")({
   component: RouteComponent,

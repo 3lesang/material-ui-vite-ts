@@ -1,5 +1,4 @@
 import { axiosClient } from "@/axios";
-import { formatPermissions } from "@/routes/_admin/setting/_layout/role/$id";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import Checkbox from "@mui/material/Checkbox";
@@ -9,6 +8,7 @@ import TableCell, { TableCellProps } from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useQuery } from "@tanstack/react-query";
+import { formatPermissions } from ".";
 
 export interface PermissionColumnsProps {
   field: string;
@@ -19,22 +19,32 @@ export interface PermissionColumnsProps {
 
 interface Props {
   onChange?: (data: any) => void;
-  rows?: any[];
   columns?: PermissionColumnsProps[];
+  value?: any[];
 }
 
+const page = 1;
+const limit = 10;
+
 function PermissionTable(props: Props) {
-  const page = 1;
-  const limit = 10;
   const { data } = useQuery({
     queryKey: ["permissions", page, limit],
     queryFn: () => axiosClient.get("/permissions", { params: { page, limit } }),
   });
 
+  const permissions = formatPermissions(props.value || []);
   const rows = Object.entries(formatPermissions(data?.data?.data || []));
 
   const handleCheckboxChange = (permission: any): void => {
-    console.log(permission);
+    const permissions = props?.value;
+    const index = permissions?.findIndex((item) => item?.id == permission?.id);
+
+    if (index == -1) {
+      permissions?.push(permission);
+    } else {
+      permissions?.splice(Number(index), 1);
+    }
+    props?.onChange?.(permissions);
   };
 
   return (
@@ -63,18 +73,23 @@ function PermissionTable(props: Props) {
           {rows?.map((row: [string, any], index) => (
             <TableRow key={index}>
               {props?.columns?.map((column, index) => {
+                const module = row[0];
+                const actions = row[1];
+                const actionName = column.field;
+                const checked = permissions[module]?.[actionName]?.id;
                 const renderValue = () => {
                   switch (column.type) {
                     case "string":
-                      return row[0];
+                      return module;
                     case "checkbox": {
-                      if (!row[1][column.field]?.id) return null;
+                      if (!actions[actionName]?.id) return null;
                       return (
                         <Checkbox
                           size="small"
                           sx={{ padding: 0.5 }}
+                          defaultChecked={checked}
                           onChange={() =>
-                            handleCheckboxChange(row[1][column.field])
+                            handleCheckboxChange(actions[actionName])
                           }
                         />
                       );
