@@ -5,22 +5,52 @@ import { notify } from "@/components/ui/Toast";
 import Grid2 from "@mui/material/Grid2";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createFileRoute("/_admin/setting/_layout/role/new")({
   component: RouteComponent,
 });
 
+interface AssignPermissionBody {
+  role_id: number;
+  permission_ids: number[];
+}
+
+const defaultValues: RoleSchema = {
+  id: 0,
+  name: "",
+  description: "",
+  permissions: [],
+};
+
+const assignPermissionUrl = "/roles/permissions";
+const roleUrl = "/roles";
+
 function RouteComponent() {
-  const url = "/roles";
+  const [permission, setPermission] = useState<any[]>([]);
+
+  const { mutate: assignPermissionMutate } = useMutation({
+    mutationFn: (data: AssignPermissionBody) =>
+      axiosClient.post(assignPermissionUrl, data),
+  });
 
   const { mutate } = useMutation({
-    mutationFn: (data: RoleSchema) => axiosClient.post(url, data),
-    onSuccess: () => {
+    mutationFn: (data: RoleSchema) => axiosClient.post(roleUrl, data),
+    onSuccess: (res) => {
+      const ids = permission.map((item) => item.id);
+      const payload = {
+        role_id: Number(res?.data?.id),
+        permission_ids: ids,
+      };
+      assignPermissionMutate(payload);
       notify("Role created successfully");
     },
   });
 
   const handleSubmit = (data: RoleSchema) => {
+    if (data.permissions?.length) {
+      setPermission(data?.permissions);
+    }
     mutate(data);
   };
 
@@ -30,9 +60,12 @@ function RouteComponent() {
         <BackButton />
       </Grid2>
       <Grid2 size={12}>
-        <RoleForm actionText="Create" onSubmit={handleSubmit} />
+        <RoleForm
+          actionText="Create"
+          onSubmit={handleSubmit}
+          defaultValues={defaultValues}
+        />
       </Grid2>
-      <Grid2 size={12}></Grid2>
     </Grid2>
   );
 }

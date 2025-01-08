@@ -54,7 +54,7 @@ function RouteComponent() {
 
   const handleSubmit = (data: RoleSchema) => {
     mutate(data);
-    const ids: number[] = data?.permissions?.map((item) => item?.id);
+    const ids: number[] = data?.permissions?.map((item) => item?.id) || [];
     const payload = {
       role_id: Number(id),
       permission_ids: ids,

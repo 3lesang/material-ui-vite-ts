@@ -14,10 +14,10 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
 const FormSchema = z.object({
-  id: z.number(),
-  name: z.string(),
+  id: z.number().optional(),
+  name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  permissions: z.any().array(),
+  permissions: z.any().array().optional(),
 });
 
 export type RoleSchema = z.infer<typeof FormSchema>;
@@ -34,7 +34,7 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
     handleSubmit,
     reset,
     setValue,
-    formState: { isDirty, isValid },
+    formState: { isDirty, isValid, errors },
   } = useForm({
     defaultValues,
     resolver: zodResolver(FormSchema),
@@ -92,8 +92,11 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
                       <TextField
                         label="Name"
                         fullWidth
+                        required
                         size="small"
                         {...field}
+                        error={!!errors.name}
+                        helperText={errors?.name?.message}
                       />
                     )}
                   />
