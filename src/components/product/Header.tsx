@@ -1,5 +1,5 @@
 import { axiosClient } from "@/axios";
-import FilterAction from "@/components/FilterAction";
+import FilterAction from "@/components/product/FilterAction";
 import { useApp } from "@/context/app";
 import { idsAtom } from "@/store/product";
 import AddIcon from "@mui/icons-material/Add";

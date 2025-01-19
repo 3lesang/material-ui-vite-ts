@@ -1,6 +1,6 @@
 import { axiosClient } from "@/axios";
-import DeleteAction from "@/components/DeleteAction";
-import Header from "@/components/Header";
+import DeleteAction from "@/components/product/DeleteAction";
+import Header from "@/components/product/Header";
 import { idsAtom } from "@/store/product";
 import EditIcon from "@mui/icons-material/Edit";
 import FileCopyIcon from "@mui/icons-material/FileCopy";

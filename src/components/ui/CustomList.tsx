@@ -6,29 +6,29 @@ import ListItemText from "@mui/material/ListItemText";
 import { Link, useLocation } from "@tanstack/react-router";
 import React from "react";
 
-export interface AppListItemProps {
+export interface CustomListItemProps {
   title: string;
-  to?: string;
+  href?: string;
   type?: "group";
   icon?: React.ReactNode;
 }
 
-interface AppListProps {
-  items: AppListItemProps[];
+interface CustomListProps {
+  items: CustomListItemProps[];
 }
 
-interface ListItemProps extends AppListItemProps {
+interface ListItemProps extends CustomListItemProps {
   selected: boolean;
 }
 
-function AppList({ items }: AppListProps) {
+function CustomList({ items }: CustomListProps) {
   const location = useLocation();
 
-  const formatItems = (items: AppListItemProps[]) => {
+  const formatItems = (items: CustomListItemProps[]) => {
     return items.map((item) => {
       return {
         ...item,
-        selected: location.pathname.includes(item.to as string),
+        selected: location.pathname.includes(item.href as string),
       };
     });
   };
@@ -49,7 +49,7 @@ function AppList({ items }: AppListProps) {
         <ListItem key={index} disablePadding>
           <ListItemButton
             component={Link}
-            to={item.to}
+            to={item.href}
             selected={item.selected}
           >
             <ListItemIcon>{item.icon}</ListItemIcon>
@@ -66,4 +66,4 @@ function AppList({ items }: AppListProps) {
   );
 }
 
-export default AppList;
+export default CustomList;

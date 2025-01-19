@@ -1,47 +1,74 @@
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import CardHeader from '@mui/material/CardHeader'
-import Grid2 from '@mui/material/Grid2'
-import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
-import TextField from '@mui/material/TextField'
-import { createFileRoute } from '@tanstack/react-router'
+import { axiosClient } from "@/axios";
+import BackButton from "@/components/BackButton";
+import { notify } from "@/components/ui/Toast";
+import UserForm, {
+  UserFormProps,
+  UserSchema,
+} from "@/components/user/UserForm";
+import Grid2 from "@mui/material/Grid2";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_admin/setting/_layout/user/$id')({
+interface AssignRoleBody {
+  user_id?: number;
+  role_ids?: number[];
+}
+
+export const Route = createFileRoute("/_admin/setting/_layout/user/$id")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
+  const { id } = Route.useParams();
+  const url = `/users/${id}`;
+  const role = `/users/${id}/roles`;
+  const assignRole = "/users/roles";
+
+  const { data } = useQuery({
+    queryKey: [url],
+    queryFn: () => axiosClient.get(url),
+  });
+
+  const { data: userRoleData } = useQuery({
+    queryKey: [role],
+    queryFn: () => axiosClient.get(role),
+  });
+
+  const defaultValues: UserFormProps["defaultValues"] = {
+    id: data?.data?.id,
+    name: data?.data?.name,
+    email: data?.data?.email,
+    username: data?.data?.username,
+    active: data?.data?.active,
+    roles: userRoleData?.data?.map((item: any) => item?.id),
+  };
+
+  const { mutate: infoMutate } = useMutation({
+    mutationFn: (data: UserSchema) => axiosClient.put(url, data),
+    onSuccess() {
+      notify("User updated");
+    },
+  });
+
+  const { mutate: roleMutate } = useMutation({
+    mutationFn: (data: AssignRoleBody) => axiosClient.post(assignRole, data),
+  });
+
+  const handleSubmit = (data: UserSchema) => {
+    infoMutate(data);
+    roleMutate({ user_id: Number(id), role_ids: data?.roles });
+  };
+
   return (
     <Grid2 container spacing={1}>
       <Grid2 size={12}>
-        <Card>
-          <CardHeader title="User details" />
-          <CardContent>
-            <Grid2 container>
-              <Grid2 size={6}>
-                <TextField
-                  label="Name"
-                  fullWidth
-                  size="small"
-                  margin="normal"
-                />
-              </Grid2>
-            </Grid2>
-          </CardContent>
-        </Card>
+        <BackButton />
       </Grid2>
       <Grid2 size={12}>
-        <Card>
-          <CardHeader title="Roles" />
-          <CardContent>
-            <Select size="small" multiple value={['user', 'admin']}>
-              <MenuItem value="user">User</MenuItem>
-              <MenuItem value="admin">Admin</MenuItem>
-            </Select>
-          </CardContent>
-        </Card>
+        {data?.data && (
+          <UserForm defaultValues={defaultValues} onSubmit={handleSubmit} />
+        )}
       </Grid2>
     </Grid2>
-  )
+  );
 }

@@ -5,6 +5,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import Chip from "@mui/material/Chip";
 import Grid2 from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
@@ -40,11 +41,15 @@ const columns: GridColDef[] = [
     width: 300,
   },
   {
-    field: "status",
+    field: "active",
     headerName: "Status",
     sortable: false,
     disableColumnMenu: true,
     width: 100,
+    renderCell: (value: any) => {
+      const status = value ? "Active" : "Inactive";
+      return <Chip label={status} size="small" />;
+    },
   },
   {
     field: "actions",

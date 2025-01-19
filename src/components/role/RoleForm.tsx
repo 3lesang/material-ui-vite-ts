@@ -24,7 +24,7 @@ export type RoleSchema = z.infer<typeof FormSchema>;
 
 interface FormProps {
   defaultValues?: RoleSchema;
-  onSubmit: (data: RoleSchema) => void;
+  onSubmit?: (data: RoleSchema) => void;
   actionText?: string;
 }
 
@@ -45,7 +45,7 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
   };
 
   const beforeSubmit = (data: RoleSchema) => {
-    onSubmit(data);
+    onSubmit?.(data);
     reset(defaultValues, { keepValues: true });
   };
 
