@@ -49,7 +49,7 @@ function AuthHeader() {
 
   return (
     <CustomMenu items={items}>
-      <Button color="inherit" size="small" startIcon={<AccountCircleIcon />}>
+      <Button color="inherit" size="small" endIcon={<AccountCircleIcon />}>
         {JSON.parse(user || "").username}
       </Button>
     </CustomMenu>
