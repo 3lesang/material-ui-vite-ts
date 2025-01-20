@@ -1,14 +1,14 @@
 import { axiosClient } from "@/axios";
-import { notify } from "@/components/ui/Toast";
+import { notify } from "@/components/ui/CustomToast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { CardActions } from "@mui/material";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
@@ -40,7 +40,7 @@ function RouteComponent() {
     mutationFn: (data: LoginFormSchema) =>
       axiosClient.post("/auth/register", data),
     onSuccess() {
-      notify("Login successfully");
+      notify("Sign up successfully");
     },
   });
 
@@ -106,19 +106,26 @@ function RouteComponent() {
               color="primary"
               type="submit"
               loading={isPending}
+              disableElevation
               fullWidth
             >
               Sign up
             </LoadingButton>
           </Box>
+          <Stack mt={1} direction="row">
+            <Typography>Don't have an account?</Typography>
+            <Typography
+              to="/auth/login"
+              color="blue"
+              component={Link}
+              sx={{
+                textDecoration: "none",
+              }}
+            >
+              Sign in
+            </Typography>
+          </Stack>
         </CardContent>
-
-        <CardActions>
-          <p>Don't have an account?</p>
-          <Link to="/auth/login">
-            <p>Sign in</p>
-          </Link>
-        </CardActions>
       </Card>
     </Stack>
   );

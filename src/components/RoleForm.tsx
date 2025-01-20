@@ -1,5 +1,6 @@
-import { columns } from "@/components/permission";
-import PermissionTable from "@/components/permission/Permission";
+import PermissionTable, {
+  columns,
+} from "@/components/PermissionTable";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIcon from "@mui/icons-material/Check";
 import Box from "@mui/material/Box";

@@ -1,28 +1,18 @@
+import AuthHeader from "@/components/AuthHeader";
 import pages from "@/data/page";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import {
-  createFileRoute,
-  Link,
-  Outlet,
-  useNavigate,
-} from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_admin")({
   component: LayoutComponent,
 });
 
 function LayoutComponent() {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate({ to: "/auth/login" });
-  };
   return (
     <Container disableGutters>
       <AppBar component="nav" position="sticky" elevation={0} color="inherit">
@@ -49,9 +39,7 @@ function LayoutComponent() {
               </Button>
             ))}
           </Box>
-          <IconButton color="inherit" onClick={handleClick} size="small">
-            <AccountCircleIcon />
-          </IconButton>
+          <AuthHeader />
         </Toolbar>
       </AppBar>
       <Outlet />

@@ -1,7 +1,6 @@
 import { axiosClient } from "@/axios";
 import FilterAction from "@/components/product/FilterAction";
 import { useApp } from "@/context/app";
-import { idsAtom } from "@/store/product";
 import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import SearchIcon from "@mui/icons-material/Search";
@@ -16,7 +15,6 @@ import Tooltip from "@mui/material/Tooltip";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useAtom } from "jotai";
 import * as React from "react";
 
 interface HeaderProps {
@@ -29,10 +27,9 @@ function Header(props: HeaderProps) {
   const navigate = useNavigate({ from: "/product" });
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const { confirm } = useApp();
-  const [ids] = useAtom(idsAtom);
 
   const url = "/products";
-  const data = { ids };
+  const data = { ids: [] };
 
   const { mutate, isPending } = useMutation({
     mutationFn: (ids: number[]) => axiosClient.delete(url, { data }),
@@ -56,7 +53,7 @@ function Header(props: HeaderProps) {
         "This action cannot be undone. This will permanently delete items.",
     });
     if (confirmed) {
-      mutate(ids);
+      mutate([]);
     }
   };
 
@@ -98,17 +95,15 @@ function Header(props: HeaderProps) {
             />
           </Grid>
           <Grid>
-            {ids.length > 0 && (
-              <LoadingButton
-                variant="contained"
-                onClick={handleDeleteManyClick}
-                color="error"
-                loading={isPending}
-                size="small"
-              >
-                Delete
-              </LoadingButton>
-            )}
+            <LoadingButton
+              variant="contained"
+              onClick={handleDeleteManyClick}
+              color="error"
+              loading={isPending}
+              size="small"
+            >
+              Delete
+            </LoadingButton>
           </Grid>
           <Grid>
             <Button

@@ -9,7 +9,7 @@ import Chip from "@mui/material/Chip";
 import Grid2 from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -46,8 +46,8 @@ const columns: GridColDef[] = [
     sortable: false,
     disableColumnMenu: true,
     width: 100,
-    renderCell: (value: any) => {
-      const status = value ? "Active" : "Inactive";
+    renderCell: (params: GridRenderCellParams) => {
+      const status = params.value ? "Active" : "Inactive";
       return <Chip label={status} size="small" />;
     },
   },
@@ -80,6 +80,7 @@ function RouteComponent() {
   const { data, isLoading } = useQuery({
     queryKey: [url, params.page, params.limit],
     queryFn: () => axiosClient.get(url, { params }),
+    retry: false,
   });
 
   return (

@@ -7,8 +7,7 @@ const axiosClient = axios.create({
 const onRequest = (config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem("token");
   if (token) {
-    const tokenParsed = JSON.parse(token);
-    config.headers.Authorization = `Bearer ${tokenParsed}`;
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 };

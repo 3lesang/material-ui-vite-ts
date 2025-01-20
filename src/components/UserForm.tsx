@@ -1,7 +1,5 @@
 import { axiosClient } from "@/axios";
-import MultipleSelect, {
-  MultipleSelectProps,
-} from "@/components/ui/MultipleSelect";
+import CustomSelect, { CustomSelectProps } from "@/components/ui/CustomSelect";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIcon from "@mui/icons-material/Check";
 import Box from "@mui/material/Box";
@@ -61,7 +59,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
     reset(defaultValues, { keepValues: true });
   };
 
-  const options: MultipleSelectProps["options"] = data?.data?.data?.map(
+  const options: CustomSelectProps["options"] = data?.data?.data?.map(
     (item: any) => ({
       label: item?.name,
       value: item?.id,
@@ -149,7 +147,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
                       name="roles"
                       control={control}
                       render={({ field }) => (
-                        <MultipleSelect
+                        <CustomSelect
                           options={options}
                           label="Roles"
                           {...field}

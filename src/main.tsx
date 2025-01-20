@@ -11,16 +11,11 @@ import ReactDOM from "react-dom/client";
 import theme from "./theme";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { notify } from "./components/ui/Toast";
 import { AppProvider } from "./context/app";
 import { routeTree } from "./routeTree.gen";
 
 const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: (error) => {
-      notify(error.message, { variant: "error" });
-    },
-  }),
+  queryCache: new QueryCache(),
 });
 
 const router = createRouter({ routeTree, context: { queryClient } });

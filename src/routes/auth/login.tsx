@@ -1,22 +1,38 @@
 import { axiosClient } from "@/axios";
-import { notify } from "@/components/ui/Toast";
+import { notify } from "@/components/ui/CustomToast";
+import { TOKEN_LOCAL_KEY, USER_LOCAL_KEY } from "@/data/page";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useLocalStorage } from "@uidotdev/usehooks";
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useNavigate,
+} from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
 export const Route = createFileRoute("/auth/login")({
   component: RouteComponent,
+  beforeLoad: async ({ location }) => {
+    const user = localStorage.getItem(USER_LOCAL_KEY);
+    if (user) {
+      throw redirect({
+        to: "/",
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
 });
 
 const formSchema = z.object({
@@ -27,8 +43,6 @@ const formSchema = z.object({
 export type LoginFormSchema = z.infer<typeof formSchema>;
 
 function RouteComponent() {
-  const [user, saveUser] = useLocalStorage("user", null);
-  const [_, saveToken] = useLocalStorage("token", null);
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -42,13 +56,13 @@ function RouteComponent() {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: LoginFormSchema) =>
       axiosClient.post("/auth/login", data),
-    onSuccess(res) {
-      saveUser(res?.data?.user);
-      saveToken(res?.data?.token);
-      notify("Login successfully", {
-        variant: "success",
-      });
+    onSuccess: (res) => {
+      localStorage.setItem(USER_LOCAL_KEY, JSON.stringify(res?.data?.user));
+      localStorage.setItem(TOKEN_LOCAL_KEY, res?.data?.token);
       navigate({ to: "/" });
+    },
+    onError: (res) => {
+      notify(res.message, { variant: "error" });
     },
   });
 
@@ -99,19 +113,26 @@ function RouteComponent() {
               color="primary"
               type="submit"
               loading={isPending}
+              disableElevation
               fullWidth
             >
               Log in
             </LoadingButton>
           </Box>
+          <Stack mt={1} direction="row">
+            <Typography>Don't have an account?</Typography>
+            <Typography
+              to="/auth/register"
+              color="blue"
+              component={Link}
+              sx={{
+                textDecoration: "none",
+              }}
+            >
+              Sign up
+            </Typography>
+          </Stack>
         </CardContent>
-
-        <CardActions>
-          <p>Don't have an account?</p>
-          <Link to="/auth/register">
-            <p>Sign up</p>
-          </Link>
-        </CardActions>
       </Card>
     </Stack>
   );

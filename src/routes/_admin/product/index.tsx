@@ -1,7 +1,6 @@
 import { axiosClient } from "@/axios";
 import DeleteAction from "@/components/product/DeleteAction";
 import Header from "@/components/product/Header";
-import { idsAtom } from "@/store/product";
 import EditIcon from "@mui/icons-material/Edit";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import Box from "@mui/material/Box";
@@ -24,7 +23,6 @@ import {
 } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { formatRelative } from "date-fns/formatRelative";
-import { useAtom } from "jotai";
 import { z } from "zod";
 
 const QuerySchema = z.object({
@@ -44,7 +42,6 @@ function Index() {
   const navigate = useNavigate({
     from: Route.fullPath,
   });
-  const [_, setIds] = useAtom(idsAtom);
   const { page, limit, order, search } = useSearch({
     from: "/_admin/product/",
   });
@@ -174,7 +171,6 @@ function Index() {
 
   const handleRowSelectionModelChange = (model: GridRowSelectionModel) => {
     const ids = Array.from(model).map(Number);
-    setIds(ids);
   };
   const handleSortModelChange = (sortModel: GridSortModel) => {
     console.log(sortModel);

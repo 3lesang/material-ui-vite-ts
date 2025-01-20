@@ -6,14 +6,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import React from "react";
 
-export interface MultipleSelectProps {
+export interface CustomSelectProps {
   options: { value: any; label: string }[];
   value?: any[];
   onChange: (values: any[]) => void;
   label?: string;
 }
 
-const MultipleSelect: React.FC<MultipleSelectProps> = ({
+const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
   value = [],
   onChange,
@@ -57,4 +57,4 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
   );
 };
 
-export default MultipleSelect;
+export default CustomSelect;
