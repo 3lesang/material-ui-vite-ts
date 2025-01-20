@@ -29,7 +29,7 @@ export const columns: PermissionColumnsProps[] = [
   },
   {
     field: "read",
-    headerName: "View",
+    headerName: "List",
     align: "center",
     type: "checkbox",
   },
@@ -41,7 +41,7 @@ export const columns: PermissionColumnsProps[] = [
   },
   {
     field: "update",
-    headerName: "Edit",
+    headerName: "Update",
     align: "center",
     type: "checkbox",
   },

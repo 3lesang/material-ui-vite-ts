@@ -1,13 +1,13 @@
 import { TOKEN_LOCAL_KEY, USER_LOCAL_KEY } from "@/data/page";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import CustomMenu from "./ui/CustomMenu";
 
 function AuthHeader() {
   const user = localStorage.getItem(USER_LOCAL_KEY);
+
   const navigate = useNavigate();
   const [isAuth, setIsAuth] = useState(() => {
     return Boolean(user);
@@ -49,9 +49,9 @@ function AuthHeader() {
 
   return (
     <CustomMenu items={items}>
-      <IconButton color="inherit" size="small">
-        <AccountCircleIcon />
-      </IconButton>
+      <Button color="inherit" size="small" startIcon={<AccountCircleIcon />}>
+        {JSON.parse(user || "").username}
+      </Button>
     </CustomMenu>
   );
 }

@@ -1,10 +1,7 @@
 import { axiosClient } from "@/axios";
 import BackButton from "@/components/BackButton";
 import { notify } from "@/components/ui/CustomToast";
-import UserForm, {
-  UserFormProps,
-  UserSchema,
-} from "@/components/UserForm";
+import UserForm, { UserFormProps, UserSchema } from "@/components/UserForm";
 import Grid2 from "@mui/material/Grid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -47,6 +44,9 @@ function RouteComponent() {
     mutationFn: (data: UserSchema) => axiosClient.patch(url, data),
     onSuccess() {
       notify("User updated");
+    },
+    onError(error) {
+      notify(error.message, { variant: "error" });
     },
   });
 

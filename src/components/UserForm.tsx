@@ -142,7 +142,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
                   />
                 </Grid2>
                 <Grid2 size={4}>
-                  {options && (
+                  {options?.length && (
                     <Controller
                       name="roles"
                       control={control}

@@ -50,6 +50,9 @@ function RouteComponent() {
     mutationKey: [assignPermissionUrl],
     mutationFn: (data: AssignPermissionBody) =>
       axiosClient.post(assignPermissionUrl, data),
+    onError: (res) => {
+      notify(res.message, { variant: "error" });
+    },
   });
 
   const handleSubmit = (data: RoleSchema) => {
