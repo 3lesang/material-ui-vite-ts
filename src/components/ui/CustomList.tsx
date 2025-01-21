@@ -48,6 +48,7 @@ function CustomList({ items }: CustomListProps) {
                   fontWeight: 500,
                   fontSize: 12,
                   color: "textSecondary",
+                  pl: 1,
                 },
               }}
             />
