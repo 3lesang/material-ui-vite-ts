@@ -24,11 +24,13 @@ function RouteComponent() {
   const { data } = useQuery({
     queryKey: [url],
     queryFn: () => axiosClient.get(url),
+    gcTime: 0,
   });
 
   const { data: userRoleData } = useQuery({
     queryKey: [role],
     queryFn: () => axiosClient.get(role),
+    gcTime: 0,
   });
 
   const defaultValues: UserFormProps["defaultValues"] = {
@@ -65,7 +67,7 @@ function RouteComponent() {
         <BackButton />
       </Grid2>
       <Grid2 size={12}>
-        {data?.data && (
+        {data?.data && userRoleData?.data && (
           <UserForm defaultValues={defaultValues} onSubmit={handleSubmit} />
         )}
       </Grid2>

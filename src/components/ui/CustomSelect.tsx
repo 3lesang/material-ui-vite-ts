@@ -9,7 +9,7 @@ import React from "react";
 export interface CustomSelectProps {
   options: { value: any; label: string }[];
   value?: any[];
-  onChange: (values: any[]) => void;
+  onChange?: (values: any[]) => void;
   label?: string;
 }
 
@@ -21,7 +21,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 }) => {
   const handleSelectionChange = (event: SelectChangeEvent<string[]>) => {
     const value = event.target.value as any[];
-    onChange(value);
+    onChange?.(value);
   };
 
   return (

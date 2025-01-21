@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_admin/setting/_layout")({
 
 const items: CustomListItemProps[] = [
   {
-    title: "Permissions",
+    title: "Administration panel",
     type: "group",
   },
   {
@@ -21,6 +21,15 @@ const items: CustomListItemProps[] = [
   {
     title: "Role",
     href: "/setting/role",
+    icon: <SettingsOutlinedIcon />,
+  },
+  {
+    title: "Account",
+    type: "group",
+  },
+  {
+    title: "Profile",
+    href: "/setting/profile",
     icon: <SettingsOutlinedIcon />,
   },
 ];
