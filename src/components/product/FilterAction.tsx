@@ -46,7 +46,6 @@ function Filter() {
         aria-describedby={id}
         variant="text"
         onClick={handleClick}
-        size="small"
         startIcon={<FilterListIcon />}
       >
         Filter
@@ -69,7 +68,7 @@ function Filter() {
           }}
         >
           <Stack spacing={1}>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
               <InputLabel id="demo-select-small-label">Last Updated</InputLabel>
               <Select
                 labelId="demo-select-small-label"
@@ -82,7 +81,7 @@ function Filter() {
                 <MenuItem value="created_at asc">Oldest</MenuItem>
               </Select>
             </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
               <InputLabel id="demo-select-small-label">Price</InputLabel>
               <Select
                 labelId="demo-select-small-label"

@@ -8,6 +8,46 @@ import type {} from "@mui/x-data-grid/themeAugmentation";
 const theme = createTheme({
   cssVariables: true,
   components: {
+    MuiButton: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiChip: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiIconButton: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiSelect: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiCheckbox: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiTable: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiSwitch: {
+      defaultProps: {
+        size: "small",
+      },
+    },
     MuiDataGrid: {
       styleOverrides: {
         root: {
@@ -28,6 +68,21 @@ const theme = createTheme({
           "& .MuiDataGrid-columnHeader:focus-within": {
             outline: "none",
           },
+        },
+      },
+    },
+    MuiCard: {
+      defaultProps: {
+        elevation: 0,
+      },
+    },
+    MuiCardHeader: {
+      defaultProps: {
+        titleTypographyProps: {
+          variant: "button",
+        },
+        subheaderTypographyProps: {
+          variant: "caption",
         },
       },
     },

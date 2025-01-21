@@ -41,7 +41,16 @@ function CustomList({ items }: CustomListProps) {
       if (item.type === "group") {
         return (
           <ListItem key={index} disablePadding>
-            <ListItemText primary={item.title} />
+            <ListItemText
+              primary={item.title}
+              slotProps={{
+                primary: {
+                  fontWeight: 500,
+                  fontSize: 12,
+                  color: "textSecondary",
+                },
+              }}
+            />
           </ListItem>
         );
       }

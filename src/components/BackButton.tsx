@@ -9,7 +9,7 @@ function BackButton() {
   };
 
   return (
-    <Button size="small" startIcon={<ChevronLeftIcon />} onClick={handleBack}>
+    <Button startIcon={<ChevronLeftIcon />} onClick={handleBack}>
       Back
     </Button>
   );

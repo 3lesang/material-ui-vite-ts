@@ -39,11 +39,11 @@ const columns: GridColDef[] = [
     getActions(params) {
       return [
         <Link to={`/setting/role/${params?.id}`}>
-          <IconButton size="small">
+          <IconButton>
             <MoreVertIcon />
           </IconButton>
         </Link>,
-        <IconButton size="small">
+        <IconButton>
           <DeleteOutlineIcon />
         </IconButton>,
       ];
@@ -73,7 +73,6 @@ function RouteComponent() {
               component={Link}
               to="/setting/role/new"
               startIcon={<AddOutlinedIcon />}
-              size="small"
               variant="contained"
               disableElevation
             >

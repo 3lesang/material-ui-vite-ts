@@ -108,7 +108,6 @@ function RouteComponent() {
               <TextField
                 {...field}
                 fullWidth
-                size="small"
                 label="Product Name"
                 multiline
                 rows={3}
@@ -125,7 +124,6 @@ function RouteComponent() {
               <TextField
                 {...field}
                 fullWidth
-                size="small"
                 label="Description"
                 margin="normal"
                 multiline
@@ -141,7 +139,6 @@ function RouteComponent() {
               <TextField
                 {...field}
                 fullWidth
-                size="small"
                 label="Price"
                 type="number"
                 margin="normal"
@@ -164,12 +161,7 @@ function RouteComponent() {
             render={({ field }) => (
               <FormControl fullWidth margin="normal">
                 <InputLabel>Category</InputLabel>
-                <Select
-                  {...field}
-                  label="Category"
-                  error={!!errors.category}
-                  size="small"
-                >
+                <Select {...field} label="Category" error={!!errors.category}>
                   <MenuItem value="">Select a category</MenuItem>
                   <MenuItem value="electronics">Electronics</MenuItem>
                   <MenuItem value="clothing">Clothing</MenuItem>
@@ -191,7 +183,6 @@ function RouteComponent() {
             render={({ field }) => (
               <TextField
                 {...field}
-                size="small"
                 fullWidth
                 label="Image URL"
                 type="url"
@@ -208,12 +199,7 @@ function RouteComponent() {
             render={({ field }) => (
               <FormControlLabel
                 control={
-                  <Checkbox
-                    {...field}
-                    checked={field.value}
-                    color="primary"
-                    size="small"
-                  />
+                  <Checkbox {...field} checked={field.value} color="primary" />
                 }
                 label="In Stock"
                 sx={{ mt: 2 }}

@@ -25,7 +25,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   };
 
   return (
-    <FormControl fullWidth size="small">
+    <FormControl fullWidth>
       <InputLabel>{label}</InputLabel>
       <Select
         label={label}
@@ -41,7 +41,6 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
                   options.find((option) => option.value === value)?.label ||
                   value
                 }
-                size="small"
               />
             ))}
           </Box>

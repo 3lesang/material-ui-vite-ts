@@ -48,7 +48,7 @@ const columns: GridColDef[] = [
     width: 100,
     renderCell: (params: GridRenderCellParams) => {
       const status = params.value ? "Active" : "Inactive";
-      return <Chip label={status} size="small" />;
+      return <Chip label={status} />;
     },
   },
   {
@@ -58,11 +58,11 @@ const columns: GridColDef[] = [
     getActions(params) {
       return [
         <Link to={`/setting/user/${params?.id}`}>
-          <IconButton size="small">
+          <IconButton>
             <MoreVertIcon />
           </IconButton>
         </Link>,
-        <IconButton size="small">
+        <IconButton>
           <DeleteOutlineIcon />
         </IconButton>,
       ];
@@ -90,7 +90,6 @@ function RouteComponent() {
           <Box>
             <Button
               startIcon={<EmailIcon />}
-              size="small"
               variant="contained"
               disableElevation
             >

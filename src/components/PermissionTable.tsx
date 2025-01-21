@@ -109,7 +109,7 @@ function PermissionTable(props: Props) {
           variant: "caption",
         }}
       />
-      <Table size="small">
+      <Table>
         <TableHead>
           <TableRow>
             {props?.columns?.map((column, index) => (
@@ -135,7 +135,6 @@ function PermissionTable(props: Props) {
                       if (!actions[actionName]?.id) return null;
                       return (
                         <Checkbox
-                          size="small"
                           disabled={props?.disable}
                           sx={{ padding: 0.5 }}
                           defaultChecked={checked}

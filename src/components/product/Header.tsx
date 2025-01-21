@@ -100,7 +100,6 @@ function Header(props: HeaderProps) {
               onClick={handleDeleteManyClick}
               color="error"
               loading={isPending}
-              size="small"
             >
               Delete
             </LoadingButton>
@@ -109,13 +108,12 @@ function Header(props: HeaderProps) {
             <Button
               variant="contained"
               startIcon={<AddIcon />}
-              size="small"
               onClick={handleCreateClick}
             >
               New item
             </Button>
             <Tooltip title="Reload">
-              <IconButton size="small">
+              <IconButton>
                 <RefreshIcon color="inherit" />
               </IconButton>
             </Tooltip>

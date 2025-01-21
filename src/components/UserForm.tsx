@@ -78,7 +78,6 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
                 startIcon={<CheckIcon />}
                 variant="contained"
                 disableElevation
-                size="small"
               >
                 Save
               </Button>
@@ -90,12 +89,6 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
             <CardHeader
               title="User details"
               subheader="Enter the user information"
-              titleTypographyProps={{
-                variant: "button",
-              }}
-              subheaderTypographyProps={{
-                variant: "caption",
-              }}
             />
             <CardContent>
               <Grid2 container spacing={1}>
@@ -104,12 +97,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
                     name="name"
                     control={control}
                     render={({ field }) => (
-                      <TextField
-                        label="Name"
-                        fullWidth
-                        size="small"
-                        {...field}
-                      />
+                      <TextField label="Name" fullWidth {...field} />
                     )}
                   />
                 </Grid2>
@@ -118,12 +106,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
                     name="username"
                     control={control}
                     render={({ field }) => (
-                      <TextField
-                        label="Username"
-                        fullWidth
-                        size="small"
-                        {...field}
-                      />
+                      <TextField label="Username" fullWidth {...field} />
                     )}
                   />
                 </Grid2>
@@ -132,12 +115,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
                     name="email"
                     control={control}
                     render={({ field }) => (
-                      <TextField
-                        label="Email"
-                        fullWidth
-                        size="small"
-                        {...field}
-                      />
+                      <TextField label="Email" fullWidth {...field} />
                     )}
                   />
                 </Grid2>

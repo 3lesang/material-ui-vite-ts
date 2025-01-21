@@ -1,22 +1,19 @@
 import CustomList, { CustomListItemProps } from "@/components/ui/CustomList";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PersonIcon from "@mui/icons-material/Person";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import Grid2 from "@mui/material/Grid2";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_admin/setting/_layout")({
-  component: RouteComponent,
-});
-
 const items: CustomListItemProps[] = [
   {
-    title: "Administration panel",
+    title: "Administration",
     type: "group",
   },
   {
     title: "User",
     href: "/setting/user",
-    icon: <AccountCircleIcon />,
+    icon: <PersonIcon />,
   },
   {
     title: "Role",
@@ -24,15 +21,19 @@ const items: CustomListItemProps[] = [
     icon: <SettingsOutlinedIcon />,
   },
   {
-    title: "Account",
+    title: "Setting",
     type: "group",
   },
   {
-    title: "Profile",
+    title: "Account",
     href: "/setting/profile",
-    icon: <SettingsOutlinedIcon />,
+    icon: <AccountCircleIcon />,
   },
 ];
+
+export const Route = createFileRoute("/_admin/setting/_layout")({
+  component: RouteComponent,
+});
 
 function RouteComponent() {
   return (

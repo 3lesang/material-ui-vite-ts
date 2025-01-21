@@ -16,7 +16,6 @@ function AuthHeader() {
   if (!isAuth) {
     return (
       <Button
-        size="small"
         variant="contained"
         disableElevation
         component={Link}
@@ -49,7 +48,7 @@ function AuthHeader() {
 
   return (
     <CustomMenu items={items}>
-      <Button color="inherit" size="small" endIcon={<AccountCircleIcon />}>
+      <Button color="inherit" endIcon={<AccountCircleIcon />}>
         {JSON.parse(user || "").username}
       </Button>
     </CustomMenu>

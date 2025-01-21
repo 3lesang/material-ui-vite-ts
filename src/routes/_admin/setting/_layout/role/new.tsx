@@ -45,6 +45,9 @@ function RouteComponent() {
       assignPermissionMutate(payload);
       notify("Role created successfully");
     },
+    onError: (res) => {
+      notify(res.message, { variant: "error" });
+    },
   });
 
   const handleSubmit = (data: RoleSchema) => {

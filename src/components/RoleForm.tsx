@@ -1,6 +1,4 @@
-import PermissionTable, {
-  columns,
-} from "@/components/PermissionTable";
+import PermissionTable, { columns } from "@/components/PermissionTable";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIcon from "@mui/icons-material/Check";
 import Box from "@mui/material/Box";
@@ -63,7 +61,6 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
                 startIcon={<CheckIcon />}
                 variant="contained"
                 disableElevation
-                size="small"
                 disabled={!isDirty || !isValid}
               >
                 {actionText}
@@ -76,12 +73,6 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
             <CardHeader
               title="Role Information"
               subheader="Enter the role information"
-              titleTypographyProps={{
-                variant: "button",
-              }}
-              subheaderTypographyProps={{
-                variant: "caption",
-              }}
             />
             <CardContent>
               <Grid2 container spacing={1}>
@@ -94,7 +85,6 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
                         label="Name"
                         fullWidth
                         required
-                        size="small"
                         {...field}
                         error={!!errors.name}
                         helperText={errors?.name?.message}
@@ -111,7 +101,6 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
                         {...field}
                         label="Description"
                         fullWidth
-                        size="small"
                         multiline
                         rows={5}
                       />
