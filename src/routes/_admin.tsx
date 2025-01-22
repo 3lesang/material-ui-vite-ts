@@ -1,6 +1,7 @@
-import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_admin")({
@@ -11,22 +12,19 @@ const drawerWidth = 256;
 
 function LayoutComponent() {
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Stack direction="row" minHeight="100vh">
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
       >
+        <Box px={1}>
+          <Typography variant="h6">Acme</Typography>
+        </Box>
         <Sidebar />
       </Box>
-      <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Header />
-        <Box
-          component="main"
-          sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
-        >
-          <Outlet />
-        </Box>
+      <Box component="main" p={1} bgcolor="#eee" flexGrow={1}>
+        <Outlet />
       </Box>
-    </Box>
+    </Stack>
   );
 }
