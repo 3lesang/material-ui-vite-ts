@@ -42,11 +42,13 @@ export const ROLE_COLUMN: GridColDef[] = [
     headerName: "Name",
     sortable: false,
     disableColumnMenu: true,
+    width: 500,
   },
   {
     field: "description",
     headerName: "Description",
     sortable: false,
     disableColumnMenu: true,
+    width: 800,
   },
 ];

@@ -27,7 +27,7 @@ function RouteComponent() {
 
   return (
     <Grid2 container spacing={1}>
-      <Box ml="auto">
+      <Box ml="auto" px={1} pt={1}>
         <Button
           component={Link}
           to="/setting/role/new"

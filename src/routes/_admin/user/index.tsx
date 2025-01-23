@@ -28,16 +28,13 @@ function RouteComponent() {
   return (
     <Grid2 container spacing={1}>
       <Box ml="auto" px={1} pt={1}>
-        <Button startIcon={<EmailIcon />}>
-          Invite new user
-        </Button>
+        <Button startIcon={<EmailIcon />}>Invite new user</Button>
       </Box>
       <Grid2 size={12}>
         <DataGrid
           loading={isLoading}
           columns={USER_COLUMN}
           rows={data?.data?.data}
-          rowSelection={false}
         />
       </Grid2>
     </Grid2>

@@ -1,9 +1,9 @@
+import CustomMenu from "@/components/ui/CustomMenu";
 import { TOKEN_LOCAL_KEY, USER_LOCAL_KEY } from "@/constant/key";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import CustomMenu from "./ui/CustomMenu";
 
 function AuthHeader() {
   const user = localStorage.getItem(USER_LOCAL_KEY);

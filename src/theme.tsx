@@ -77,19 +77,11 @@ const theme = createTheme({
     MuiDataGrid: {
       styleOverrides: {
         root: {
-          "--DataGrid-rowBorderColor": "none",
-          borderRadius: 0,
           border: 0,
           "& .MuiDataGrid-columnSeparator": {
             display: "none",
           },
-          "& .MuiDataGrid-cell:focus": {
-            outline: "none",
-          },
           "& .MuiDataGrid-cell:focus-within": {
-            outline: "none",
-          },
-          "& .MuiDataGrid-columnHeader:focus": {
             outline: "none",
           },
           "& .MuiDataGrid-columnHeader:focus-within": {

@@ -9,12 +9,12 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid2 from "@mui/material/Grid2";
-import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
 import { useQuery } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import BackButton from "./BackButton";
 
 const FormSchema = z.object({
   id: z.number().optional(),
@@ -70,26 +70,28 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
     <Box component="form" onSubmit={handleSubmit(beforeSubmit)}>
       <Grid2 container spacing={1}>
         <Grid2 size={12}>
-          <Stack alignItems="flex-end">
-            <Box>
-              <Button
-                type="submit"
-                disabled={!isDirty || !isValid}
-                startIcon={<CheckIcon />}
-                variant="contained"
-                disableElevation
-              >
-                Save
-              </Button>
-            </Box>
-          </Stack>
+          <Box pt={1}>
+            <BackButton />
+          </Box>
         </Grid2>
         <Grid2 size={12}>
           <Card>
             <CardHeader
               title="User details"
               subheader="Enter the user information"
+              action={
+                <Button
+                  type="submit"
+                  disabled={!isDirty || !isValid}
+                  startIcon={<CheckIcon />}
+                  variant="contained"
+                  disableElevation
+                >
+                  Save
+                </Button>
+              }
             />
+
             <CardContent>
               <Grid2 container spacing={1}>
                 <Grid2 size={6}>
