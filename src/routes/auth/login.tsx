@@ -1,5 +1,5 @@
 import LoginForm from "@/components/LoginForm";
-import { USER_LOCAL_KEY } from "@/data/page";
+import { USER_LOCAL_KEY } from "@/constant/key";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";

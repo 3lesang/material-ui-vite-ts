@@ -48,9 +48,36 @@ const theme = createTheme({
         size: "small",
       },
     },
+    MuiCard: {
+      defaultProps: {
+        elevation: 0,
+      },
+    },
+    MuiCardHeader: {
+      defaultProps: {
+        titleTypographyProps: {
+          variant: "button",
+        },
+        subheaderTypographyProps: {
+          variant: "caption",
+        },
+      },
+    },
+    MuiAppBar: {
+      defaultProps: {
+        elevation: 0,
+        color: "inherit",
+      },
+    },
+    MuiToolbar: {
+      defaultProps: {
+        variant: "dense",
+      },
+    },
     MuiDataGrid: {
       styleOverrides: {
         root: {
+          "--DataGrid-rowBorderColor": "none",
           borderRadius: 0,
           border: 0,
           "& .MuiDataGrid-columnSeparator": {
@@ -70,20 +97,10 @@ const theme = createTheme({
           },
         },
       },
-    },
-    MuiCard: {
       defaultProps: {
-        elevation: 0,
-      },
-    },
-    MuiCardHeader: {
-      defaultProps: {
-        titleTypographyProps: {
-          variant: "button",
-        },
-        subheaderTypographyProps: {
-          variant: "caption",
-        },
+        rowHeight: 40,
+        columnHeaderHeight: 40,
+        hideFooter: true,
       },
     },
   },

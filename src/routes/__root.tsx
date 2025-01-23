@@ -18,7 +18,7 @@ export const Route = createRootRouteWithContext<{
     <React.Fragment>
       <Outlet />
       <Suspense>
-        <TanStackRouterDevtools />
+        {/* <TanStackRouterDevtools /> */}
       </Suspense>
     </React.Fragment>
   ),

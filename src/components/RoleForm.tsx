@@ -1,11 +1,9 @@
 import PermissionTable, { columns } from "@/components/PermissionTable";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIcon from "@mui/icons-material/Check";
+import { Container } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
 import Grid2 from "@mui/material/Grid2";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -51,7 +49,7 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
   const isSupperAdmin = defaultValues?.id == 1;
 
   return (
-    <Box component="form" onSubmit={handleSubmit(beforeSubmit)}>
+    <Container component="form" onSubmit={handleSubmit(beforeSubmit)}>
       <Grid2 container spacing={1}>
         <Grid2 size={12}>
           <Stack alignItems="flex-end">
@@ -69,47 +67,39 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
           </Stack>
         </Grid2>
         <Grid2 size={12}>
-          <Card>
-            <CardHeader
-              title="Role Information"
-              subheader="Enter the role information"
-            />
-            <CardContent>
-              <Grid2 container spacing={1}>
-                <Grid2 size={6}>
-                  <Controller
-                    control={control}
-                    name="name"
-                    render={({ field }) => (
-                      <TextField
-                        label="Name"
-                        fullWidth
-                        required
-                        {...field}
-                        error={!!errors.name}
-                        helperText={errors?.name?.message}
-                      />
-                    )}
+          <Grid2 container spacing={1}>
+            <Grid2 size={6}>
+              <Controller
+                control={control}
+                name="name"
+                render={({ field }) => (
+                  <TextField
+                    label="Name"
+                    fullWidth
+                    required
+                    {...field}
+                    error={!!errors.name}
+                    helperText={errors?.name?.message}
                   />
-                </Grid2>
-                <Grid2 size={6}>
-                  <Controller
-                    name="description"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Description"
-                        fullWidth
-                        multiline
-                        rows={5}
-                      />
-                    )}
+                )}
+              />
+            </Grid2>
+            <Grid2 size={6}>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Description"
+                    fullWidth
+                    multiline
+                    rows={5}
                   />
-                </Grid2>
-              </Grid2>
-            </CardContent>
-          </Card>
+                )}
+              />
+            </Grid2>
+          </Grid2>
         </Grid2>
         <Grid2 size={12}>
           <PermissionTable
@@ -120,6 +110,6 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
           />
         </Grid2>
       </Grid2>
-    </Box>
+    </Container>
   );
 }

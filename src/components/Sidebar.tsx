@@ -1,36 +1,27 @@
-import CustomList, { CustomListItemProps } from "@/components/ui/CustomList";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import PersonIcon from "@mui/icons-material/Person";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-
-const items: CustomListItemProps[] = [
-  {
-    title: "Administration",
-    type: "group",
-  },
-  {
-    title: "User",
-    href: "/setting/user",
-    icon: <PersonIcon />,
-  },
-  {
-    title: "Role",
-    href: "/setting/role",
-    icon: <SettingsOutlinedIcon />,
-  },
-  {
-    title: "Setting",
-    type: "group",
-  },
-  {
-    title: "Account",
-    href: "/setting/profile",
-    icon: <AccountCircleIcon />,
-  },
-];
+import MailIcon from "@mui/icons-material/Mail";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
 
 function Sidebar() {
-  return <CustomList items={items} />;
+  return (
+    <Drawer open={false}>
+      <List>
+        {["All mail", "Trash", "Spam"].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
+  );
 }
 
 export default Sidebar;

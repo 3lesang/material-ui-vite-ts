@@ -1,6 +1,6 @@
 import { axiosClient } from "@/axios";
 import { notify } from "@/components/ui/CustomToast";
-import { TOKEN_LOCAL_KEY, USER_LOCAL_KEY } from "@/data/page";
+import { TOKEN_LOCAL_KEY, USER_LOCAL_KEY } from "@/constant/key";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
