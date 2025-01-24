@@ -1,6 +1,4 @@
 import { axiosClient } from "@/axios";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import Checkbox from "@mui/material/Checkbox";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -98,65 +96,53 @@ function PermissionTable(props: Props) {
   };
 
   return (
-    <Card>
-      <CardHeader
-        title="Permission Information"
-        subheader="Enter the permission information"
-        titleTypographyProps={{
-          variant: "button",
-        }}
-        subheaderTypographyProps={{
-          variant: "caption",
-        }}
-      />
-      <Table>
-        <TableHead>
-          <TableRow>
-            {props?.columns?.map((column, index) => (
-              <TableCell key={index} align={column.align}>
-                {column.headerName}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows?.map((row: [string, any], index) => (
-            <TableRow key={index}>
-              {props?.columns?.map((column, index) => {
-                const module = row[0];
-                const actions = row[1];
-                const actionName = column.field;
-                const checked = permissions[module]?.[actionName]?.id;
-                const renderValue = () => {
-                  switch (column.type) {
-                    case "string":
-                      return module;
-                    case "checkbox": {
-                      if (!actions[actionName]?.id) return null;
-                      return (
-                        <Checkbox
-                          disabled={props?.disable}
-                          sx={{ padding: 0.5 }}
-                          defaultChecked={checked}
-                          onChange={() =>
-                            handleCheckboxChange(actions[actionName])
-                          }
-                        />
-                      );
-                    }
-                  }
-                };
-                return (
-                  <TableCell key={index} align={column.align}>
-                    {renderValue()}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
+    <Table>
+      <TableHead>
+        <TableRow>
+          {props?.columns?.map((column, index) => (
+            <TableCell key={index} align={column.align}>
+              {column.headerName}
+            </TableCell>
           ))}
-        </TableBody>
-      </Table>
-    </Card>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {rows?.map((row: [string, any], index) => (
+          <TableRow key={index}>
+            {props?.columns?.map((column, index) => {
+              const module = row[0];
+              const actions = row[1];
+              const actionName = column.field;
+              const checked = permissions[module]?.[actionName]?.id;
+              const renderValue = () => {
+                switch (column.type) {
+                  case "string":
+                    return module;
+                  case "checkbox": {
+                    if (!actions[actionName]?.id) return null;
+                    return (
+                      <Checkbox
+                        disabled={props?.disable}
+                        sx={{ padding: 0.5 }}
+                        defaultChecked={checked}
+                        onChange={() =>
+                          handleCheckboxChange(actions[actionName])
+                        }
+                      />
+                    );
+                  }
+                }
+              };
+              return (
+                <TableCell key={index} align={column.align}>
+                  {renderValue()}
+                </TableCell>
+              );
+            })}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
 

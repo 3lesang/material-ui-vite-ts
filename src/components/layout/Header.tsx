@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { Link } from "@tanstack/react-router";
 import AuthHeader from "./AuthHeader";
 
+const routes = [{ label: "Users", to: "/user" }];
 function Header() {
   return (
     <AppBar position="sticky">

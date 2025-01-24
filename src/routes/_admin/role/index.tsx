@@ -1,12 +1,12 @@
 import { axiosClient } from "@/axios";
 import { ROLE_COLUMN } from "@/constant/columns";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Grid2 from "@mui/material/Grid2";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 
 const url = "/roles";
 const params = {
@@ -19,30 +19,38 @@ export const Route = createFileRoute("/_admin/role/")({
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: [url, params.page, params.limit],
     queryFn: () => axiosClient.get(url, { params }),
     retry: false,
   });
 
+  const handleNavigate = (params: any) => {
+    navigate({ to: `/role/${params?.id}` });
+  };
+
   return (
-    <Grid2 container spacing={1}>
-      <Box ml="auto" px={1} pt={1}>
-        <Button
-          component={Link}
-          to="/setting/role/new"
-          startIcon={<AddOutlinedIcon />}
-        >
-          Add new item
-        </Button>
-      </Box>
-      <Grid2 size={12}>
-        <DataGrid
-          loading={isLoading}
-          columns={ROLE_COLUMN}
-          rows={data?.data?.data}
-        />
-      </Grid2>
-    </Grid2>
+    <Card>
+      <CardHeader
+        title="Roles"
+        subheader="List of roles"
+        action={
+          <Button
+            component={Link}
+            to="/role/new"
+            startIcon={<AddOutlinedIcon />}
+          >
+            Add new item
+          </Button>
+        }
+      />
+      <DataGrid
+        loading={isLoading}
+        columns={ROLE_COLUMN}
+        rows={data?.data?.data}
+        onCellClick={handleNavigate}
+      />
+    </Card>
   );
 }

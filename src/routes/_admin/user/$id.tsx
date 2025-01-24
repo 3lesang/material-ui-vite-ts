@@ -1,7 +1,6 @@
 import { axiosClient } from "@/axios";
 import { notify } from "@/components/ui/CustomToast";
 import UserForm, { UserFormProps, UserSchema } from "@/components/UserForm";
-import Container from "@mui/material/Container";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -60,11 +59,7 @@ function RouteComponent() {
     roleMutate({ user_id: Number(id), role_ids: data?.roles });
   };
 
-  return (
-    <Container>
-      {data?.data && userRoleData?.data && (
-        <UserForm defaultValues={defaultValues} onSubmit={handleSubmit} />
-      )}
-    </Container>
-  );
+  if (data?.data && userRoleData?.data) {
+    return <UserForm defaultValues={defaultValues} onSubmit={handleSubmit} />;
+  }
 }

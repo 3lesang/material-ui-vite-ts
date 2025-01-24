@@ -1,12 +1,11 @@
 import { axiosClient } from "@/axios";
 import { USER_COLUMN } from "@/constant/columns";
 import EmailIcon from "@mui/icons-material/Email";
-import Box from "@mui/material/Box";
+import { Card, CardHeader } from "@mui/material";
 import Button from "@mui/material/Button";
-import Grid2 from "@mui/material/Grid2";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 const url = "/users";
 const params = {
@@ -19,24 +18,30 @@ export const Route = createFileRoute("/_admin/user/")({
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: [url, params.page, params.limit],
     queryFn: () => axiosClient.get(url, { params }),
     retry: false,
   });
 
+  const handleNavigate = (params: any) => {
+    navigate({ to: `/user/${params?.id}` });
+  };
+
   return (
-    <Grid2 container spacing={1}>
-      <Box ml="auto" px={1} pt={1}>
-        <Button startIcon={<EmailIcon />}>Invite new user</Button>
-      </Box>
-      <Grid2 size={12}>
-        <DataGrid
-          loading={isLoading}
-          columns={USER_COLUMN}
-          rows={data?.data?.data}
-        />
-      </Grid2>
-    </Grid2>
+    <Card>
+      <CardHeader
+        title="Users"
+        subheader="All the users who have access to the admin panel"
+        action={<Button startIcon={<EmailIcon />}>Invite new user</Button>}
+      />
+      <DataGrid
+        loading={isLoading}
+        columns={USER_COLUMN}
+        rows={data?.data?.data}
+        onCellClick={handleNavigate}
+      />
+    </Card>
   );
 }

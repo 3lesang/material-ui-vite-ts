@@ -1,14 +1,13 @@
 import PermissionTable, { columns } from "@/components/PermissionTable";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIcon from "@mui/icons-material/Check";
-import { Container } from "@mui/material";
-import Box from "@mui/material/Box";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import Button from "@mui/material/Button";
 import Grid2 from "@mui/material/Grid2";
-import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import BackButton from "./BackButton";
 
 const FormSchema = z.object({
   id: z.number().optional(),
@@ -49,67 +48,61 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
   const isSupperAdmin = defaultValues?.id == 1;
 
   return (
-    <Container component="form" onSubmit={handleSubmit(beforeSubmit)}>
-      <Grid2 container spacing={1}>
-        <Grid2 size={12}>
-          <Stack alignItems="flex-end">
-            <Box>
-              <Button
-                type="submit"
-                startIcon={<CheckIcon />}
-                variant="contained"
-                disableElevation
-                disabled={!isDirty || !isValid}
-              >
-                {actionText}
-              </Button>
-            </Box>
-          </Stack>
-        </Grid2>
-        <Grid2 size={12}>
-          <Grid2 container spacing={1}>
-            <Grid2 size={6}>
-              <Controller
-                control={control}
-                name="name"
-                render={({ field }) => (
-                  <TextField
-                    label="Name"
-                    fullWidth
-                    required
-                    {...field}
-                    error={!!errors.name}
-                    helperText={errors?.name?.message}
-                  />
-                )}
-              />
-            </Grid2>
-            <Grid2 size={6}>
-              <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Description"
-                    fullWidth
-                    multiline
-                    rows={5}
-                  />
-                )}
-              />
-            </Grid2>
+    <Card component="form" onSubmit={handleSubmit(beforeSubmit)}>
+      <CardHeader
+        title="Roles"
+        subheader="Define the rights given to the role"
+        action={
+          <Button
+            type="submit"
+            startIcon={<CheckIcon />}
+            disabled={!isDirty || !isValid}
+          >
+            {actionText}
+          </Button>
+        }
+      />
+      <CardContent>
+        <Grid2 container spacing={1}>
+          <Grid2 size={6}>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <TextField
+                  label="Name"
+                  fullWidth
+                  required
+                  {...field}
+                  error={!!errors.name}
+                  helperText={errors?.name?.message}
+                />
+              )}
+            />
+          </Grid2>
+          <Grid2 size={6}>
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Description"
+                  fullWidth
+                  multiline
+                  rows={5}
+                />
+              )}
+            />
           </Grid2>
         </Grid2>
-        <Grid2 size={12}>
-          <PermissionTable
-            disable={isSupperAdmin}
-            value={defaultValues?.permissions}
-            columns={columns}
-            onChange={handlePermissionChange}
-          />
-        </Grid2>
-      </Grid2>
-    </Container>
+      </CardContent>
+      <PermissionTable
+        disable={isSupperAdmin}
+        value={defaultValues?.permissions}
+        columns={columns}
+        onChange={handlePermissionChange}
+      />
+    </Card>
   );
 }

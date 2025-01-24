@@ -2,7 +2,6 @@ import { axiosClient } from "@/axios";
 import CustomSelect, { CustomSelectProps } from "@/components/ui/CustomSelect";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIcon from "@mui/icons-material/Check";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -67,93 +66,78 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
   );
 
   return (
-    <Box component="form" onSubmit={handleSubmit(beforeSubmit)}>
-      <Grid2 container spacing={1}>
-        <Grid2 size={12}>
-          <Box pt={1}>
-            <BackButton />
-          </Box>
-        </Grid2>
-        <Grid2 size={12}>
-          <Card>
-            <CardHeader
-              title="User details"
-              subheader="Enter the user information"
-              action={
-                <Button
-                  type="submit"
-                  disabled={!isDirty || !isValid}
-                  startIcon={<CheckIcon />}
-                  variant="contained"
-                  disableElevation
-                >
-                  Save
-                </Button>
-              }
-            />
+    <Card component="form" onSubmit={handleSubmit(beforeSubmit)}>
+      <CardHeader
+        title="Users"
+        subheader="Enter the user information"
+        action={
+          <Button
+            type="submit"
+            disabled={!isDirty || !isValid}
+            startIcon={<CheckIcon />}
+            variant="contained"
+            disableElevation
+          >
+            Save
+          </Button>
+        }
+      />
 
-            <CardContent>
-              <Grid2 container spacing={1}>
-                <Grid2 size={6}>
-                  <Controller
-                    name="name"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField label="Name" fullWidth {...field} />
-                    )}
-                  />
-                </Grid2>
-                <Grid2 size={6}>
-                  <Controller
-                    name="username"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField label="Username" fullWidth {...field} />
-                    )}
-                  />
-                </Grid2>
-                <Grid2 size={6}>
-                  <Controller
-                    name="email"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField label="Email" fullWidth {...field} />
-                    )}
-                  />
-                </Grid2>
-                <Grid2 size={4}>
-                  {options?.length && (
-                    <Controller
-                      name="roles"
-                      control={control}
-                      render={({ field }) => (
-                        <CustomSelect
-                          options={options}
-                          label="Roles"
-                          {...field}
-                        />
-                      )}
-                    />
-                  )}
-                </Grid2>
-                <Grid2 size={2}>
-                  <Controller
-                    name="active"
-                    control={control}
-                    render={({ field: { onChange, value } }) => (
-                      <FormControlLabel
-                        control={<Switch checked={value} onChange={onChange} />}
-                        label="Active"
-                      />
-                    )}
-                  />
-                </Grid2>
-              </Grid2>
-            </CardContent>
-          </Card>
+      <CardContent>
+        <Grid2 container spacing={1}>
+          <Grid2 size={6}>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <TextField label="Name" fullWidth {...field} />
+              )}
+            />
+          </Grid2>
+          <Grid2 size={6}>
+            <Controller
+              name="username"
+              control={control}
+              render={({ field }) => (
+                <TextField label="Username" fullWidth {...field} />
+              )}
+            />
+          </Grid2>
+          <Grid2 size={6}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <TextField label="Email" fullWidth {...field} />
+              )}
+            />
+          </Grid2>
+          <Grid2 size={4}>
+            {options?.length && (
+              <Controller
+                name="roles"
+                control={control}
+                render={({ field }) => (
+                  <CustomSelect options={options} label="Roles" {...field} />
+                )}
+              />
+            )}
+          </Grid2>
+          <Grid2 size={2}>
+            <Controller
+              name="active"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <FormControlLabel
+                  control={<Switch checked={value} onChange={onChange} />}
+                  label="Active"
+                />
+              )}
+            />
+          </Grid2>
         </Grid2>
-      </Grid2>
-    </Box>
+      </CardContent>
+    </Card>
   );
 }
 

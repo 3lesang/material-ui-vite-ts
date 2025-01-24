@@ -6,29 +6,28 @@ export const USER_COLUMN: GridColDef[] = [
     field: "name",
     headerName: "Name",
     sortable: false,
+    width: 200,
     disableColumnMenu: true,
-    width: 500,
   },
   {
     field: "username",
     headerName: "Username",
     sortable: false,
+    width: 100,
     disableColumnMenu: true,
-    width: 200,
   },
   {
     field: "email",
     headerName: "Email",
     sortable: false,
+    width: 400,
     disableColumnMenu: true,
-    width: 500,
   },
   {
     field: "active",
     headerName: "Status",
     sortable: false,
     disableColumnMenu: true,
-    width: 150,
     renderCell: (params: GridRenderCellParams) => {
       const status = params.value ? "Active" : "Inactive";
       return <Chip label={status} />;
@@ -41,14 +40,14 @@ export const ROLE_COLUMN: GridColDef[] = [
     field: "name",
     headerName: "Name",
     sortable: false,
+    width: 300,
     disableColumnMenu: true,
-    width: 500,
   },
   {
     field: "description",
     headerName: "Description",
     sortable: false,
+    width: 500,
     disableColumnMenu: true,
-    width: 800,
   },
 ];

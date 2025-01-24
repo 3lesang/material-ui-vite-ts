@@ -56,7 +56,7 @@ const theme = createTheme({
     MuiCardHeader: {
       defaultProps: {
         titleTypographyProps: {
-          variant: "button",
+          variant: "h6",
         },
         subheaderTypographyProps: {
           variant: "caption",
@@ -93,6 +93,16 @@ const theme = createTheme({
         rowHeight: 40,
         columnHeaderHeight: 40,
         hideFooter: true,
+        // checkboxSelection: true,
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          "&:last-child td": {
+            border: 0,
+          },
+        },
       },
     },
   },
