@@ -1,13 +1,18 @@
 import AdbIcon from "@mui/icons-material/Adb";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Link } from "@tanstack/react-router";
-import AuthHeader from "./AuthHeader";
+import APopover from "../ui/APopover";
+import AuthButton from "./AuthButton";
 
-const routes = [{ label: "Users", to: "/user" }];
 function Header() {
   return (
     <AppBar position="sticky">
@@ -23,8 +28,24 @@ function Header() {
           <Button color="inherit" component={Link} to="/role">
             Roles
           </Button>
+          <APopover
+            trigger="hover"
+            dropdown={
+              <List disablePadding>
+                <ListItem disablePadding dense>
+                  <ListItemButton>
+                    <ListItemText primary="Profile" />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            }
+          >
+            <Button color="inherit" endIcon={<ExpandMoreIcon />}>
+              Settings
+            </Button>
+          </APopover>
         </Box>
-        <AuthHeader />
+        <AuthButton />
       </Toolbar>
     </AppBar>
   );

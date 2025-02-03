@@ -1,4 +1,4 @@
-import Typography from "@mui/material/Typography";
+import { Box, Card, Grid2 } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_admin/")({
@@ -6,5 +6,18 @@ export const Route = createFileRoute("/_admin/")({
 });
 
 function RouteComponent() {
-  return <Typography>home</Typography>;
+  return (
+    <Grid2 container spacing={1}>
+      <Grid2 size={6}>
+        <Card>
+          <Box height={300} bgcolor="#cecece" />
+        </Card>
+      </Grid2>
+      <Grid2 size={12}>
+        <Card>
+          <Box height={300} bgcolor="#eee" />
+        </Card>
+      </Grid2>
+    </Grid2>
+  );
 }

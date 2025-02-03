@@ -93,6 +93,7 @@ const theme = createTheme({
         rowHeight: 40,
         columnHeaderHeight: 40,
         hideFooter: true,
+        rowSelection: false,
         // checkboxSelection: true,
       },
     },
