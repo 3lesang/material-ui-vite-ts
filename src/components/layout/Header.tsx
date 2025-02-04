@@ -22,19 +22,21 @@ function Header() {
           Acme
         </Typography>
         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-          <Button color="inherit" component={Link} to="/user">
-            Users
-          </Button>
-          <Button color="inherit" component={Link} to="/role">
-            Roles
+          <Button component={Link} to="/" color="inherit">
+            Home
           </Button>
           <APopover
             trigger="hover"
             dropdown={
-              <List disablePadding>
-                <ListItem disablePadding dense>
-                  <ListItemButton>
-                    <ListItemText primary="Profile" />
+              <List>
+                <ListItem dense disablePadding>
+                  <ListItemButton component={Link} to="/user" color="inherit">
+                    <ListItemText primary="Users" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem dense disablePadding>
+                  <ListItemButton component={Link} to="/role" color="inherit">
+                    <ListItemText primary="Roles" />
                   </ListItemButton>
                 </ListItem>
               </List>

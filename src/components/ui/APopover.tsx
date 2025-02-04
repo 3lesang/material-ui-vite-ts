@@ -33,6 +33,7 @@ const APopover = (props: APopoverProps) => {
               vertical: "top",
               horizontal: "center",
             }}
+            onClick={popupState.close}
           >
             {props?.dropdown}
           </Wrapper>
