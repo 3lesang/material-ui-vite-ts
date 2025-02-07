@@ -1,6 +1,4 @@
 import { axiosClient } from "@/axios";
-import DeleteAction from "@/components/product/DeleteAction";
-import Header from "@/components/product/Header";
 import EditIcon from "@mui/icons-material/Edit";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import Box from "@mui/material/Box";
@@ -143,7 +141,6 @@ function Index() {
       type: "actions",
       width: 100,
       getActions: (params) => [
-        <DeleteAction onDelete={handleDelete(params.id)} />,
         <GridActionsCellItem
           icon={<EditIcon />}
           onClick={handleView(params.id)}
@@ -178,7 +175,6 @@ function Index() {
 
   return (
     <Box>
-      <Header onDeleteSuccess={refetch} />
       <TableContainer component={Paper}>
         <DataGrid
           rows={rows}
