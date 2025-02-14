@@ -76,6 +76,7 @@ function LoginForm() {
           />
         )}
       />
+      <Box mt={2} />
       <LoadingButton
         variant="contained"
         color="primary"

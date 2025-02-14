@@ -13,14 +13,14 @@ export const Route = createFileRoute("/auth/register")({
 function RouteComponent() {
   return (
     <Stack justifyContent="center" alignItems="center" height="100vh">
-      <Card sx={{ width: 400 }} elevation={1}>
+      <Card sx={{ width: 400 }} elevation={0}>
         <CardHeader
           title="Sign up"
           subheader="Enter your account information"
         />
         <CardContent>
           <RegisterForm />
-          <Typography mt={1}>
+          <Typography variant="caption">
             Don't have an account? <Link to="/auth/login"> Sign in</Link>
           </Typography>
         </CardContent>

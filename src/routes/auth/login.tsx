@@ -25,12 +25,12 @@ export const Route = createFileRoute("/auth/login")({
 function RouteComponent() {
   return (
     <Stack justifyContent="center" alignItems="center" height="100vh">
-      <Card sx={{ width: 400 }} elevation={1}>
+      <Card sx={{ width: 400 }} elevation={0}>
         <CardHeader title="Login" subheader="Enter your account" />
         <CardContent>
           <LoginForm />
-          <Typography mt={1}>
-            Don't have an account? <Link to="/auth/register"> Sign up</Link>
+          <Typography variant="caption">
+            Don't have an account? <Link to="/auth/register">Sign up</Link>
           </Typography>
         </CardContent>
       </Card>

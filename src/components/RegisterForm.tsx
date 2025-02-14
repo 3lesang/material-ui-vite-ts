@@ -83,6 +83,7 @@ function RegisterForm() {
           />
         )}
       />
+      <Box mt={2}/>
       <LoadingButton
         variant="contained"
         color="primary"
