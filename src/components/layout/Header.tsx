@@ -1,4 +1,3 @@
-import AdbIcon from "@mui/icons-material/Adb";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -17,14 +16,16 @@ function Header() {
   return (
     <AppBar position="sticky">
       <Toolbar variant="dense">
-        <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-        <Typography variant="h6" component="div">
-          Acme
+        <img
+          src="https://cdn4.iconfinder.com/data/icons/social-media-logos-6/512/36-simple-512.png"
+          alt="logo"
+          width="30"
+          height="30"
+        />
+        <Typography variant="h6" component="div" ml={1}>
+          Wave
         </Typography>
         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-          <Button component={Link} to="/" color="inherit">
-            Home
-          </Button>
           <APopover
             trigger="hover"
             dropdown={
@@ -43,7 +44,7 @@ function Header() {
             }
           >
             <Button color="inherit" endIcon={<ExpandMoreIcon />}>
-              Settings
+              Manager
             </Button>
           </APopover>
         </Box>
