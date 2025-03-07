@@ -22,9 +22,12 @@ function Header() {
           width="30"
           height="30"
         />
-        <Typography variant="h6" component="div" ml={1}>
-          Wave
+        <Typography variant="h6" component="div" mx={1}>
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            Wave
+          </Link>
         </Typography>
+
         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
           <APopover
             trigger="hover"
