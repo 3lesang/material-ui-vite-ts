@@ -1,20 +1,17 @@
-import s3Client from "@/minio";
+import s3Client, { BUCKET_NAME } from "@/minio";
 import {
   GetObjectCommand,
   ListObjectsV2Command,
   ListObjectsV2CommandOutput,
 } from "@aws-sdk/client-s3";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { CardActions, CardMedia, Grid2 } from "@mui/material";
+import { CardActions, CardMedia, Grid2, Skeleton } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-
-const BUCKET_NAME = "wave";
-const MINIO_ENDPOINT = "https://minio.lesang.id.vn";
 
 export const Route = createFileRoute("/_admin/media/")({
   component: RouteComponent,
@@ -25,29 +22,52 @@ const commandListObject = new ListObjectsV2Command({
   MaxKeys: 100,
 });
 
-const commandGetObject = new GetObjectCommand({
-  Bucket: BUCKET_NAME,
-  Key: "wp12583031-anime-scene-4k-wallpapers.jpg",
-});
+function Image({ name }: { name?: string }) {
+  const commandGetObject = new GetObjectCommand({
+    Bucket: BUCKET_NAME,
+    Key: name,
+  });
+
+  const { data, isLoading } = useQuery({
+    queryKey: [name],
+    queryFn: async () => {
+      const response = await s3Client.send(commandGetObject);
+      if (!response.Body) throw new Error("Empty response body");
+
+      const chunks: Uint8Array[] = [];
+      for await (const chunk of response.Body as any) {
+        chunks.push(chunk);
+      }
+      const blob = new Blob(chunks, {
+        type: response.ContentType,
+      });
+
+      return URL.createObjectURL(blob);
+    },
+    retry: 0,
+  });
+
+  const height = 160;
+
+  return (
+    <Card>
+      {isLoading && <Skeleton variant="rectangular" height={height} />}
+      {data && (
+        <CardMedia component="img" alt={name} height={height} image={data} />
+      )}
+      <CardActions>
+        <Button size="small">Share</Button>
+      </CardActions>
+    </Card>
+  );
+}
 
 function RouteComponent() {
-  const { data, isLoading } = useQuery<ListObjectsV2CommandOutput>({
+  const { data } = useQuery<ListObjectsV2CommandOutput>({
     queryKey: ["media"],
     queryFn: () => s3Client.send(commandListObject),
+    retry: 0,
   });
-
-  const { data: image } = useQuery({
-    queryKey: ["s3Image"],
-    queryFn: () => s3Client.send(commandGetObject),
-    retry: false,
-  });
-
-  console.log(image);
-  console.log(data);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <Card>
@@ -59,18 +79,8 @@ function RouteComponent() {
       <CardContent>
         <Grid2 container spacing={2}>
           {data?.Contents?.map((obj) => (
-            <Grid2 size={2} key={obj.Key}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  alt={obj.Key}
-                  height="140"
-                  image={`${MINIO_ENDPOINT}/${BUCKET_NAME}/${obj.Key}`}
-                />
-                <CardActions>
-                  <Button size="small">Share</Button>
-                </CardActions>
-              </Card>
+            <Grid2 size={3} key={obj.Key}>
+              <Image name={obj.Key} key={obj.Key} />
             </Grid2>
           ))}
         </Grid2>
