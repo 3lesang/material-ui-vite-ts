@@ -79,7 +79,7 @@ function RouteComponent() {
       <CardContent>
         <Grid2 container spacing={2}>
           {data?.Contents?.map((obj) => (
-            <Grid2 size={3} key={obj.Key}>
+            <Grid2 size={[12, 3]} key={obj.Key}>
               <Image name={obj.Key} key={obj.Key} />
             </Grid2>
           ))}
