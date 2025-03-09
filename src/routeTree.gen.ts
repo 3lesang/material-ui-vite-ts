@@ -20,6 +20,7 @@ import { Route as AdminAboutImport } from './routes/_admin/about'
 import { Route as AdminUserIndexImport } from './routes/_admin/user/index'
 import { Route as AdminRoleIndexImport } from './routes/_admin/role/index'
 import { Route as AdminProductIndexImport } from './routes/_admin/product/index'
+import { Route as AdminMediaIndexImport } from './routes/_admin/media/index'
 import { Route as AdminUserIdImport } from './routes/_admin/user/$id'
 import { Route as AdminRoleNewImport } from './routes/_admin/role/new'
 import { Route as AdminRoleIdImport } from './routes/_admin/role/$id'
@@ -78,6 +79,12 @@ const AdminRoleIndexRoute = AdminRoleIndexImport.update({
 const AdminProductIndexRoute = AdminProductIndexImport.update({
   id: '/product/',
   path: '/product/',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminMediaIndexRoute = AdminMediaIndexImport.update({
+  id: '/media/',
+  path: '/media/',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -192,6 +199,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUserIdImport
       parentRoute: typeof AdminImport
     }
+    '/_admin/media/': {
+      id: '/_admin/media/'
+      path: '/media'
+      fullPath: '/media'
+      preLoaderRoute: typeof AdminMediaIndexImport
+      parentRoute: typeof AdminImport
+    }
     '/_admin/product/': {
       id: '/_admin/product/'
       path: '/product'
@@ -227,6 +241,7 @@ interface AdminRouteChildren {
   AdminRoleIdRoute: typeof AdminRoleIdRoute
   AdminRoleNewRoute: typeof AdminRoleNewRoute
   AdminUserIdRoute: typeof AdminUserIdRoute
+  AdminMediaIndexRoute: typeof AdminMediaIndexRoute
   AdminProductIndexRoute: typeof AdminProductIndexRoute
   AdminRoleIndexRoute: typeof AdminRoleIndexRoute
   AdminUserIndexRoute: typeof AdminUserIndexRoute
@@ -241,6 +256,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminRoleIdRoute: AdminRoleIdRoute,
   AdminRoleNewRoute: AdminRoleNewRoute,
   AdminUserIdRoute: AdminUserIdRoute,
+  AdminMediaIndexRoute: AdminMediaIndexRoute,
   AdminProductIndexRoute: AdminProductIndexRoute,
   AdminRoleIndexRoute: AdminRoleIndexRoute,
   AdminUserIndexRoute: AdminUserIndexRoute,
@@ -260,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/role/$id': typeof AdminRoleIdRoute
   '/role/new': typeof AdminRoleNewRoute
   '/user/$id': typeof AdminUserIdRoute
+  '/media': typeof AdminMediaIndexRoute
   '/product': typeof AdminProductIndexRoute
   '/role': typeof AdminRoleIndexRoute
   '/user': typeof AdminUserIndexRoute
@@ -276,6 +293,7 @@ export interface FileRoutesByTo {
   '/role/$id': typeof AdminRoleIdRoute
   '/role/new': typeof AdminRoleNewRoute
   '/user/$id': typeof AdminUserIdRoute
+  '/media': typeof AdminMediaIndexRoute
   '/product': typeof AdminProductIndexRoute
   '/role': typeof AdminRoleIndexRoute
   '/user': typeof AdminUserIndexRoute
@@ -294,6 +312,7 @@ export interface FileRoutesById {
   '/_admin/role/$id': typeof AdminRoleIdRoute
   '/_admin/role/new': typeof AdminRoleNewRoute
   '/_admin/user/$id': typeof AdminUserIdRoute
+  '/_admin/media/': typeof AdminMediaIndexRoute
   '/_admin/product/': typeof AdminProductIndexRoute
   '/_admin/role/': typeof AdminRoleIndexRoute
   '/_admin/user/': typeof AdminUserIndexRoute
@@ -313,6 +332,7 @@ export interface FileRouteTypes {
     | '/role/$id'
     | '/role/new'
     | '/user/$id'
+    | '/media'
     | '/product'
     | '/role'
     | '/user'
@@ -328,6 +348,7 @@ export interface FileRouteTypes {
     | '/role/$id'
     | '/role/new'
     | '/user/$id'
+    | '/media'
     | '/product'
     | '/role'
     | '/user'
@@ -344,6 +365,7 @@ export interface FileRouteTypes {
     | '/_admin/role/$id'
     | '/_admin/role/new'
     | '/_admin/user/$id'
+    | '/_admin/media/'
     | '/_admin/product/'
     | '/_admin/role/'
     | '/_admin/user/'
@@ -388,6 +410,7 @@ export const routeTree = rootRoute
         "/_admin/role/$id",
         "/_admin/role/new",
         "/_admin/user/$id",
+        "/_admin/media/",
         "/_admin/product/",
         "/_admin/role/",
         "/_admin/user/"
@@ -429,6 +452,10 @@ export const routeTree = rootRoute
     },
     "/_admin/user/$id": {
       "filePath": "_admin/user/$id.tsx",
+      "parent": "/_admin"
+    },
+    "/_admin/media/": {
+      "filePath": "_admin/media/index.tsx",
       "parent": "/_admin"
     },
     "/_admin/product/": {
