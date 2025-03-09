@@ -1,8 +1,7 @@
 import { S3Client } from "@aws-sdk/client-s3";
 
-export const BUCKET_NAME = "bucket";
-export const MINIO_ENDPOINT = "http://178.128.21.155:9000";
-// export const MINIO_ENDPOINT = "https://minio.lesang.id.vn";
+export const BUCKET_NAME = import.meta.env.VITE_BUCKET_NAME;
+export const MINIO_ENDPOINT = import.meta.env.VITE_MINIO_ENDPOINT;
 
 const s3Client = new S3Client({
   region: "us-east-1",
