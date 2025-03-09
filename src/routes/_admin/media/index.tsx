@@ -1,5 +1,9 @@
 import s3Client from "@/minio";
-import { GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  ListObjectsV2Command,
+  ListObjectsV2CommandOutput,
+} from "@aws-sdk/client-s3";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { CardActions, CardMedia, Grid2 } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -16,61 +20,34 @@ export const Route = createFileRoute("/_admin/media/")({
   component: RouteComponent,
 });
 
-const listObjects = async () => {
-  try {
-    const command = new ListObjectsV2Command({
-      Bucket: BUCKET_NAME,
-      MaxKeys: 100,
-    });
+const commandListObject = new ListObjectsV2Command({
+  Bucket: BUCKET_NAME,
+  MaxKeys: 100,
+});
 
-    const response = await s3Client.send(command);
-    return response.Contents || [];
-  } catch (err) {
-    console.error("Error listing objects:", err);
-    return [];
-  }
-};
-
-const getObject = async () => {
-  try {
-    const command = new GetObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: "wp12583031-anime-scene-4k-wallpapers.jpg",
-    });
-
-    const response = await s3Client.send(command);
-
-    if (!response.Body) throw new Error("Empty response body");
-
-    const contentType = response.ContentType || "image/jpeg";
-
-    const chunks: Uint8Array[] = [];
-    for await (const chunk of response.Body as AsyncIterable<Uint8Array>) {
-      chunks.push(chunk);
-    }
-
-    const blob = new Blob(chunks, { type: contentType });
-    return URL.createObjectURL(blob);
-  } catch (error: any) {
-    console.error("Error fetching image from S3:", error);
-    throw new Error(`Failed to fetch image: ${error.message}`);
-  }
-};
+const commandGetObject = new GetObjectCommand({
+  Bucket: BUCKET_NAME,
+  Key: "wp12583031-anime-scene-4k-wallpapers.jpg",
+});
 
 function RouteComponent() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery<ListObjectsV2CommandOutput>({
     queryKey: ["media"],
-    queryFn: listObjects,
+    queryFn: () => s3Client.send(commandListObject),
   });
 
   const { data: image } = useQuery({
     queryKey: ["s3Image"],
-    queryFn: getObject,
+    queryFn: () => s3Client.send(commandGetObject),
     retry: false,
   });
 
   console.log(image);
   console.log(data);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Card>
@@ -81,7 +58,7 @@ function RouteComponent() {
       />
       <CardContent>
         <Grid2 container spacing={2}>
-          {data?.map((obj) => (
+          {data?.Contents?.map((obj) => (
             <Grid2 size={2} key={obj.Key}>
               <Card>
                 <CardMedia
