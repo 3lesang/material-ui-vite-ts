@@ -1,18 +1,14 @@
 import { axiosClient } from "@/axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {
   Box,
-  Button,
   Checkbox,
-  Container,
   FormControl,
   FormControlLabel,
   InputAdornment,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
   TextField,
   Typography,
@@ -88,139 +84,125 @@ function RouteComponent() {
   }, [reset, result]);
 
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
-        <Button startIcon={<ArrowBackIcon />} onClick={handleBack}>
-          Back
-        </Button>
-        <Typography variant="h5" component="h1">
-          Product Details
-        </Typography>
-        <Typography variant="h6" component="h6" gutterBottom>
-          ID: {id}
-        </Typography>
-
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Product Name"
-                multiline
-                rows={3}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
-            )}
-          />
-
-          <Controller
-            name="description"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Description"
-                margin="normal"
-                multiline
-                rows={8}
-              />
-            )}
-          />
-
-          <Controller
-            name="price"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Price"
-                type="number"
-                margin="normal"
-                error={!!errors.price}
-                helperText={errors.price?.message}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
-                    ),
-                  },
-                }}
-              />
-            )}
-          />
-
-          <Controller
-            name="category"
-            control={control}
-            render={({ field }) => (
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Category</InputLabel>
-                <Select {...field} label="Category" error={!!errors.category}>
-                  <MenuItem value="">Select a category</MenuItem>
-                  <MenuItem value="electronics">Electronics</MenuItem>
-                  <MenuItem value="clothing">Clothing</MenuItem>
-                  <MenuItem value="books">Books</MenuItem>
-                  <MenuItem value="home">Home & Garden</MenuItem>
-                </Select>
-                {errors.category && (
-                  <Typography variant="caption" color="error">
-                    {errors.category.message}
-                  </Typography>
-                )}
-              </FormControl>
-            )}
-          />
-
-          <Controller
-            name="imageUrl"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                label="Image URL"
-                type="url"
-                margin="normal"
-                error={!!errors.imageUrl}
-                helperText={errors.imageUrl?.message}
-              />
-            )}
-          />
-
-          <Controller
-            name="inStock"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                control={
-                  <Checkbox {...field} checked={field.value} color="primary" />
-                }
-                label="In Stock"
-                sx={{ mt: 2 }}
-              />
-            )}
-          />
-
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            color="primary"
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
             fullWidth
-            disabled={!isDirty || !isValid || isSuccess}
-            loading={isPending}
-            size="large"
-            sx={{ mt: 3 }}
-          >
-            Update Product
-          </LoadingButton>
-        </Box>
-      </Paper>
-    </Container>
+            label="Product Name"
+            multiline
+            rows={3}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="description"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            fullWidth
+            label="Description"
+            margin="normal"
+            multiline
+            rows={8}
+          />
+        )}
+      />
+
+      <Controller
+        name="price"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            fullWidth
+            label="Price"
+            type="number"
+            margin="normal"
+            error={!!errors.price}
+            helperText={errors.price?.message}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">$</InputAdornment>
+                ),
+              },
+            }}
+          />
+        )}
+      />
+
+      <Controller
+        name="category"
+        control={control}
+        render={({ field }) => (
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Category</InputLabel>
+            <Select {...field} label="Category" error={!!errors.category}>
+              <MenuItem value="">Select a category</MenuItem>
+              <MenuItem value="electronics">Electronics</MenuItem>
+              <MenuItem value="clothing">Clothing</MenuItem>
+              <MenuItem value="books">Books</MenuItem>
+              <MenuItem value="home">Home & Garden</MenuItem>
+            </Select>
+            {errors.category && (
+              <Typography variant="caption" color="error">
+                {errors.category.message}
+              </Typography>
+            )}
+          </FormControl>
+        )}
+      />
+
+      <Controller
+        name="imageUrl"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            fullWidth
+            label="Image URL"
+            type="url"
+            margin="normal"
+            error={!!errors.imageUrl}
+            helperText={errors.imageUrl?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="inStock"
+        control={control}
+        render={({ field }) => (
+          <FormControlLabel
+            control={
+              <Checkbox {...field} checked={field.value} color="primary" />
+            }
+            label="In Stock"
+            sx={{ mt: 2 }}
+          />
+        )}
+      />
+
+      <LoadingButton
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        disabled={!isDirty || !isValid || isSuccess}
+        loading={isPending}
+        size="large"
+        sx={{ mt: 3 }}
+      >
+        Update Product
+      </LoadingButton>
+    </Box>
   );
 }

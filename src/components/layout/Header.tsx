@@ -1,4 +1,5 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import TableRowsIcon from "@mui/icons-material/TableRows";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -12,13 +13,15 @@ import { Link } from "@tanstack/react-router";
 import APopover from "../ui/APopover";
 import AuthButton from "./AuthButton";
 
-function ManagerMenu() {
-  const list = [
-    { label: "Users", to: "/user" },
-    { label: "Roles", to: "/role" },
-    { label: "Assets", to: "/media" },
-  ];
+const list = [
+  { label: "Product", to: "/product" },
+  { label: "Category", to: "/category" },
+  { label: "Assets", to: "/media" },
+  { label: "Users", to: "/user" },
+  { label: "Roles", to: "/role" },
+];
 
+function ManagerMenu() {
   return (
     <APopover
       trigger="hover"
@@ -34,7 +37,11 @@ function ManagerMenu() {
         </List>
       }
     >
-      <Button color="inherit" endIcon={<ExpandMoreIcon />}>
+      <Button
+        color="inherit"
+        startIcon={<TableRowsIcon />}
+        endIcon={<ExpandMoreIcon />}
+      >
         List
       </Button>
     </APopover>

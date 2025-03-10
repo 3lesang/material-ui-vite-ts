@@ -9,15 +9,13 @@ import {
   PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import GridViewIcon from "@mui/icons-material/GridView";
 import ImageIcon from "@mui/icons-material/Image";
 import { LoadingButton } from "@mui/lab";
 import {
-  CardActionArea,
+  Button,
   CardMedia,
   Checkbox,
   Grid2,
-  IconButton,
   Skeleton,
   Stack,
   styled,
@@ -27,6 +25,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 
 const commandListObject = new ListObjectsV2Command({
@@ -47,7 +46,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 function Image({ name }: { name?: string }) {
-  const { selected, pushName, removeName, selectedAll } = useMedia();
+  const { pushName, removeName, selectedAll } = useMedia();
   const [checked, setChecked] = useState(selectedAll);
 
   const commandGetObject = new GetObjectCommand({
@@ -69,7 +68,11 @@ function Image({ name }: { name?: string }) {
         type: response.ContentType,
       });
 
-      return URL.createObjectURL(blob);
+      const data = {
+        blob: URL.createObjectURL(blob),
+        LastModified: response.LastModified,
+      };
+      return data;
     },
     retry: 0,
   });
@@ -87,35 +90,41 @@ function Image({ name }: { name?: string }) {
     setChecked(selectedAll);
   }, [selectedAll]);
 
+  const now = new Date();
+  const formattedTime = data?.LastModified?.toISOString()
+    ? format(data?.LastModified?.toISOString(), "MMMM d, yyyy")
+    : "";
+
   return (
     <Card
       sx={{
         bgcolor: checked ? "action.hover" : "background.paper",
       }}
     >
-      <CardActionArea>
-        <CardHeader
-          avatar={<ImageIcon fontSize="small" />}
-          action={<Checkbox onChange={handleCheck} checked={checked} />}
-          sx={{
-            "& .MuiCardHeader-content": {
-              display: "block",
-              overflow: "hidden",
-            },
-          }}
-          title={name}
-          subheader="September 14, 2016"
-          titleTypographyProps={{
-            fontSize: 14,
-            noWrap: true,
-            textOverflow: "ellipsis",
-          }}
+      <CardHeader
+        avatar={<ImageIcon fontSize="small" />}
+        action={<Checkbox onChange={handleCheck} checked={checked} />}
+        sx={{
+          "& .MuiCardHeader-content": {
+            display: "block",
+            overflow: "hidden",
+          },
+        }}
+        title={name}
+        titleTypographyProps={{
+          noWrap: true,
+          textOverflow: "ellipsis",
+        }}
+      />
+      {isLoading && <Skeleton variant="rectangular" height={height} />}
+      {data && (
+        <CardMedia
+          component="img"
+          alt={name}
+          height={height}
+          image={data.blob}
         />
-        {isLoading && <Skeleton variant="rectangular" height={height} />}
-        {data && (
-          <CardMedia component="img" alt={name} height={height} image={data} />
-        )}
-      </CardActionArea>
+      )}
     </Card>
   );
 }
@@ -223,13 +232,10 @@ function MediaList() {
                 Delete
               </LoadingButton>
             )}
-            <IconButton
-              size="small"
-              onClick={handleSelectAll}
-              color={selectedAll ? "primary" : "inherit"}
-            >
-              <GridViewIcon fontSize="small" />
-            </IconButton>
+
+            <Button onClick={handleSelectAll} color="inherit">
+              Select
+            </Button>
             <LoadingButton
               loading={isUploading}
               component="label"
