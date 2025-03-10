@@ -16,7 +16,7 @@ function ManagerMenu() {
   const list = [
     { label: "Users", to: "/user" },
     { label: "Roles", to: "/role" },
-    { label: "Media", to: "/media" },
+    { label: "Assets", to: "/media" },
   ];
 
   return (
