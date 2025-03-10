@@ -64,9 +64,10 @@ function Header() {
           </Link>
         </Typography>
 
-        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+        {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}> */}
           <ManagerMenu />
-        </Box>
+        {/* </Box> */}
+        <Box mx="auto" />
         <AuthButton />
       </Toolbar>
     </AppBar>

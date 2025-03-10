@@ -9,7 +9,7 @@ import {
 } from "@aws-sdk/client-s3";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { LoadingButton } from "@mui/lab";
-import { Button, Grid2, Stack, styled, Typography } from "@mui/material";
+import { Checkbox, Grid2, Stack, styled, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
@@ -112,13 +112,20 @@ function MediaList() {
     return (
       <Grid2 container spacing={2}>
         {data?.Contents?.map((obj) => (
-          <Grid2 size={[12, 3]} key={obj.Key}>
+          <Grid2 size={[6, 3]} key={obj.Key}>
             <S3Image name={obj.Key} />
           </Grid2>
         ))}
       </Grid2>
     );
   };
+
+  const indeterminate =
+    selected.length > 0 && selected.length < Number(data?.Contents?.length);
+
+  const checked =
+    selectedAll ||
+    (selected.length > 0 && selected.length === Number(data?.Contents?.length));
 
   return (
     <Card>
@@ -137,9 +144,6 @@ function MediaList() {
               </LoadingButton>
             )}
 
-            <Button onClick={handleSelectAll} color="inherit">
-              Select
-            </Button>
             <LoadingButton
               loading={isUploading}
               component="label"
@@ -155,6 +159,11 @@ function MediaList() {
               />
               Upload
             </LoadingButton>
+            <Checkbox
+              onChange={handleSelectAll}
+              checked={checked}
+              indeterminate={indeterminate}
+            />
           </Stack>
         }
       />
