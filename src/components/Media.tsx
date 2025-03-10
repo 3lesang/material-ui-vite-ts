@@ -2,31 +2,19 @@ import { AppMediaProvider, useMedia } from "@/context/media";
 import s3Client, { BUCKET_NAME } from "@/minio";
 import {
   DeleteObjectsCommand,
-  GetObjectCommand,
   ListObjectsV2Command,
   ListObjectsV2CommandOutput,
   PutObjectCommand,
   PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import ImageIcon from "@mui/icons-material/Image";
 import { LoadingButton } from "@mui/lab";
-import {
-  Button,
-  CardMedia,
-  Checkbox,
-  Grid2,
-  Skeleton,
-  Stack,
-  styled,
-  Typography,
-} from "@mui/material";
+import { Button, Grid2, Stack, styled, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
-import { useEffect, useState } from "react";
+import S3Image from "./S3Image";
 
 const commandListObject = new ListObjectsV2Command({
   Bucket: BUCKET_NAME,
@@ -44,90 +32,6 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
-
-function Image({ name }: { name?: string }) {
-  const { pushName, removeName, selectedAll } = useMedia();
-  const [checked, setChecked] = useState(selectedAll);
-
-  const commandGetObject = new GetObjectCommand({
-    Bucket: BUCKET_NAME,
-    Key: name,
-  });
-
-  const { data, isLoading } = useQuery({
-    queryKey: [name],
-    queryFn: async () => {
-      const response = await s3Client.send(commandGetObject);
-      if (!response.Body) throw new Error("Empty response body");
-
-      const chunks: Uint8Array[] = [];
-      for await (const chunk of response.Body as any) {
-        chunks.push(chunk);
-      }
-      const blob = new Blob(chunks, {
-        type: response.ContentType,
-      });
-
-      const data = {
-        blob: URL.createObjectURL(blob),
-        LastModified: response.LastModified,
-      };
-      return data;
-    },
-    retry: 0,
-  });
-
-  const height = 140;
-
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setChecked(checked);
-    if (checked && name) pushName(name);
-    else if (!checked && name) removeName(name);
-  };
-
-  useEffect(() => {
-    setChecked(selectedAll);
-  }, [selectedAll]);
-
-  const now = new Date();
-  const formattedTime = data?.LastModified?.toISOString()
-    ? format(data?.LastModified?.toISOString(), "MMMM d, yyyy")
-    : "";
-
-  return (
-    <Card
-      sx={{
-        bgcolor: checked ? "action.hover" : "background.paper",
-      }}
-    >
-      <CardHeader
-        avatar={<ImageIcon fontSize="small" />}
-        action={<Checkbox onChange={handleCheck} checked={checked} />}
-        sx={{
-          "& .MuiCardHeader-content": {
-            display: "block",
-            overflow: "hidden",
-          },
-        }}
-        title={name}
-        titleTypographyProps={{
-          noWrap: true,
-          textOverflow: "ellipsis",
-        }}
-      />
-      {isLoading && <Skeleton variant="rectangular" height={height} />}
-      {data && (
-        <CardMedia
-          component="img"
-          alt={name}
-          height={height}
-          image={data.blob}
-        />
-      )}
-    </Card>
-  );
-}
 
 function MediaList() {
   const { selected, clearName, setAll, selectedAll, setNameAll } = useMedia();
@@ -209,7 +113,7 @@ function MediaList() {
       <Grid2 container spacing={2}>
         {data?.Contents?.map((obj) => (
           <Grid2 size={[12, 3]} key={obj.Key}>
-            <Image name={obj.Key} />
+            <S3Image name={obj.Key} />
           </Grid2>
         ))}
       </Grid2>
