@@ -1,8 +1,9 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { alpha, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useOnClickOutside } from "usehooks-ts";
 import S3Image from "../S3Image";
 
 interface LightBoxProps {
@@ -12,36 +13,40 @@ interface LightBoxProps {
 
 function LightBox({ children, name }: LightBoxProps) {
   const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
-  const handleClose = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClose = () => {
     setOpen(false);
   };
 
-  const handleOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOpen = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setOpen(true);
   };
 
-  const model = createPortal(
+  useOnClickOutside(ref as React.RefObject<HTMLElement>, handleClose);
+
+  const modal = createPortal(
     <Box
       position="fixed"
       top={0}
-      bgcolor={alpha("#000", 0.5)}
-      bottom={0}
-      zIndex={1300}
       left={0}
       right={0}
+      bottom={0}
+      bgcolor={alpha("#000", 0.9)}
+      zIndex={1300}
       color="white"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
     >
-      <Box ml="auto" width="fit-content" position="absolute" right={0}>
+      <Box position="absolute" top={8} right={8}>
         <IconButton color="inherit" onClick={handleClose}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>
-      <Box width="100vw" height="100vh" alignContent="center">
-        <Box>
-          <S3Image name={name} />
-        </Box>
+      <Box width={["100%", "50%"]} mx="auto" ref={ref}>
+        <S3Image name={name} />
       </Box>
     </Box>,
     document.body
@@ -49,10 +54,10 @@ function LightBox({ children, name }: LightBoxProps) {
 
   return (
     <>
-      <bdo onClick={handleOpen} style={{ display: "flex", cursor: "pointer" }}>
+      <div onClick={handleOpen} style={{ display: "flex", cursor: "pointer" }}>
         {children}
-      </bdo>
-      {open && <>{model}</>}
+      </div>
+      {open && modal}
     </>
   );
 }
