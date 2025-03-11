@@ -26,6 +26,16 @@ function LightBox({ children, name }: LightBoxProps) {
 
   useOnClickOutside(ref as React.RefObject<HTMLElement>, handleClose);
 
+  const preventScroll = (e: Event) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  };
+  
+  window.addEventListener("scroll", preventScroll, { passive: false })
+
+
+
   const modal = createPortal(
     <Box
       position="fixed"
