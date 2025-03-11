@@ -1,7 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { alpha, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useOnClickOutside } from "usehooks-ts";
 import S3Image from "../S3Image";
@@ -26,15 +26,17 @@ function LightBox({ children, name }: LightBoxProps) {
 
   useOnClickOutside(ref as React.RefObject<HTMLElement>, handleClose);
 
-  const preventScroll = (e: Event) => {
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  };
-  
-  window.addEventListener("scroll", preventScroll, { passive: false })
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
 
-
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   const modal = createPortal(
     <Box
