@@ -8,6 +8,7 @@ import {
   PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { LoadingButton } from "@mui/lab";
 import { Stack, styled } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -15,7 +16,7 @@ import CardHeader from "@mui/material/CardHeader";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
-import ImageViewer from "./ImageViewer";
+import LightBox from "./ui/LightBox";
 
 const commandListObject = new ListObjectsV2Command({
   Bucket: BUCKET_NAME,
@@ -109,8 +110,8 @@ function FileList() {
       renderCell: (params) => {
         return (
           <Stack direction="row" alignItems="center" gap={1}>
-            <ImageViewer name={params.value} />
-            {params.value}
+            <ImageOutlinedIcon fontSize="small" />
+            <LightBox name={params.value}>{params.value}</LightBox>
           </Stack>
         );
       },

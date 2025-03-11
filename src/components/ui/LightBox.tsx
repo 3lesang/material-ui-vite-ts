@@ -49,7 +49,9 @@ function LightBox({ children, name }: LightBoxProps) {
 
   return (
     <>
-      <IconButton onClick={handleOpen}>{children}</IconButton>
+      <bdo onClick={handleOpen} style={{ display: "flex", cursor: "pointer" }}>
+        {children}
+      </bdo>
       {open && <>{model}</>}
     </>
   );
