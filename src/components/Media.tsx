@@ -8,13 +8,14 @@ import {
   PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { LoadingButton } from "@mui/lab";
-import { Checkbox, Grid2, Stack, styled, Typography } from "@mui/material";
+import { Stack, styled } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import S3Image from "./S3Image";
+import { formatDistanceToNow } from "date-fns";
 
 const commandListObject = new ListObjectsV2Command({
   Bucket: BUCKET_NAME,
@@ -33,6 +34,13 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+const convertByte = (bytes: number) => {
+  if (bytes === 0) return "0 Bytes";
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+};
+
 function MediaList() {
   const { selected, clearName, setAll, selectedAll, setNameAll } = useMedia();
 
@@ -42,7 +50,7 @@ function MediaList() {
     retry: 0,
   });
 
-  const { mutate, isPending: isUploading } = useMutation({
+  const { mutate: upload, isPending: isUploading } = useMutation({
     mutationFn: async (params: PutObjectCommandInput) => {
       const command = new PutObjectCommand(params);
       return s3Client.send(command);
@@ -84,48 +92,47 @@ function MediaList() {
       ContentType: file.type,
     };
 
-    mutate(params);
+    upload(params);
   };
 
   const handleDelete = () => {
     deleteObject(selected);
   };
 
-  const handleSelectAll = () => {
-    const name = data?.Contents?.map((obj) => obj.Key);
-    setAll(!selectedAll);
-    if (selectedAll) {
-      setNameAll([]);
-    } else {
-      setNameAll(name as string[]);
-    }
-  };
-
-  const renderContent = () => {
-    if (!data?.Contents && !isLoading) {
-      return (
-        <Typography textAlign="center" variant="body2">
-          This location is empty, please try uploading a new file
-        </Typography>
-      );
-    }
-    return (
-      <Grid2 container spacing={2}>
-        {data?.Contents?.map((obj) => (
-          <Grid2 size={[6, 3]} key={obj.Key}>
-            <S3Image name={obj.Key} />
-          </Grid2>
-        ))}
-      </Grid2>
-    );
-  };
-
-  const indeterminate =
-    selected.length > 0 && selected.length < Number(data?.Contents?.length);
-
-  const checked =
-    selectedAll ||
-    (selected.length > 0 && selected.length === Number(data?.Contents?.length));
+  const columns: GridColDef[] = [
+    {
+      field: "Key",
+      headerName: "Name",
+      width: 500,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        return (
+          <Stack direction="row" alignItems="center" gap={1}>
+            <ImageOutlinedIcon />
+            {params.value}
+          </Stack>
+        );
+      },
+    },
+    {
+      field: "Size",
+      headerName: "Size",
+      width: 100,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => convertByte(params.value),
+    },
+    {
+      field: "LastModified",
+      headerName: "Last Modified",
+      width: 400,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) =>
+        formatDistanceToNow(new Date(params.value), { addSuffix: true }),
+    },
+  ];
 
   return (
     <Card>
@@ -137,17 +144,18 @@ function MediaList() {
             {selected.length > 0 && (
               <LoadingButton
                 color="error"
+                size="small"
                 onClick={handleDelete}
                 loading={isDeleting}
               >
                 Delete
               </LoadingButton>
             )}
-
             <LoadingButton
               loading={isUploading}
               component="label"
               role={undefined}
+              size="small"
               tabIndex={-1}
               startIcon={<CloudUploadIcon />}
             >
@@ -159,15 +167,20 @@ function MediaList() {
               />
               Upload
             </LoadingButton>
-            <Checkbox
-              onChange={handleSelectAll}
-              checked={checked}
-              indeterminate={indeterminate}
-            />
           </Stack>
         }
       />
-      <CardContent>{renderContent()}</CardContent>
+      <DataGrid
+        checkboxSelection
+        rowSelection
+        loading={isLoading}
+        columns={columns}
+        rows={data?.Contents}
+        getRowId={(row) => row.Key as string}
+        onRowSelectionModelChange={(newRowSelectionModel) => {
+          setNameAll(newRowSelectionModel as string[]);
+        }}
+      />
     </Card>
   );
 }

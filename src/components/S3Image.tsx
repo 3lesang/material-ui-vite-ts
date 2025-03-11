@@ -1,12 +1,6 @@
-import { useMedia } from "@/context/media";
 import s3Client, { BUCKET_NAME } from "@/minio";
-import { GetObjectCommand } from "@aws-sdk/client-s3";
-import ImageIcon from "@mui/icons-material/Image";
-import { CardMedia, Checkbox, Skeleton } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
+import { GetObjectCommand, GetObjectCommandOutput } from "@aws-sdk/client-s3";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 
 const arrayBufferToBase64 = (buffer: Uint8Array) => {
   let binary = "";
@@ -18,15 +12,17 @@ const arrayBufferToBase64 = (buffer: Uint8Array) => {
   return window.btoa(binary);
 };
 
-function S3Image({ name }: { name?: string }) {
-  const { pushName, removeName, selectedAll } = useMedia();
-  const [checked, setChecked] = useState(selectedAll);
+const convertResponse = async (response: GetObjectCommandOutput) => {
+  const bytes = await response.Body?.transformToByteArray();
+  if (!bytes) throw new Error("Failed to load image");
 
-  const commandGetObject = new GetObjectCommand({
-    Bucket: BUCKET_NAME,
-    Key: name,
-  });
+  const base64 = arrayBufferToBase64(bytes);
+  const mimeType = response.ContentType;
 
+  return `data:${mimeType};base64,${base64}`;
+};
+
+function S3Image({ name }: { name: string }) {
   const { data, isLoading } = useQuery({
     queryKey: [name],
     queryFn: async () => {
@@ -36,58 +32,23 @@ function S3Image({ name }: { name?: string }) {
           Key: name,
         })
       );
-
-      const bytes = await response.Body?.transformToByteArray();
-      if (!bytes) throw new Error("Failed to load image");
-
-      const base64 = arrayBufferToBase64(bytes);
-      const mimeType = response.ContentType || "image/jpeg";
-
-      return `data:${mimeType};base64,${base64}`;
+      return convertResponse(response);
     },
     enabled: !!name,
     retry: 0,
   });
 
-  const height = 140;
-
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setChecked(checked);
-    if (checked && name) pushName(name);
-    else if (!checked && name) removeName(name);
-  };
-
-  useEffect(() => {
-    setChecked(selectedAll);
-  }, [selectedAll]);
+  if (isLoading) return;
 
   return (
-    <Card
-      sx={{
-        bgcolor: checked ? "action.hover" : "background.paper",
-      }}
-    >
-      <CardHeader
-        avatar={<ImageIcon fontSize="small" />}
-        action={<Checkbox onChange={handleCheck} checked={checked} />}
-        sx={{
-          "& .MuiCardHeader-content": {
-            display: "block",
-            overflow: "hidden",
-          },
-        }}
-        title={name}
-        titleTypographyProps={{
-          noWrap: true,
-          textOverflow: "ellipsis",
-        }}
-      />
-      {isLoading && <Skeleton variant="rectangular" height={height} />}
-      {data && (
-        <CardMedia component="img" alt={name} height={height} image={data} />
-      )}
-    </Card>
+    <img
+      alt={name}
+      src={data}
+      width="100%"
+      height="100%"
+      loading="lazy"
+      style={{ objectFit: "cover" }}
+    />
   );
 }
 
