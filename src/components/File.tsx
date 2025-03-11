@@ -17,6 +17,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import LightBox from "./ui/LightBox";
+import AlignItemsList from "./AlignItemsList";
 
 const commandListObject = new ListObjectsV2Command({
   Bucket: BUCKET_NAME,
@@ -81,19 +82,22 @@ function FileList() {
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files?.length) return;
-    const file = files[0];
 
-    const arrayBuffer = await file.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
+    const uploadPromises = Array.from(files).map(async (file) => {
+      const arrayBuffer = await file.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
 
-    const params: PutObjectCommandInput = {
-      Bucket: BUCKET_NAME,
-      Key: file.name,
-      Body: uint8Array,
-      ContentType: file.type,
-    };
+      const params: PutObjectCommandInput = {
+        Bucket: BUCKET_NAME,
+        Key: file.name,
+        Body: uint8Array,
+        ContentType: file.type,
+      };
 
-    upload(params);
+      return upload(params);
+    });
+
+    Promise.all(uploadPromises);
   };
 
   const handleDelete = () => {
@@ -171,8 +175,11 @@ function FileList() {
           </Stack>
         }
       />
+      <AlignItemsList/>
+      {/*
+      
       <DataGrid
-        checkboxSelection
+        // checkboxSelection
         rowSelection
         loading={isLoading}
         columns={columns}
@@ -182,6 +189,8 @@ function FileList() {
           setNameAll(newRowSelectionModel as string[]);
         }}
       />
+      */}
+
     </Card>
   );
 }
