@@ -8,7 +8,6 @@ import {
   PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { LoadingButton } from "@mui/lab";
 import { Stack, styled } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -16,6 +15,7 @@ import CardHeader from "@mui/material/CardHeader";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
+import ImageViewer from "./ImageViewer";
 
 const commandListObject = new ListObjectsV2Command({
   Bucket: BUCKET_NAME,
@@ -41,7 +41,7 @@ const convertByte = (bytes: number) => {
   return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
 };
 
-function MediaList() {
+function FileList() {
   const { selected, clearName, setAll, selectedAll, setNameAll } = useMedia();
 
   const { data, refetch, isLoading } = useQuery<ListObjectsV2CommandOutput>({
@@ -109,7 +109,7 @@ function MediaList() {
       renderCell: (params) => {
         return (
           <Stack direction="row" alignItems="center" gap={1}>
-            <ImageOutlinedIcon />
+            <ImageViewer name={params.value} />
             {params.value}
           </Stack>
         );
@@ -118,7 +118,7 @@ function MediaList() {
     {
       field: "Size",
       headerName: "Size",
-      width: 100,
+      width: 200,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => convertByte(params.value),
@@ -126,7 +126,7 @@ function MediaList() {
     {
       field: "LastModified",
       headerName: "Last Modified",
-      width: 400,
+      width: 300,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) =>
@@ -137,8 +137,8 @@ function MediaList() {
   return (
     <Card>
       <CardHeader
-        title="Assets"
-        subheader="List of assets"
+        title="File"
+        subheader="List of file"
         action={
           <Stack direction="row" spacing={1}>
             {selected.length > 0 && (
@@ -185,12 +185,12 @@ function MediaList() {
   );
 }
 
-function Media() {
+function File() {
   return (
     <AppMediaProvider>
-      <MediaList />
+      <FileList />
     </AppMediaProvider>
   );
 }
 
-export default Media;
+export default File;

@@ -63,7 +63,7 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
       />
       <CardContent>
         <Grid2 container spacing={1}>
-          <Grid2 size={6}>
+          <Grid2 size={[12, 6]}>
             <Controller
               control={control}
               name="name"
@@ -79,7 +79,7 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
               )}
             />
           </Grid2>
-          <Grid2 size={6}>
+          <Grid2 size={[12, 6]}>
             <Controller
               name="description"
               control={control}

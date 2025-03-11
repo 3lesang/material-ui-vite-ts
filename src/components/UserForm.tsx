@@ -84,7 +84,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
 
       <CardContent>
         <Grid2 container spacing={1}>
-          <Grid2 size={6}>
+          <Grid2 size={[6, 6]}>
             <Controller
               name="name"
               control={control}
@@ -93,7 +93,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
               )}
             />
           </Grid2>
-          <Grid2 size={6}>
+          <Grid2 size={[6, 6]}>
             <Controller
               name="username"
               control={control}
@@ -102,7 +102,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
               )}
             />
           </Grid2>
-          <Grid2 size={6}>
+          <Grid2 size={[12, 6]}>
             <Controller
               name="email"
               control={control}
@@ -111,7 +111,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
               )}
             />
           </Grid2>
-          <Grid2 size={4}>
+          <Grid2 size={[6, 4]}>
             {options?.length && (
               <Controller
                 name="roles"
@@ -122,7 +122,7 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
               />
             )}
           </Grid2>
-          <Grid2 size={2}>
+          <Grid2 size={[6, 2]}>
             <Controller
               name="active"
               control={control}

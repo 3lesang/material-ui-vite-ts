@@ -20,7 +20,8 @@ import { Route as AdminAboutImport } from './routes/_admin/about'
 import { Route as AdminUserIndexImport } from './routes/_admin/user/index'
 import { Route as AdminRoleIndexImport } from './routes/_admin/role/index'
 import { Route as AdminProductIndexImport } from './routes/_admin/product/index'
-import { Route as AdminMediaIndexImport } from './routes/_admin/media/index'
+import { Route as AdminFileIndexImport } from './routes/_admin/file/index'
+import { Route as AdminCategoryIndexImport } from './routes/_admin/category/index'
 import { Route as AdminUserIdImport } from './routes/_admin/user/$id'
 import { Route as AdminRoleNewImport } from './routes/_admin/role/new'
 import { Route as AdminRoleIdImport } from './routes/_admin/role/$id'
@@ -82,9 +83,15 @@ const AdminProductIndexRoute = AdminProductIndexImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
-const AdminMediaIndexRoute = AdminMediaIndexImport.update({
-  id: '/media/',
-  path: '/media/',
+const AdminFileIndexRoute = AdminFileIndexImport.update({
+  id: '/file/',
+  path: '/file/',
+  getParentRoute: () => AdminRoute,
+} as any)
+
+const AdminCategoryIndexRoute = AdminCategoryIndexImport.update({
+  id: '/category/',
+  path: '/category/',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -199,11 +206,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUserIdImport
       parentRoute: typeof AdminImport
     }
-    '/_admin/media/': {
-      id: '/_admin/media/'
-      path: '/media'
-      fullPath: '/media'
-      preLoaderRoute: typeof AdminMediaIndexImport
+    '/_admin/category/': {
+      id: '/_admin/category/'
+      path: '/category'
+      fullPath: '/category'
+      preLoaderRoute: typeof AdminCategoryIndexImport
+      parentRoute: typeof AdminImport
+    }
+    '/_admin/file/': {
+      id: '/_admin/file/'
+      path: '/file'
+      fullPath: '/file'
+      preLoaderRoute: typeof AdminFileIndexImport
       parentRoute: typeof AdminImport
     }
     '/_admin/product/': {
@@ -241,7 +255,8 @@ interface AdminRouteChildren {
   AdminRoleIdRoute: typeof AdminRoleIdRoute
   AdminRoleNewRoute: typeof AdminRoleNewRoute
   AdminUserIdRoute: typeof AdminUserIdRoute
-  AdminMediaIndexRoute: typeof AdminMediaIndexRoute
+  AdminCategoryIndexRoute: typeof AdminCategoryIndexRoute
+  AdminFileIndexRoute: typeof AdminFileIndexRoute
   AdminProductIndexRoute: typeof AdminProductIndexRoute
   AdminRoleIndexRoute: typeof AdminRoleIndexRoute
   AdminUserIndexRoute: typeof AdminUserIndexRoute
@@ -256,7 +271,8 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminRoleIdRoute: AdminRoleIdRoute,
   AdminRoleNewRoute: AdminRoleNewRoute,
   AdminUserIdRoute: AdminUserIdRoute,
-  AdminMediaIndexRoute: AdminMediaIndexRoute,
+  AdminCategoryIndexRoute: AdminCategoryIndexRoute,
+  AdminFileIndexRoute: AdminFileIndexRoute,
   AdminProductIndexRoute: AdminProductIndexRoute,
   AdminRoleIndexRoute: AdminRoleIndexRoute,
   AdminUserIndexRoute: AdminUserIndexRoute,
@@ -276,7 +292,8 @@ export interface FileRoutesByFullPath {
   '/role/$id': typeof AdminRoleIdRoute
   '/role/new': typeof AdminRoleNewRoute
   '/user/$id': typeof AdminUserIdRoute
-  '/media': typeof AdminMediaIndexRoute
+  '/category': typeof AdminCategoryIndexRoute
+  '/file': typeof AdminFileIndexRoute
   '/product': typeof AdminProductIndexRoute
   '/role': typeof AdminRoleIndexRoute
   '/user': typeof AdminUserIndexRoute
@@ -293,7 +310,8 @@ export interface FileRoutesByTo {
   '/role/$id': typeof AdminRoleIdRoute
   '/role/new': typeof AdminRoleNewRoute
   '/user/$id': typeof AdminUserIdRoute
-  '/media': typeof AdminMediaIndexRoute
+  '/category': typeof AdminCategoryIndexRoute
+  '/file': typeof AdminFileIndexRoute
   '/product': typeof AdminProductIndexRoute
   '/role': typeof AdminRoleIndexRoute
   '/user': typeof AdminUserIndexRoute
@@ -312,7 +330,8 @@ export interface FileRoutesById {
   '/_admin/role/$id': typeof AdminRoleIdRoute
   '/_admin/role/new': typeof AdminRoleNewRoute
   '/_admin/user/$id': typeof AdminUserIdRoute
-  '/_admin/media/': typeof AdminMediaIndexRoute
+  '/_admin/category/': typeof AdminCategoryIndexRoute
+  '/_admin/file/': typeof AdminFileIndexRoute
   '/_admin/product/': typeof AdminProductIndexRoute
   '/_admin/role/': typeof AdminRoleIndexRoute
   '/_admin/user/': typeof AdminUserIndexRoute
@@ -332,7 +351,8 @@ export interface FileRouteTypes {
     | '/role/$id'
     | '/role/new'
     | '/user/$id'
-    | '/media'
+    | '/category'
+    | '/file'
     | '/product'
     | '/role'
     | '/user'
@@ -348,7 +368,8 @@ export interface FileRouteTypes {
     | '/role/$id'
     | '/role/new'
     | '/user/$id'
-    | '/media'
+    | '/category'
+    | '/file'
     | '/product'
     | '/role'
     | '/user'
@@ -365,7 +386,8 @@ export interface FileRouteTypes {
     | '/_admin/role/$id'
     | '/_admin/role/new'
     | '/_admin/user/$id'
-    | '/_admin/media/'
+    | '/_admin/category/'
+    | '/_admin/file/'
     | '/_admin/product/'
     | '/_admin/role/'
     | '/_admin/user/'
@@ -410,7 +432,8 @@ export const routeTree = rootRoute
         "/_admin/role/$id",
         "/_admin/role/new",
         "/_admin/user/$id",
-        "/_admin/media/",
+        "/_admin/category/",
+        "/_admin/file/",
         "/_admin/product/",
         "/_admin/role/",
         "/_admin/user/"
@@ -454,8 +477,12 @@ export const routeTree = rootRoute
       "filePath": "_admin/user/$id.tsx",
       "parent": "/_admin"
     },
-    "/_admin/media/": {
-      "filePath": "_admin/media/index.tsx",
+    "/_admin/category/": {
+      "filePath": "_admin/category/index.tsx",
+      "parent": "/_admin"
+    },
+    "/_admin/file/": {
+      "filePath": "_admin/file/index.tsx",
       "parent": "/_admin"
     },
     "/_admin/product/": {

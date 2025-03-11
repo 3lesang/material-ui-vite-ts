@@ -16,7 +16,7 @@ import AuthButton from "./AuthButton";
 const list = [
   { label: "Product", to: "/product" },
   { label: "Category", to: "/category" },
-  { label: "Assets", to: "/media" },
+  { label: "File", to: "/file" },
   { label: "Users", to: "/user" },
   { label: "Roles", to: "/role" },
 ];
