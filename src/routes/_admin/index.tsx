@@ -13,9 +13,14 @@ function RouteComponent() {
           <Box height={300} bgcolor="#cecece" />
         </Card>
       </Grid2>
+      <Grid2 size={6}>
+        <Card>
+          <Box height={300} bgcolor="#eeeeee" />
+        </Card>
+      </Grid2>
       <Grid2 size={12}>
         <Card>
-          <Box height={300} bgcolor="#eee" />
+          <Box height={300} bgcolor="#cecece" />
         </Card>
       </Grid2>
     </Grid2>

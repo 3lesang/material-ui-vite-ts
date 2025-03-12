@@ -1,6 +1,7 @@
 import APopover from "@/components/ui/APopover";
 import { TOKEN_LOCAL_KEY, USER_LOCAL_KEY } from "@/constant/key";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { IconButton, useMediaQuery, useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -10,6 +11,9 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 
 function AuthButton() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const user = localStorage.getItem(USER_LOCAL_KEY);
   const parseUser = user ? JSON.parse(user) : null;
 
@@ -53,9 +57,15 @@ function AuthButton() {
         </List>
       }
     >
-      <Button color="inherit" startIcon={<AccountCircleIcon />}>
-        {parseUser.username}
-      </Button>
+      {isMobile ? (
+        <IconButton>
+          <AccountCircleIcon fontSize="small" />
+        </IconButton>
+      ) : (
+        <Button color="inherit" startIcon={<AccountCircleIcon />}>
+          {parseUser.username}
+        </Button>
+      )}
     </APopover>
   );
 }

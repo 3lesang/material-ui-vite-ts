@@ -1,5 +1,5 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import TableRowsIcon from "@mui/icons-material/TableRows";
+import { useMediaQuery, useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,9 +8,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import { Link } from "@tanstack/react-router";
 import APopover from "../ui/APopover";
+import TemporaryDrawer from "./AppDrawer";
+import AppLogo from "./AppLogo";
 import AuthButton from "./AuthButton";
 
 const list = [
@@ -37,11 +38,7 @@ function ManagerMenu() {
         </List>
       }
     >
-      <Button
-        color="inherit"
-        startIcon={<TableRowsIcon />}
-        endIcon={<ExpandMoreIcon />}
-      >
+      <Button color="inherit" endIcon={<ExpandMoreIcon />}>
         List
       </Button>
     </APopover>
@@ -49,24 +46,15 @@ function ManagerMenu() {
 }
 
 function Header() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <AppBar position="sticky">
       <Toolbar variant="dense">
-        <img
-          src="https://cdn4.iconfinder.com/data/icons/social-media-logos-6/512/36-simple-512.png"
-          alt="logo"
-          width="30"
-          height="30"
-        />
-        <Typography variant="h6" component="div" mx={1}>
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-            Wave
-          </Link>
-        </Typography>
-
-        {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}> */}
-        <ManagerMenu />
-        {/* </Box> */}
+        {isMobile && <TemporaryDrawer />}
+        {!isMobile && <AppLogo />}
+        {!isMobile && <ManagerMenu />}
         <Box mx="auto" />
         <AuthButton />
       </Toolbar>
