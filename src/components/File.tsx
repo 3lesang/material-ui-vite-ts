@@ -21,7 +21,7 @@ import LightBox from "./ui/LightBox";
 
 const commandListObject = new ListObjectsV2Command({
   Bucket: BUCKET_NAME,
-  MaxKeys: 12,
+  MaxKeys: 1000,
 });
 
 const VisuallyHiddenInput = styled("input")({
