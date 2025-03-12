@@ -65,7 +65,7 @@ function Header() {
         </Typography>
 
         {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}> */}
-          <ManagerMenu />
+        <ManagerMenu />
         {/* </Box> */}
         <Box mx="auto" />
         <AuthButton />

@@ -12,6 +12,7 @@ import theme from "./theme";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AppProvider } from "./context/app";
+import "./main.css";
 import { routeTree } from "./routeTree.gen";
 
 const queryClient = new QueryClient({

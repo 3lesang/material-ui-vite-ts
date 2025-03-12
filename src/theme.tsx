@@ -112,6 +112,11 @@ const theme = createTheme({
       textTransform: "none",
     },
   },
+  palette: {
+    background: {
+      default: "#F9F9FA",
+    },
+  },
 });
 
 export default theme;

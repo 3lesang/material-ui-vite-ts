@@ -5,9 +5,9 @@ import Header from "./Header";
 
 export default function MiniDrawer() {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }} height="100vh">
+    <Box>
       <Header />
-      <Box component="main" sx={{ flexGrow: 1 }} bgcolor="#F9F9FA" py={1}>
+      <Box component="main" py={1}>
         <Container>
           <Outlet />
         </Container>
