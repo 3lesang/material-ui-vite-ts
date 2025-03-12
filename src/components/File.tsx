@@ -93,7 +93,7 @@ function FileList() {
   const { data, refetch, isLoading } = useQuery<ListObjectsV2CommandOutput>({
     queryKey: ["file", page],
     // queryFn: () => s3Client.send(commandListObject),
-    queryFn: () => listObjectsByPage(BUCKET_NAME, 10, page),
+    queryFn: () => listObjectsByPage(BUCKET_NAME, 17, page),
     retry: 0,
   });
 
