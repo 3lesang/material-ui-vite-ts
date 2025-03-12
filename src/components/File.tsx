@@ -10,14 +10,14 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { LoadingButton } from "@mui/lab";
-import { Stack, styled } from "@mui/material";
+import { Stack, styled, useMediaQuery, useTheme } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { formatDistanceToNow } from "date-fns";
-import LightBox from "./ui/LightBox";
+import { format } from "date-fns";
 import AlignItemsList from "./AlignItemsList";
+import LightBox from "./ui/LightBox";
 
 const commandListObject = new ListObjectsV2Command({
   Bucket: BUCKET_NAME,
@@ -45,6 +45,9 @@ const convertByte = (bytes: number) => {
 
 function FileList() {
   const { selected, clearName, setAll, selectedAll, setNameAll } = useMedia();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { data, refetch, isLoading } = useQuery<ListObjectsV2CommandOutput>({
     queryKey: ["media"],
@@ -135,7 +138,17 @@ function FileList() {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) =>
-        formatDistanceToNow(new Date(params.value), { addSuffix: true }),
+        format(new Date(params.value), "dd MMM yyyy HH:mm"),
+    },
+  ];
+
+  const listColumns = [
+    {
+      field: "Key",
+    },
+    {
+      field: "LastModified",
+      renderCell: (value: any) => format(new Date(value), "dd MMM yyyy HH:mm"),
     },
   ];
 
@@ -175,22 +188,22 @@ function FileList() {
           </Stack>
         }
       />
-      <AlignItemsList/>
-      {/*
-      
-      <DataGrid
-        // checkboxSelection
-        rowSelection
-        loading={isLoading}
-        columns={columns}
-        rows={data?.Contents}
-        getRowId={(row) => row.Key as string}
-        onRowSelectionModelChange={(newRowSelectionModel) => {
-          setNameAll(newRowSelectionModel as string[]);
-        }}
-      />
-      */}
 
+      {isMobile ? (
+        <AlignItemsList rows={data?.Contents} columns={listColumns} />
+      ) : (
+        <DataGrid
+          // checkboxSelection
+          rowSelection
+          loading={isLoading}
+          columns={columns}
+          rows={data?.Contents}
+          getRowId={(row) => row.Key as string}
+          onRowSelectionModelChange={(newRowSelectionModel) => {
+            setNameAll(newRowSelectionModel as string[]);
+          }}
+        />
+      )}
     </Card>
   );
 }

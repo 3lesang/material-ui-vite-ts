@@ -1,77 +1,41 @@
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
+import { GridColDef } from "@mui/x-data-grid";
+import LightBox from "./ui/LightBox";
 
-export default function AlignItemsList() {
+interface AlignItemsListProps {
+  rows?: any[];
+  columns: GridColDef[];
+}
+
+export default function AlignItemsList({ rows, columns }: AlignItemsListProps) {
   return (
     <List dense>
-      <ListItem dense>
-        <ListItemAvatar>
-          <ImageOutlinedIcon />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Brunch this weekend?"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                sx={{ color: "text.primary", display: "inline" }}
-              >
-                Ali Connors
-              </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider component="li" />
-      <ListItem>
-        <ListItemAvatar>
-          <ImageOutlinedIcon />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Summer BBQ"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                sx={{ color: "text.primary", display: "inline" }}
-              >
-                to Scott, Alex, Jennifer
-              </Typography>
-              {" — Wish I could come, but I'm out of town this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider component="li" />
-      <ListItem>
-        <ListItemAvatar>
-          <ImageOutlinedIcon />
-        </ListItemAvatar>
-        <ListItemText
-          primary="Oui Oui"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                sx={{ color: "text.primary", display: "inline" }}
-              >
-                Sandra Adams
-              </Typography>
-              {" — Do you have Paris recommendations? Have you ever…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
+      {rows?.map((row) => (
+        <LightBox name={row[columns[0].field]}>
+          <ListItemButton dense>
+            <ListItemAvatar>
+              <ImageOutlinedIcon />
+            </ListItemAvatar>
+            <ListItemText
+              primary={row[columns[0].field]}
+              slotProps={{
+                primary: {
+                  noWrap: true,
+                },
+              }}
+              secondary={
+                columns?.[1].renderCell
+                  ? columns?.[1]?.renderCell(row[columns?.[1]?.field])
+                  : row[columns[1].field]
+              }
+            />
+          </ListItemButton>
+        </LightBox>
+      ))}
     </List>
   );
 }
