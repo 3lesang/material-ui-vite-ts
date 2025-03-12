@@ -10,19 +10,23 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { LoadingButton } from "@mui/lab";
-import { Stack, styled, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  CardActions,
+  Pagination,
+  Stack,
+  styled,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
+import { useState } from "react";
 import AlignItemsList from "./AlignItemsList";
 import LightBox from "./ui/LightBox";
-
-const commandListObject = new ListObjectsV2Command({
-  Bucket: BUCKET_NAME,
-  MaxKeys: 1000,
-});
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -43,15 +47,53 @@ const convertByte = (bytes: number) => {
   return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
 };
 
+async function listObjectsByPage(
+  bucketName: string,
+  pageSize: number,
+  pageNumber: number
+) {
+  let startAfter: string | undefined;
+
+  if (pageNumber > 1) {
+    const previousPage = await s3Client.send(
+      new ListObjectsV2Command({
+        Bucket: bucketName,
+        MaxKeys: (pageNumber - 1) * pageSize,
+      })
+    );
+
+    const objects = previousPage.Contents || [];
+    if (objects.length > 0) {
+      startAfter = objects[objects.length - 1].Key;
+    }
+  }
+
+  const command = new ListObjectsV2Command({
+    Bucket: bucketName,
+    MaxKeys: pageSize,
+    StartAfter: startAfter,
+  });
+
+  return s3Client.send(command);
+}
+
 function FileList() {
+  const [page, setPage] = useState(1);
+
   const { selected, clearName, setAll, selectedAll, setNameAll } = useMedia();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const commandListObject = new ListObjectsV2Command({
+    Bucket: BUCKET_NAME,
+    MaxKeys: 10,
+  });
+
   const { data, refetch, isLoading } = useQuery<ListObjectsV2CommandOutput>({
-    queryKey: ["media"],
-    queryFn: () => s3Client.send(commandListObject),
+    queryKey: ["file", page],
+    // queryFn: () => s3Client.send(commandListObject),
+    queryFn: () => listObjectsByPage(BUCKET_NAME, 10, page),
     retry: 0,
   });
 
@@ -193,7 +235,7 @@ function FileList() {
         <AlignItemsList rows={data?.Contents} columns={listColumns} />
       ) : (
         <DataGrid
-          // checkboxSelection
+          checkboxSelection
           rowSelection
           loading={isLoading}
           columns={columns}
@@ -204,6 +246,17 @@ function FileList() {
           }}
         />
       )}
+      <CardActions>
+        <Box ml="auto" />
+        <Pagination
+          count={3}
+          shape="rounded"
+          onChange={(e, page) => {
+            console.log(page);
+            setPage(page);
+          }}
+        />
+      </CardActions>
     </Card>
   );
 }
