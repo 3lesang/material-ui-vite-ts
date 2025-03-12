@@ -13,6 +13,7 @@ import { LoadingButton } from "@mui/lab";
 import {
   Box,
   CardActions,
+  Divider,
   Pagination,
   Stack,
   styled,
@@ -246,6 +247,7 @@ function FileList() {
           }}
         />
       )}
+      <Divider />
       <CardActions>
         <Box ml="auto" />
         <Pagination

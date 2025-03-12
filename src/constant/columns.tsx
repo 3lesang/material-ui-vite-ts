@@ -47,7 +47,7 @@ export const ROLE_COLUMN: GridColDef[] = [
     field: "description",
     headerName: "Description",
     sortable: false,
-    width: 500,
+    width: 800,
     disableColumnMenu: true,
   },
 ];

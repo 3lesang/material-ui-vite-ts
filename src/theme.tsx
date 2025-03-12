@@ -106,6 +106,11 @@ const theme = createTheme({
         },
       },
     },
+    MuiPagination: {
+      defaultProps: {
+        size: "small",
+      },
+    },
   },
   typography: {
     button: {

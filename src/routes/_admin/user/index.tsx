@@ -1,7 +1,14 @@
 import { axiosClient } from "@/axios";
 import { USER_COLUMN } from "@/constant/columns";
 import EmailIcon from "@mui/icons-material/Email";
-import { Card, CardHeader } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardActions,
+  CardHeader,
+  Divider,
+  Pagination,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { useQuery } from "@tanstack/react-query";
@@ -42,6 +49,11 @@ function RouteComponent() {
         rows={data?.data?.data}
         onCellClick={handleNavigate}
       />
+      <Divider />
+      <CardActions>
+        <Box ml="auto" />
+        <Pagination count={3} shape="rounded" />
+      </CardActions>
     </Card>
   );
 }

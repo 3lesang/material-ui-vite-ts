@@ -1,5 +1,6 @@
 import LoginForm from "@/components/LoginForm";
 import { USER_LOCAL_KEY } from "@/constant/key";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
@@ -24,11 +25,12 @@ export const Route = createFileRoute("/auth/login")({
 
 function RouteComponent() {
   return (
-    <Stack justifyContent="center" alignItems="center" height="100vh">
-      <Card sx={{ width: 400 }} elevation={0}>
+    <Stack justifyContent="center" alignItems="center" height="100vh" p={2}>
+      <Card sx={{ maxWidth: 400 }}>
         <CardHeader title="Login" subheader="Enter your account" />
         <CardContent>
           <LoginForm />
+          <Box mt={1} />
           <Typography variant="caption">
             Don't have an account? <Link to="/auth/register">Sign up</Link>
           </Typography>

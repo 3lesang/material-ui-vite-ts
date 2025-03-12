@@ -1,7 +1,6 @@
 import PermissionTable, { columns } from "@/components/PermissionTable";
 import { zodResolver } from "@hookform/resolvers/zod";
-import CheckIcon from "@mui/icons-material/Check";
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Card, CardActions, CardContent, CardHeader } from "@mui/material";
 import Button from "@mui/material/Button";
 import Grid2 from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
@@ -52,11 +51,7 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
         title="Roles"
         subheader="Define the rights given to the role"
         action={
-          <Button
-            type="submit"
-            startIcon={<CheckIcon />}
-            disabled={!isDirty || !isValid}
-          >
+          <Button type="submit" disabled={!isDirty || !isValid}>
             {actionText}
           </Button>
         }
@@ -89,7 +84,7 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
                   label="Description"
                   fullWidth
                   multiline
-                  rows={5}
+                  minRows={3}
                 />
               )}
             />
@@ -102,6 +97,7 @@ export function RoleForm({ defaultValues, onSubmit, actionText }: FormProps) {
         columns={columns}
         onChange={handlePermissionChange}
       />
+      <CardActions />
     </Card>
   );
 }

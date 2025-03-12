@@ -2,6 +2,7 @@ import { axiosClient } from "@/axios";
 import CustomSelect, { CustomSelectProps } from "@/components/ui/CustomSelect";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIcon from "@mui/icons-material/Check";
+import { CardActions } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -70,14 +71,8 @@ function UserForm({ defaultValues, onSubmit }: UserFormProps) {
         title="Users"
         subheader="Enter the user information"
         action={
-          <Button
-            type="submit"
-            disabled={!isDirty || !isValid}
-            startIcon={<CheckIcon />}
-            variant="contained"
-            disableElevation
-          >
-            Save
+          <Button type="submit" disabled={!isDirty || !isValid}>
+            Update
           </Button>
         }
       />

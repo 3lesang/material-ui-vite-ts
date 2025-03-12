@@ -2,3 +2,8 @@ html,
 body {
   touch-action: manipulation;
 }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
