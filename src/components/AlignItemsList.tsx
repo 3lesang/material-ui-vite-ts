@@ -35,6 +35,9 @@ export default function AlignItemsList({
                 primary: {
                   noWrap: true,
                 },
+                secondary: {
+                  noWrap: true,
+                },
               }}
               secondary={render(2, columns, row)}
             />

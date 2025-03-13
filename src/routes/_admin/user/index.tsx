@@ -30,7 +30,6 @@ export const Route = createFileRoute("/_admin/user/")({
 function RouteComponent() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: [url, params.page, params.limit],
@@ -62,7 +61,11 @@ function RouteComponent() {
         action={<Button startIcon={<EmailIcon />}>Invite new user</Button>}
       />
       {isMobile ? (
-        <AlignItemsList columns={listColumns} rows={data?.data?.data} />
+        <AlignItemsList
+          columns={listColumns}
+          rows={data?.data?.data}
+          onItemClick={handleNavigate}
+        />
       ) : (
         <DataGrid
           loading={isLoading}
@@ -71,10 +74,11 @@ function RouteComponent() {
           onCellClick={handleNavigate}
         />
       )}
-      <Divider />
+      {!isMobile && <Divider />}
+
       <CardActions>
         <Box ml="auto" />
-        <Pagination count={3} shape="rounded" />
+        {!isMobile && <Pagination count={3} shape="rounded" />}
       </CardActions>
     </Card>
   );

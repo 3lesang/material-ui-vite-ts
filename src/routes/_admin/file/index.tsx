@@ -1,4 +1,5 @@
-import File from "@/components/File";
+import FileList from "@/components/File";
+import { AppMediaProvider } from "@/context/media";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_admin/file/")({
@@ -6,5 +7,9 @@ export const Route = createFileRoute("/_admin/file/")({
 });
 
 function RouteComponent() {
-  return <File />;
+  return (
+    <AppMediaProvider>
+      <FileList />
+    </AppMediaProvider>
+  );
 }

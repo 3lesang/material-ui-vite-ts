@@ -1,6 +1,8 @@
 import { axiosClient } from "@/axios";
+import AlignItemsList from "@/components/AlignItemsList";
 import { ROLE_COLUMN } from "@/constant/columns";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import { useMediaQuery, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -23,6 +25,9 @@ export const Route = createFileRoute("/_admin/role/")({
 });
 
 function RouteComponent() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: [url, params.page, params.limit],
@@ -33,6 +38,18 @@ function RouteComponent() {
   const handleNavigate = (params: any) => {
     navigate({ to: `/role/${params?.id}` });
   };
+
+  const listColumns = [
+    {
+      field: "",
+    },
+    {
+      field: "name",
+    },
+    {
+      field: "description",
+    },
+  ];
 
   return (
     <Card>
@@ -49,16 +66,24 @@ function RouteComponent() {
           </Button>
         }
       />
-      <DataGrid
-        loading={isLoading}
-        columns={ROLE_COLUMN}
-        rows={data?.data?.data}
-        onCellClick={handleNavigate}
-      />
-      <Divider />
+      {isMobile ? (
+        <AlignItemsList
+          columns={listColumns}
+          rows={data?.data?.data}
+          onItemClick={handleNavigate}
+        />
+      ) : (
+        <DataGrid
+          loading={isLoading}
+          columns={ROLE_COLUMN}
+          rows={data?.data?.data}
+          onCellClick={handleNavigate}
+        />
+      )}
+      {!isMobile && <Divider />}
       <CardActions>
         <Box ml="auto" />
-        <Pagination count={3} shape="rounded" />
+        {!isMobile && <Pagination count={3} shape="rounded" />}
       </CardActions>
     </Card>
   );

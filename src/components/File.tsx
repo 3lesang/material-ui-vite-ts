@@ -1,5 +1,5 @@
 import { useApp } from "@/context/app";
-import { AppMediaProvider, useMedia } from "@/context/media";
+import { useMedia } from "@/context/media";
 import s3Client, { BUCKET_NAME } from "@/minio";
 import {
   DeleteObjectsCommand,
@@ -270,28 +270,22 @@ function FileList() {
           }}
         />
       )}
-      <Divider />
+      {!isMobile && <Divider />}
       <CardActions>
         <Box ml="auto" />
-        <Pagination
-          count={3}
-          shape="rounded"
-          onChange={(e, page) => {
-            console.log(page);
-            setPage(page);
-          }}
-        />
+        {!isMobile && (
+          <Pagination
+            count={3}
+            shape="rounded"
+            onChange={(e, page) => {
+              console.log(page);
+              setPage(page);
+            }}
+          />
+        )}
       </CardActions>
     </Card>
   );
 }
 
-function File() {
-  return (
-    <AppMediaProvider>
-      <FileList />
-    </AppMediaProvider>
-  );
-}
-
-export default File;
+export default FileList;
