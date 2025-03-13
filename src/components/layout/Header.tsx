@@ -52,7 +52,7 @@ function Header() {
   return (
     <AppBar position="sticky">
       <Toolbar variant="dense">
-        {/* <AppLogo /> */}
+        {!isMobile && <AppLogo />}
         {isMobile && <TemporaryDrawer />}
         {!isMobile && <ManagerMenu />}
         <Box mx="auto" />
