@@ -3,8 +3,9 @@ import CookieIcon from "@mui/icons-material/Cookie";
 import FolderIcon from "@mui/icons-material/Folder";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import TuneIcon from "@mui/icons-material/Tune";
-import { ListItemIcon } from "@mui/material";
+import { Divider, ListItemIcon, ListSubheader, Toolbar } from "@mui/material";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -35,8 +36,33 @@ export default function TemporaryDrawer() {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List dense>
+    <Box sx={{ width: 280 }} role="presentation" onClick={toggleDrawer(false)}>
+      <Toolbar />
+      <Divider />
+      <List
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            Overview
+          </ListSubheader>
+        }
+      >
+        <ListItem disablePadding dense component={Link} to="/">
+          <ListItemButton>
+            <ListItemIcon>
+              <SpaceDashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+          </ListItemButton>
+        </ListItem>
+      </List>
+      <List
+        dense
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            List
+          </ListSubheader>
+        }
+      >
         {list.map((item, index) => (
           <ListItem
             key={item.label}

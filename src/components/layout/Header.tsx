@@ -52,8 +52,8 @@ function Header() {
   return (
     <AppBar position="sticky">
       <Toolbar variant="dense">
+        {/* <AppLogo /> */}
         {isMobile && <TemporaryDrawer />}
-        {!isMobile && <AppLogo />}
         {!isMobile && <ManagerMenu />}
         <Box mx="auto" />
         <AuthButton />
