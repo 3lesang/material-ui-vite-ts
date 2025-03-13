@@ -1,4 +1,5 @@
 import { axiosClient } from "@/axios";
+import AlignItemsList from "@/components/AlignItemsList";
 import { USER_COLUMN } from "@/constant/columns";
 import EmailIcon from "@mui/icons-material/Email";
 import {
@@ -8,6 +9,8 @@ import {
   CardHeader,
   Divider,
   Pagination,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
@@ -25,6 +28,9 @@ export const Route = createFileRoute("/_admin/user/")({
 });
 
 function RouteComponent() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     queryKey: [url, params.page, params.limit],
@@ -36,6 +42,18 @@ function RouteComponent() {
     navigate({ to: `/user/${params?.id}` });
   };
 
+  const listColumns = [
+    {
+      field: "",
+    },
+    {
+      field: "name",
+    },
+    {
+      field: "email",
+    },
+  ];
+
   return (
     <Card>
       <CardHeader
@@ -43,12 +61,16 @@ function RouteComponent() {
         subheader="All the users who have access to the admin panel"
         action={<Button startIcon={<EmailIcon />}>Invite new user</Button>}
       />
-      <DataGrid
-        loading={isLoading}
-        columns={USER_COLUMN}
-        rows={data?.data?.data}
-        onCellClick={handleNavigate}
-      />
+      {isMobile ? (
+        <AlignItemsList columns={listColumns} rows={data?.data?.data} />
+      ) : (
+        <DataGrid
+          loading={isLoading}
+          columns={USER_COLUMN}
+          rows={data?.data?.data}
+          onCellClick={handleNavigate}
+        />
+      )}
       <Divider />
       <CardActions>
         <Box ml="auto" />

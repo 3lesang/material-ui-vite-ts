@@ -1,33 +1,35 @@
+import { useApp } from "@/context/app";
 import CloseIcon from "@mui/icons-material/Close";
 import { alpha, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useOnClickOutside } from "usehooks-ts";
 import S3Image from "../S3Image";
 
 interface LightBoxProps {
-  children: React.ReactNode;
-  name: string;
+  children?: React.ReactNode;
+  name?: string;
+  open?: boolean;
 }
 
-function LightBox({ children, name }: LightBoxProps) {
-  const [open, setOpen] = useState(false);
+function LightBox({ children, name, open = false }: LightBoxProps) {
+  const { lightBoxOpen, handleOpenLightBox } = useApp();
   const ref = useRef<HTMLDivElement>(null);
 
   const handleClose = () => {
-    setOpen(false);
+    handleOpenLightBox(false, "");
   };
 
   const handleOpen = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setOpen(true);
+    handleOpenLightBox(true, name as string);
   };
 
   useOnClickOutside(ref as React.RefObject<HTMLElement>, handleClose);
 
   useEffect(() => {
-    if (open) {
+    if (lightBoxOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -36,7 +38,7 @@ function LightBox({ children, name }: LightBoxProps) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [lightBoxOpen]);
 
   const modal = createPortal(
     <Box
@@ -58,7 +60,7 @@ function LightBox({ children, name }: LightBoxProps) {
         </IconButton>
       </Box>
       <Box width={["100%", "50%"]} mx="auto" ref={ref}>
-        <S3Image name={name} />
+        <S3Image name={name as string} />
       </Box>
     </Box>,
     document.body
@@ -69,7 +71,7 @@ function LightBox({ children, name }: LightBoxProps) {
       <div onClick={handleOpen} style={{ display: "flex", cursor: "pointer" }}>
         {children}
       </div>
-      {open && modal}
+      {lightBoxOpen && modal}
     </>
   );
 }

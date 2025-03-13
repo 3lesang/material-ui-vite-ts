@@ -1,41 +1,46 @@
-import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import List from "@mui/material/List";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { GridColDef } from "@mui/x-data-grid";
-import LightBox from "./ui/LightBox";
 
 interface AlignItemsListProps {
   rows?: any[];
   columns: GridColDef[];
+  onItemClick?: (row: any) => void;
 }
 
-export default function AlignItemsList({ rows, columns }: AlignItemsListProps) {
+const render = (i: number, columns: GridColDef[], row: any) => {
+  return columns?.[i]?.renderCell
+    ? columns?.[i]?.renderCell(row[columns?.[i]?.field])
+    : row[columns[i]?.field];
+};
+
+export default function AlignItemsList({
+  rows,
+  columns,
+  onItemClick,
+}: AlignItemsListProps) {
+  const handleItemClick = (row: any) => {
+    onItemClick?.(row);
+  };
   return (
     <List dense>
-      {rows?.map((row) => (
-        <LightBox name={row[columns[0].field]}>
-          <ListItemButton dense>
-            <ListItemAvatar>
-              <ImageOutlinedIcon />
-            </ListItemAvatar>
+      {rows?.map((row) => {
+        return (
+          <ListItemButton dense onClick={() => handleItemClick(row)}>
+            {render(0, columns, row)}
             <ListItemText
-              primary={row[columns[0].field]}
+              primary={render(1, columns, row)}
               slotProps={{
                 primary: {
                   noWrap: true,
                 },
               }}
-              secondary={
-                columns?.[1].renderCell
-                  ? columns?.[1]?.renderCell(row[columns?.[1]?.field])
-                  : row[columns[1].field]
-              }
+              secondary={render(2, columns, row)}
             />
           </ListItemButton>
-        </LightBox>
-      ))}
+        );
+      })}
     </List>
   );
 }

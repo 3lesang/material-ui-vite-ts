@@ -1,3 +1,4 @@
+import { useApp } from "@/context/app";
 import { AppMediaProvider, useMedia } from "@/context/media";
 import s3Client, { BUCKET_NAME } from "@/minio";
 import {
@@ -14,6 +15,7 @@ import {
   Box,
   CardActions,
   Divider,
+  ListItemIcon,
   Pagination,
   Stack,
   styled,
@@ -27,7 +29,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useState } from "react";
 import AlignItemsList from "./AlignItemsList";
-import LightBox from "./ui/LightBox";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -150,6 +151,12 @@ function FileList() {
     deleteObject(selected);
   };
 
+  const { handleOpenLightBox } = useApp();
+
+  const handleItemClick = (row: any) => {
+    handleOpenLightBox(true, row?.Key);
+  };
+
   const columns: GridColDef[] = [
     {
       field: "Key",
@@ -159,10 +166,12 @@ function FileList() {
       disableColumnMenu: true,
       renderCell: (params) => {
         return (
-          <Stack direction="row" alignItems="center" gap={1}>
-            <ImageOutlinedIcon fontSize="small" />
-            <LightBox name={params.value}>{params.value}</LightBox>
-          </Stack>
+          <div onClick={() => handleOpenLightBox(true, params.value)}>
+            <Stack direction="row" alignItems="center" gap={1}>
+              <ImageOutlinedIcon fontSize="small" />
+              {params.value}
+            </Stack>
+          </div>
         );
       },
     },
@@ -186,6 +195,16 @@ function FileList() {
   ];
 
   const listColumns = [
+    {
+      field: "Key",
+      renderCell: (value: any) => {
+        return (
+          <ListItemIcon>
+            <ImageOutlinedIcon />
+          </ListItemIcon>
+        );
+      },
+    },
     {
       field: "Key",
     },
@@ -233,7 +252,11 @@ function FileList() {
       />
 
       {isMobile ? (
-        <AlignItemsList rows={data?.Contents} columns={listColumns} />
+        <AlignItemsList
+          rows={data?.Contents}
+          columns={listColumns}
+          onItemClick={handleItemClick}
+        />
       ) : (
         <DataGrid
           checkboxSelection

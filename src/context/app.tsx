@@ -1,3 +1,4 @@
+import LightBox from "@/components/ui/LightBox";
 import {
   Button,
   Dialog,
@@ -17,7 +18,9 @@ interface ConfirmDialogOptions {
 }
 
 interface AppContextValue {
+  lightBoxOpen: boolean;
   confirm: (options: ConfirmDialogOptions) => Promise<boolean>;
+  handleOpenLightBox: (value: boolean, name: string) => void;
 }
 
 interface AppProviderProps {
@@ -28,6 +31,8 @@ const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 export function AppProvider({ children }: AppProviderProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [lightBoxOpen, setLightBoxOpen] = useState(false);
+  const [lightBoxName, setLightBoxName] = useState("");
   const [dialogConfig, setDialogConfig] = useState<ConfirmDialogOptions | null>(
     null
   );
@@ -56,8 +61,15 @@ export function AppProvider({ children }: AppProviderProps) {
     setResolveDialog(null);
   };
 
+  const handleOpenLightBox = (value: boolean, name: string) => {
+    setLightBoxName(name);
+    setLightBoxOpen(value);
+  };
+
   const value: AppContextValue = {
     confirm,
+    lightBoxOpen,
+    handleOpenLightBox,
   };
 
   return (
@@ -85,6 +97,7 @@ export function AppProvider({ children }: AppProviderProps) {
         </DialogActions>
       </Dialog>
       <Toaster position="bottom-center" reverseOrder={false} />
+      <LightBox open={lightBoxOpen} name={lightBoxName} />
     </AppContext.Provider>
   );
 }
