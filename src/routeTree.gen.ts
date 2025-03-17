@@ -27,6 +27,7 @@ import { Route as AdminRoleNewImport } from './routes/_admin/role/new'
 import { Route as AdminRoleIdImport } from './routes/_admin/role/$id'
 import { Route as AdminProductCreateImport } from './routes/_admin/product/create'
 import { Route as AdminProductIdImport } from './routes/_admin/product/$id'
+import { Route as AdminCategoryNewImport } from './routes/_admin/category/new'
 
 // Create/Update Routes
 
@@ -125,6 +126,12 @@ const AdminProductIdRoute = AdminProductIdImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
+const AdminCategoryNewRoute = AdminCategoryNewImport.update({
+  id: '/category/new',
+  path: '/category/new',
+  getParentRoute: () => AdminRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -169,6 +176,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AdminIndexImport
+      parentRoute: typeof AdminImport
+    }
+    '/_admin/category/new': {
+      id: '/_admin/category/new'
+      path: '/category/new'
+      fullPath: '/category/new'
+      preLoaderRoute: typeof AdminCategoryNewImport
       parentRoute: typeof AdminImport
     }
     '/_admin/product/$id': {
@@ -250,6 +264,7 @@ interface AdminRouteChildren {
   AdminAboutRoute: typeof AdminAboutRoute
   AdminProfileRoute: typeof AdminProfileRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminCategoryNewRoute: typeof AdminCategoryNewRoute
   AdminProductIdRoute: typeof AdminProductIdRoute
   AdminProductCreateRoute: typeof AdminProductCreateRoute
   AdminRoleIdRoute: typeof AdminRoleIdRoute
@@ -266,6 +281,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAboutRoute: AdminAboutRoute,
   AdminProfileRoute: AdminProfileRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminCategoryNewRoute: AdminCategoryNewRoute,
   AdminProductIdRoute: AdminProductIdRoute,
   AdminProductCreateRoute: AdminProductCreateRoute,
   AdminRoleIdRoute: AdminRoleIdRoute,
@@ -287,6 +303,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/': typeof AdminIndexRoute
+  '/category/new': typeof AdminCategoryNewRoute
   '/product/$id': typeof AdminProductIdRoute
   '/product/create': typeof AdminProductCreateRoute
   '/role/$id': typeof AdminRoleIdRoute
@@ -305,6 +322,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/': typeof AdminIndexRoute
+  '/category/new': typeof AdminCategoryNewRoute
   '/product/$id': typeof AdminProductIdRoute
   '/product/create': typeof AdminProductCreateRoute
   '/role/$id': typeof AdminRoleIdRoute
@@ -325,6 +343,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/_admin/': typeof AdminIndexRoute
+  '/_admin/category/new': typeof AdminCategoryNewRoute
   '/_admin/product/$id': typeof AdminProductIdRoute
   '/_admin/product/create': typeof AdminProductCreateRoute
   '/_admin/role/$id': typeof AdminRoleIdRoute
@@ -346,6 +365,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/'
+    | '/category/new'
     | '/product/$id'
     | '/product/create'
     | '/role/$id'
@@ -363,6 +383,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/'
+    | '/category/new'
     | '/product/$id'
     | '/product/create'
     | '/role/$id'
@@ -381,6 +402,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/_admin/'
+    | '/_admin/category/new'
     | '/_admin/product/$id'
     | '/_admin/product/create'
     | '/_admin/role/$id'
@@ -427,6 +449,7 @@ export const routeTree = rootRoute
         "/_admin/about",
         "/_admin/profile",
         "/_admin/",
+        "/_admin/category/new",
         "/_admin/product/$id",
         "/_admin/product/create",
         "/_admin/role/$id",
@@ -455,6 +478,10 @@ export const routeTree = rootRoute
     },
     "/_admin/": {
       "filePath": "_admin/index.tsx",
+      "parent": "/_admin"
+    },
+    "/_admin/category/new": {
+      "filePath": "_admin/category/new.tsx",
       "parent": "/_admin"
     },
     "/_admin/product/$id": {

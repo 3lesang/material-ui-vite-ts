@@ -74,10 +74,11 @@ function RouteComponent() {
         />
       ) : (
         <DataGrid
+          checkboxSelection
+          rowSelection
           loading={isLoading}
           columns={ROLE_COLUMN}
           rows={data?.data?.data}
-          onCellClick={handleNavigate}
         />
       )}
       {!isMobile && <Divider />}
