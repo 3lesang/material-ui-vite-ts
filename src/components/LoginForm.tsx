@@ -2,11 +2,16 @@ import { axiosClient } from "@/axios";
 import { notify } from "@/components/ui/CustomToast";
 import { TOKEN_LOCAL_KEY, USER_LOCAL_KEY } from "@/constant/key";
 import { zodResolver } from "@hookform/resolvers/zod";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Grid2 from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -44,51 +49,60 @@ function LoginForm() {
   const onSubmit = (data: LoginFormSchema) => {
     mutate(data);
   };
-  return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="email"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            label="Email"
-            fullWidth
-            margin="normal"
-            {...field}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-          />
-        )}
-      />
 
-      <Controller
-        name="password"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            label="Password"
-            type="password"
-            margin="normal"
-            fullWidth
-            {...field}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-          />
-        )}
+  return (
+    <Card
+      sx={{ maxWidth: 400 }}
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <CardHeader
+        title="Login"
+        subheader="Enter your account"
+        action={<Button type="submit">Submit</Button>}
       />
-      <Box mt={2} />
-      <LoadingButton
-        variant="contained"
-        color="primary"
-        type="submit"
-        size="medium"
-        loading={isPending}
-        disableElevation
-        fullWidth
-      >
-        Log in
-      </LoadingButton>
-    </Box>
+      <CardContent>
+        <Grid2 container spacing={2}>
+          <Grid2 size={[12, 12]}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  label="Email"
+                  fullWidth
+                  {...field}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                />
+              )}
+            />
+          </Grid2>
+          <Grid2 size={[12, 12]}>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  {...field}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                />
+              )}
+            />
+          </Grid2>
+        </Grid2>
+      </CardContent>
+      <CardActions>
+        <Typography variant="caption">
+          Don't have an account?
+          <Link to="/auth/register"> Create a account</Link>
+        </Typography>
+      </CardActions>
+    </Card>
   );
 }
 

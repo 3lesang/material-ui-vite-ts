@@ -13,12 +13,10 @@ import Pagination from "@mui/material/Pagination";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 const url = "/roles";
-const params = {
-  page: 1,
-  limit: 10,
-};
+const limit = 10;
 
 export const Route = createFileRoute("/_admin/role/")({
   component: RouteComponent,
@@ -27,11 +25,11 @@ export const Route = createFileRoute("/_admin/role/")({
 function RouteComponent() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const { data, isLoading } = useQuery({
-    queryKey: [url, params.page, params.limit],
-    queryFn: () => axiosClient.get(url, { params }),
+    queryKey: [url, page, limit],
+    queryFn: () => axiosClient.get(url, { params: { page, limit } }),
     retry: false,
   });
 
@@ -74,8 +72,6 @@ function RouteComponent() {
         />
       ) : (
         <DataGrid
-          checkboxSelection
-          rowSelection
           loading={isLoading}
           columns={ROLE_COLUMN}
           rows={data?.data?.data}
@@ -84,7 +80,15 @@ function RouteComponent() {
       {!isMobile && <Divider />}
       <CardActions>
         <Box ml="auto" />
-        {!isMobile && <Pagination count={3} shape="rounded" />}
+        {!isMobile && (
+          <Pagination
+            count={data?.data?.total}
+            shape="rounded"
+            onChange={(e, page) => {
+              setPage(page);
+            }}
+          />
+        )}
       </CardActions>
     </Card>
   );

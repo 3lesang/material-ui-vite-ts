@@ -15,7 +15,7 @@ import {
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 
 const url = "/users";
 const params = {
@@ -58,7 +58,11 @@ function RouteComponent() {
       <CardHeader
         title="Users"
         subheader="All the users who have access to the admin panel"
-        action={<Button startIcon={<EmailIcon />}>Invite new user</Button>}
+        action={
+          <Button startIcon={<EmailIcon />} component={Link} to="/user/new">
+            Invite new user
+          </Button>
+        }
       />
       {isMobile ? (
         <AlignItemsList
@@ -68,8 +72,6 @@ function RouteComponent() {
         />
       ) : (
         <DataGrid
-          checkboxSelection
-          rowSelection
           loading={isLoading}
           columns={USER_COLUMN}
           rows={data?.data?.data}

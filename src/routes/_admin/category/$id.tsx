@@ -4,7 +4,7 @@ import { notify } from "@/components/ui/CustomToast";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_admin/category/new")({
+export const Route = createFileRoute("/_admin/category/$id")({
   component: RouteComponent,
 });
 
@@ -36,7 +36,7 @@ function RouteComponent() {
     <CategoryForm
       defaultValues={defaultValues}
       onSubmit={handleSubmit}
-      actionText="Create"
+      actionText="Update"
     />
   );
 }

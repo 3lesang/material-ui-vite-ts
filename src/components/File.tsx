@@ -1,5 +1,5 @@
 import { useApp } from "@/context/app";
-import { useMedia } from "@/context/media";
+import { useTable } from "@/context/table";
 import s3Client, { BUCKET_NAME } from "@/minio";
 import {
   DeleteObjectsCommand,
@@ -29,6 +29,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useState } from "react";
 import AlignItemsList from "./AlignItemsList";
+import S3Image from "./S3Image";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -82,7 +83,7 @@ async function listObjectsByPage(
 function FileList() {
   const [page, setPage] = useState(1);
 
-  const { selected, clearName, setAll, selectedAll, setNameAll } = useMedia();
+  const { selected, setName } = useTable();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -120,8 +121,7 @@ function FileList() {
       return s3Client.send(command);
     },
     onSuccess: () => {
-      clearName();
-      setAll(false);
+      setName([]);
       refetch();
     },
   });
@@ -166,12 +166,12 @@ function FileList() {
       disableColumnMenu: true,
       renderCell: (params) => {
         return (
-          <div onClick={() => handleOpenLightBox(true, params.value)}>
-            <Stack direction="row" alignItems="center" gap={1}>
-              <ImageOutlinedIcon fontSize="small" />
-              {params.value}
-            </Stack>
-          </div>
+          <Stack direction="row" alignItems="center">
+            <Box height={30} width={40} overflow="hidden" mr={2}>
+              <S3Image name={params.value} />
+            </Box>
+            {params.value}
+          </Stack>
         );
       },
     },
@@ -190,7 +190,7 @@ function FileList() {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) =>
-        format(new Date(params.value), "dd MMM yyyy HH:mm"),
+        format(new Date(params.value), "HH:mm dd MMM yyyy"),
     },
   ];
 
@@ -210,7 +210,7 @@ function FileList() {
     },
     {
       field: "LastModified",
-      renderCell: (value: any) => format(new Date(value), "dd MMM yyyy HH:mm"),
+      renderCell: (value: any) => format(new Date(value), "HH:mm dd MMM yyyy"),
     },
   ];
 
@@ -259,14 +259,12 @@ function FileList() {
         />
       ) : (
         <DataGrid
-          checkboxSelection
-          rowSelection
           loading={isLoading}
           columns={columns}
           rows={data?.Contents}
           getRowId={(row) => row.Key as string}
           onRowSelectionModelChange={(newRowSelectionModel) => {
-            setNameAll(newRowSelectionModel as string[]);
+            setName(newRowSelectionModel as string[]);
           }}
         />
       )}
@@ -278,7 +276,6 @@ function FileList() {
             count={3}
             shape="rounded"
             onChange={(e, page) => {
-              console.log(page);
               setPage(page);
             }}
           />

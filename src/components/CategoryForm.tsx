@@ -9,14 +9,15 @@ import { z } from "zod";
 const FormSchema = z.object({
   id: z.number().optional(),
   name: z.string().min(1, "Name is required"),
+  slug: z.string().min(1, "Name is required"),
   description: z.string().optional(),
 });
 
-export type RoleSchema = z.infer<typeof FormSchema>;
+export type CategorySchema = z.infer<typeof FormSchema>;
 
 interface FormProps {
-  defaultValues?: RoleSchema;
-  onSubmit?: (data: RoleSchema) => void;
+  defaultValues?: CategorySchema;
+  onSubmit?: (data: CategorySchema) => void;
   actionText?: string;
 }
 
@@ -36,7 +37,7 @@ export function CategoryForm({
     resolver: zodResolver(FormSchema),
   });
 
-  const beforeSubmit = (data: RoleSchema) => {
+  const beforeSubmit = (data: CategorySchema) => {
     onSubmit?.(data);
     reset(defaultValues, { keepValues: true });
   };
@@ -44,8 +45,8 @@ export function CategoryForm({
   return (
     <Card component="form" onSubmit={handleSubmit(beforeSubmit)}>
       <CardHeader
-        title="Roles"
-        subheader="Define the rights given to the role"
+        title="Categories"
+        subheader="Define the rights given to the category"
         action={
           <Button type="submit" disabled={!isDirty || !isValid}>
             {actionText}
@@ -61,6 +62,22 @@ export function CategoryForm({
               render={({ field }) => (
                 <TextField
                   label="Name"
+                  fullWidth
+                  required
+                  {...field}
+                  error={!!errors.name}
+                  helperText={errors?.name?.message}
+                />
+              )}
+            />
+          </Grid2>
+          <Grid2 size={[12, 6]}>
+            <Controller
+              control={control}
+              name="slug"
+              render={({ field }) => (
+                <TextField
+                  label="Slug"
                   fullWidth
                   required
                   {...field}

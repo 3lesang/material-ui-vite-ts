@@ -26,6 +26,17 @@ const theme = createTheme({
     MuiTextField: {
       defaultProps: {
         size: "small",
+        slotProps: {
+          inputLabel: { shrink: true },
+        },
+      },
+      styleOverrides: {
+        root: {
+          "& input:-webkit-autofill": {
+            WebkitBoxShadow: "none",
+            WebkitTextFillColor: "inherit",
+          },
+        },
       },
     },
     MuiSelect: {
@@ -93,8 +104,8 @@ const theme = createTheme({
         rowHeight: 40,
         columnHeaderHeight: 40,
         hideFooter: true,
-        rowSelection: false,
-        // checkboxSelection: true,
+        rowSelection: true,
+        checkboxSelection: true,
       },
     },
     MuiTableRow: {
@@ -107,6 +118,11 @@ const theme = createTheme({
       },
     },
     MuiPagination: {
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiFormControl: {
       defaultProps: {
         size: "small",
       },
