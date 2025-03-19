@@ -1,5 +1,7 @@
 import { axiosClient } from "@/axios";
 import ProductForm, { ProductSchema } from "@/components/ProductForm";
+import { notify } from "@/components/ui/CustomToast";
+import { generateSKU } from "@/helper";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -10,14 +12,17 @@ export const Route = createFileRoute("/_admin/product/new")({
 const url = "/products";
 
 function RouteComponent() {
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (data: ProductSchema) => axiosClient.post(url, data),
-    onSuccess() {},
+    onSuccess() {
+      notify("Product created successfully");
+    },
   });
 
   const onSubmit = (data: ProductSchema) => {
-    mutate(data);
+    const payload = { ...data, code: generateSKU(), sku: generateSKU() };
+    mutate(payload);
   };
 
-  return <ProductForm actionText="Create" />;
+  return <ProductForm actionText="Create" onSubmit={onSubmit} />;
 }

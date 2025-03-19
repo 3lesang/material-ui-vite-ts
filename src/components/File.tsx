@@ -13,10 +13,7 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
-  CardActions,
-  Divider,
   ListItemIcon,
-  Pagination,
   Stack,
   styled,
   useMediaQuery,
@@ -159,21 +156,25 @@ function FileList() {
 
   const columns: GridColDef[] = [
     {
-      field: "Key",
-      headerName: "Name",
-      width: 500,
+      field: "url",
+      headerName: "",
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params) => {
-        return (
-          <Stack direction="row" alignItems="center">
-            <Box height={30} width={40} overflow="hidden" mr={2}>
-              <S3Image name={params.value} />
-            </Box>
-            {params.value}
-          </Stack>
-        );
-      },
+      width: 100,
+      renderCell: (params) => (
+        <Stack alignItems="center" justifyContent="center" height={1}>
+          <Box width={30} height={30} borderRadius={1} overflow="hidden">
+            <S3Image name={params?.id.toString()} />
+          </Box>
+        </Stack>
+      ),
+    },
+    {
+      field: "Key",
+      headerName: "Name",
+      width: 400,
+      sortable: false,
+      disableColumnMenu: true,
     },
     {
       field: "Size",
@@ -268,19 +269,6 @@ function FileList() {
           }}
         />
       )}
-      {!isMobile && <Divider />}
-      <CardActions>
-        <Box ml="auto" />
-        {!isMobile && (
-          <Pagination
-            count={3}
-            shape="rounded"
-            onChange={(e, page) => {
-              setPage(page);
-            }}
-          />
-        )}
-      </CardActions>
     </Card>
   );
 }

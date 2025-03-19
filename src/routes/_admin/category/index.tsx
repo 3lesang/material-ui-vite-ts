@@ -5,13 +5,9 @@ import { AppTableProvider, useTable } from "@/context/table";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Stack, useMediaQuery, useTheme } from "@mui/material";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardHeader from "@mui/material/CardHeader";
-import Divider from "@mui/material/Divider";
-import Pagination from "@mui/material/Pagination";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
@@ -102,20 +98,6 @@ function PageList() {
           }}
         />
       )}
-      {!isMobile && <Divider />}
-
-      <CardActions>
-        <Box ml="auto" />
-        {!isMobile && (
-          <Pagination
-            count={data?.data?.total}
-            shape="rounded"
-            onChange={(e, page) => {
-              setPage(page);
-            }}
-          />
-        )}
-      </CardActions>
     </Card>
   );
 }

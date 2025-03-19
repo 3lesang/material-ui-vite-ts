@@ -103,7 +103,6 @@ const theme = createTheme({
       defaultProps: {
         rowHeight: 40,
         columnHeaderHeight: 40,
-        hideFooter: true,
         rowSelection: true,
         checkboxSelection: true,
       },
