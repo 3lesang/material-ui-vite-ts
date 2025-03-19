@@ -1,8 +1,10 @@
+import { generateSlug } from "@/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader } from "@mui/material";
 import Button from "@mui/material/Button";
 import Grid2 from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -31,11 +33,20 @@ export function CategoryForm({
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { isDirty, isValid, errors },
   } = useForm({
     defaultValues,
     resolver: zodResolver(FormSchema),
   });
+
+  const nameValue = watch("name");
+
+  useEffect(() => {
+    if (nameValue) {
+      setValue("slug", generateSlug(nameValue), { shouldValidate: true });
+    }
+  }, [nameValue, setValue]);
 
   const beforeSubmit = (data: CategorySchema) => {
     onSubmit?.(data);

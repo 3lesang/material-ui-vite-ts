@@ -1,27 +1,33 @@
 import { axiosClient } from "@/axios";
 import { CategoryForm, CategorySchema } from "@/components/CategoryForm";
 import { notify } from "@/components/ui/CustomToast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_admin/category/$id")({
   component: RouteComponent,
 });
 
-const defaultValues: CategorySchema = {
-  id: 0,
-  name: "",
-  slug: "",
-  description: "",
-};
-
-const url = "/categories";
-
 function RouteComponent() {
+  const { id } = Route.useParams();
+  const url = `/categories/${id}`;
+
+  const { data } = useQuery({
+    queryKey: [url],
+    queryFn: () => axiosClient.get(url),
+  });
+
+  const defaultValues: CategorySchema = {
+    id: data?.data?.id,
+    name: data?.data?.name,
+    slug: data?.data?.slug,
+    description: data?.data?.description,
+  };
+
   const { mutate } = useMutation({
-    mutationFn: (data: CategorySchema) => axiosClient.post(url, data),
+    mutationFn: (data: CategorySchema) => axiosClient.patch(url, data),
     onSuccess: (res) => {
-      notify("Category created successfully");
+      notify("Category updated successfully");
     },
     onError: (res) => {
       notify(res.message, { variant: "error" });
@@ -32,11 +38,13 @@ function RouteComponent() {
     mutate(data);
   };
 
-  return (
-    <CategoryForm
-      defaultValues={defaultValues}
-      onSubmit={handleSubmit}
-      actionText="Update"
-    />
-  );
+  if (data?.data) {
+    return (
+      <CategoryForm
+        defaultValues={defaultValues}
+        onSubmit={handleSubmit}
+        actionText="Update"
+      />
+    );
+  }
 }

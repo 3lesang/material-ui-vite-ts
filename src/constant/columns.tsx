@@ -49,7 +49,7 @@ export const CATEGORY_COLUMN: GridColDef[] = [
     field: "name",
     headerName: "Name",
     sortable: false,
-    width: 250,
+    width: 300,
     disableColumnMenu: true,
     renderCell: (params) => {
       return (

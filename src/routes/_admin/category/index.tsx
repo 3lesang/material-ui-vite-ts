@@ -13,7 +13,7 @@ import CardHeader from "@mui/material/CardHeader";
 import Divider from "@mui/material/Divider";
 import Pagination from "@mui/material/Pagination";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -42,14 +42,26 @@ function PageList() {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const { selected, setName } = useTable();
-  const { data, isLoading } = useQuery({
+
+  const { data, isLoading, refetch } = useQuery({
     queryKey: [url, page, limit],
     queryFn: () => axiosClient.get(url, { params: { page, limit } }),
     retry: false,
   });
 
+  const { mutate: deleteByIds } = useMutation({
+    mutationFn: (ids: string[]) => axiosClient.delete(url, { data: { ids } }),
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
   const handleNavigate = (params: any) => {
     navigate({ to: `/category/${params?.id}` });
+  };
+
+  const handleDelete = () => {
+    deleteByIds(selected);
   };
 
   return (
@@ -60,7 +72,7 @@ function PageList() {
         action={
           <Stack direction="row" spacing={1}>
             {selected.length > 0 && (
-              <LoadingButton color="error" size="small">
+              <LoadingButton color="error" size="small" onClick={handleDelete}>
                 Delete
               </LoadingButton>
             )}
