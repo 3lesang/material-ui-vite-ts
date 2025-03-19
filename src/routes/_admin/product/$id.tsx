@@ -16,6 +16,7 @@ function RouteComponent() {
   const { data } = useQuery({
     queryKey: [url],
     queryFn: () => axiosClient.get(url),
+    gcTime: 0,
   });
 
   const { mutate } = useMutation({

@@ -22,11 +22,13 @@ function RouteComponent() {
   const { data } = useQuery({
     queryKey: [url],
     queryFn: () => axiosClient.get(url),
+    gcTime: 0,
   });
 
   const { data: permissionData } = useQuery({
     queryKey: [permissionUrl],
     queryFn: () => axiosClient.get(permissionUrl),
+    gcTime: 0,
   });
 
   const defaultValues: RoleSchema = {
