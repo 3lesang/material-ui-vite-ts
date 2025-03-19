@@ -16,16 +16,14 @@ function AppEditor() {
   return (
     <RichTextEditor
       ref={rteRef}
-      extensions={[StarterKit]} // Or any Tiptap extensions you wish!
-      content="<p>Hello world</p>" // Initial content for the editor
-      // Optionally include `renderControls` for a menu-bar atop the editor:
+      extensions={[StarterKit]}
+      content="<p>Hello world</p>"
       renderControls={() => (
         <MenuControlsContainer>
           <MenuSelectHeading />
           <MenuDivider />
           <MenuButtonBold />
           <MenuButtonItalic />
-          {/* Add more controls of your choosing here */}
         </MenuControlsContainer>
       )}
     />

@@ -22,8 +22,8 @@ const convertResponse = async (response: GetObjectCommandOutput) => {
   return `data:${mimeType};base64,${base64}`;
 };
 
-function S3Image({ name }: { name: string }) {
-  const { data, isLoading } = useQuery({
+export const useS3Url = (name: string) => {
+  const { data } = useQuery({
     queryKey: [name],
     queryFn: async () => {
       const response = await s3Client.send(
@@ -38,8 +38,11 @@ function S3Image({ name }: { name: string }) {
     retry: 0,
   });
 
-  if (isLoading) return;
+  return { data };
+};
 
+function S3Image({ name }: { name: string }) {
+  const { data } = useS3Url(name);
   return (
     <img
       alt={name}

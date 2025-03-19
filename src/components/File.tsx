@@ -13,6 +13,7 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
+  CardContent,
   ListItemIcon,
   Stack,
   styled,
@@ -21,11 +22,12 @@ import {
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useState } from "react";
 import AlignItemsList from "./AlignItemsList";
+import ListCard from "./ListCard";
 import S3Image from "./S3Image";
 
 const VisuallyHiddenInput = styled("input")({
@@ -215,6 +217,19 @@ function FileList() {
     },
   ];
 
+  const listCardColumns = [
+    {
+      field: "Key",
+    },
+    {
+      field: "Key",
+    },
+    {
+      field: "Size",
+      renderCell: (value: any) => convertByte(value),
+    },
+  ];
+
   return (
     <Card>
       <CardHeader
@@ -259,15 +274,18 @@ function FileList() {
           onItemClick={handleItemClick}
         />
       ) : (
-        <DataGrid
-          loading={isLoading}
-          columns={columns}
-          rows={data?.Contents}
-          getRowId={(row) => row.Key as string}
-          onRowSelectionModelChange={(newRowSelectionModel) => {
-            setName(newRowSelectionModel as string[]);
-          }}
-        />
+        // <DataGrid
+        //   loading={isLoading}
+        //   columns={columns}
+        //   rows={data?.Contents}
+        //   getRowId={(row) => row.Key as string}
+        //   onRowSelectionModelChange={(newRowSelectionModel) => {
+        //     setName(newRowSelectionModel as string[]);
+        //   }}
+        // />
+        <CardContent>
+          <ListCard rows={data?.Contents} columns={listCardColumns} />
+        </CardContent>
       )}
     </Card>
   );
