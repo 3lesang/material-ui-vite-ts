@@ -1,5 +1,5 @@
 import { axiosClient } from "@/axios";
-import AlignItemsList from "@/components/AlignItemsList";
+import AlignItemsList from "@/components/ui/CustomList";
 import { CATEGORY_COLUMN } from "@/constant/columns";
 import { AppTableProvider, useTable } from "@/context/table";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";

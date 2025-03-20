@@ -1,5 +1,5 @@
 import { axiosClient } from "@/axios";
-import AlignItemsList from "@/components/AlignItemsList";
+import AlignItemsList from "@/components/ui/CustomList";
 import { ROLE_COLUMN } from "@/constant/columns";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useMediaQuery, useTheme } from "@mui/material";

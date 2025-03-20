@@ -12,7 +12,7 @@ import { Link } from "@tanstack/react-router";
 import TemporaryDrawer from "./AppDrawer";
 import AppLogo from "./AppLogo";
 import AuthButton from "./AuthButton";
-import APopover from "./ui/APopover";
+import APopover from "../ui/CustomPopover";
 
 const list = [
   { label: "Product", to: "/product" },

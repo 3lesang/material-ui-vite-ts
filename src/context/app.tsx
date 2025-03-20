@@ -1,4 +1,4 @@
-import LightBox from "@/components/ui/LightBox";
+import LightBox from "@/components/ui/CustomLightBox";
 import {
   Button,
   Dialog,

@@ -1,5 +1,5 @@
 import { axiosClient } from "@/axios";
-import AlignItemsList from "@/components/AlignItemsList";
+import AlignItemsList from "@/components/ui/CustomList";
 import { USER_COLUMN } from "@/constant/columns";
 import EmailIcon from "@mui/icons-material/Email";
 import { Card, CardHeader, useMediaQuery, useTheme } from "@mui/material";

@@ -1,4 +1,4 @@
-import s3Client, { BUCKET_NAME } from "@/minio";
+import s3Client, { BUCKET_NAME } from "@/components/s3/minio";
 import { GetObjectCommand, GetObjectCommandOutput } from "@aws-sdk/client-s3";
 import { useQuery } from "@tanstack/react-query";
 
@@ -19,11 +19,11 @@ const convertResponse = async (response: GetObjectCommandOutput) => {
   const base64 = arrayBufferToBase64(bytes);
   const mimeType = response.ContentType;
 
-  return `data:${mimeType};base64,${base64}`;
+  return { src: `data:${mimeType};base64,${base64}`, type: mimeType };
 };
 
 export const useS3Url = (name: string) => {
-  const { data } = useQuery({
+  return useQuery({
     queryKey: [name],
     queryFn: async () => {
       const response = await s3Client.send(
@@ -37,22 +37,4 @@ export const useS3Url = (name: string) => {
     enabled: !!name,
     retry: 0,
   });
-
-  return { data };
 };
-
-function S3Image({ name }: { name: string }) {
-  const { data } = useS3Url(name);
-  return (
-    <img
-      alt={name}
-      src={data}
-      width="100%"
-      height="100%"
-      loading="lazy"
-      style={{ objectFit: "cover" }}
-    />
-  );
-}
-
-export default S3Image;

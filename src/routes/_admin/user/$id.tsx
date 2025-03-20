@@ -1,6 +1,6 @@
 import { axiosClient } from "@/axios";
 import { notify } from "@/components/ui/CustomToast";
-import UserForm, { UserFormProps, UserSchema } from "@/components/UpdateUserForm";
+import UserForm, { UserFormProps, UserSchema } from "@/components/form/UpdateUserForm";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 

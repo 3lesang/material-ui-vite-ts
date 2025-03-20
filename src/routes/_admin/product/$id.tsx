@@ -1,5 +1,5 @@
 import { axiosClient } from "@/axios";
-import ProductForm, { ProductSchema } from "@/components/ProductForm";
+import ProductForm, { ProductSchema } from "@/components/form/ProductForm";
 import { notify } from "@/components/ui/CustomToast";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";

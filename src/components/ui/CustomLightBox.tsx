@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useOnClickOutside } from "usehooks-ts";
-import S3Image from "../S3Image";
+import S3Image from "../s3/S3Image";
 
 interface LightBoxProps {
   children?: React.ReactNode;

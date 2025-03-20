@@ -1,4 +1,4 @@
-import LoginForm from "@/components/LoginForm";
+import LoginForm from "@/components/form/LoginForm";
 import { USER_LOCAL_KEY } from "@/constant/key";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 

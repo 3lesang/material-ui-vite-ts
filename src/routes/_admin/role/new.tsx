@@ -1,5 +1,5 @@
 import { axiosClient } from "@/axios";
-import { RoleForm, RoleSchema } from "@/components/RoleForm";
+import { RoleForm, RoleSchema } from "@/components/form/RoleForm";
 import { notify } from "@/components/ui/CustomToast";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";

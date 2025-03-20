@@ -1,4 +1,4 @@
-import FileList from "@/components/File";
+import FileList from "@/components/s3/File";
 import { AppTableProvider } from "@/context/table";
 import { createFileRoute } from "@tanstack/react-router";
 

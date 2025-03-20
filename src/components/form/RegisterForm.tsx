@@ -1,6 +1,8 @@
 import { axiosClient } from "@/axios";
 import { notify } from "@/components/ui/CustomToast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -51,17 +53,14 @@ function RegisterForm() {
   const onSubmit = (data: LoginFormSchema) => {
     mutate(data);
   };
+
   return (
     <Card
       sx={{ maxWidth: 400 }}
       component="form"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <CardHeader
-        title="Sign up"
-        subheader="Enter your account information"
-        action={<Button type="submit">Submit</Button>}
-      />
+      <CardHeader title="Sign up" subheader="Enter your account information" />
       <CardContent>
         <Grid2 container spacing={2}>
           <Grid2 size={[6, 6]}>
@@ -144,6 +143,25 @@ function RegisterForm() {
                 />
               )}
             />
+          </Grid2>
+          <Grid2 size={[12, 12]}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disableElevation
+              color="inherit"
+            >
+              Sign up
+            </Button>
+          </Grid2>
+          <Grid2 size={6}>
+            <Button startIcon={<GoogleIcon />} color="error">
+              Sign up with Google
+            </Button>
+          </Grid2>
+          <Grid2 size={6}>
+            <Button startIcon={<FacebookIcon />}>Sign up with Facebook</Button>
           </Grid2>
         </Grid2>
       </CardContent>

@@ -1,5 +1,5 @@
 import { axiosClient } from "@/axios";
-import { CategoryForm, CategorySchema } from "@/components/CategoryForm";
+import { CategoryForm, CategorySchema } from "@/components/form/CategoryForm";
 import { notify } from "@/components/ui/CustomToast";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";

@@ -1,4 +1,4 @@
-import PermissionTable, { columns } from "@/components/PermissionTable";
+import PermissionTable, { columns } from "@/components/form/PermissionTable";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardActions, CardContent, CardHeader } from "@mui/material";
 import Button from "@mui/material/Button";

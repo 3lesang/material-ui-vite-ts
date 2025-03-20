@@ -5,12 +5,13 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { Link, RouterProvider, createRouter } from "@tanstack/react-router";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import theme from "./theme";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Error from "./components/Error";
 import { AppProvider } from "./context/app";
 import "./main.css";
 import { routeTree } from "./routeTree.gen";
@@ -23,12 +24,7 @@ const router = createRouter({
   routeTree,
   context: { queryClient },
   defaultNotFoundComponent: () => {
-    return (
-      <div>
-        <p>Not found!</p>
-        <Link to="/">Go home</Link>
-      </div>
-    );
+    return <Error />;
   },
 });
 

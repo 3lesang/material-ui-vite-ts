@@ -19,8 +19,8 @@ import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import { z } from "zod";
-import AppEditor from "./AppEditor";
-import MyDropzone from "./MyDropzone";
+import AppEditor from "../ui/CustomEditor";
+import CustomUploadFiles from "../ui/CustomUploadFiles";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -83,7 +83,7 @@ function ProductForm({ defaultValues, onSubmit, actionText }: FormProps) {
       <CardContent>
         <Grid2 container spacing={1}>
           <Grid2 size={12}>
-            <MyDropzone />
+            <CustomUploadFiles />
           </Grid2>
           <Grid2 size={6}>
             <Controller

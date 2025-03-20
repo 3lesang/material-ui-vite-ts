@@ -2,6 +2,8 @@ import { axiosClient } from "@/axios";
 import { notify } from "@/components/ui/CustomToast";
 import { TOKEN_LOCAL_KEY, USER_LOCAL_KEY } from "@/constant/key";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -56,11 +58,7 @@ function LoginForm() {
       component="form"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <CardHeader
-        title="Login"
-        subheader="Enter your account"
-        action={<Button type="submit">Submit</Button>}
-      />
+      <CardHeader title="Login" subheader="Enter your account" />
       <CardContent>
         <Grid2 container spacing={2}>
           <Grid2 size={[12, 12]}>
@@ -93,6 +91,25 @@ function LoginForm() {
                 />
               )}
             />
+          </Grid2>
+          <Grid2 size={[12, 12]}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disableElevation
+              color="inherit"
+            >
+              Login
+            </Button>
+          </Grid2>
+          <Grid2 size={6}>
+            <Button startIcon={<GoogleIcon />} color="error">
+              Login with Google
+            </Button>
+          </Grid2>
+          <Grid2 size={6}>
+            <Button startIcon={<FacebookIcon />}>Login with Facebook</Button>
           </Grid2>
         </Grid2>
       </CardContent>

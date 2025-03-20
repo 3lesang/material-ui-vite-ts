@@ -1,6 +1,7 @@
+import s3Client, { BUCKET_NAME } from "@/components/s3/minio";
 import { useApp } from "@/context/app";
 import { useTable } from "@/context/table";
-import s3Client, { BUCKET_NAME } from "@/minio";
+import { convertByte } from "@/helper";
 import {
   DeleteObjectsCommand,
   ListObjectsV2Command,
@@ -26,8 +27,10 @@ import { GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useState } from "react";
-import AlignItemsList from "./AlignItemsList";
-import ListCard from "./ListCard";
+import AlignItemsList from "../ui/CustomList";
+import CreateFolder from "./CreateFolder";
+import ListFile from "./ListFile";
+import ListFolder from "./ListFolder";
 import S3Image from "./S3Image";
 
 const VisuallyHiddenInput = styled("input")({
@@ -41,13 +44,6 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
-
-const convertByte = (bytes: number) => {
-  if (bytes === 0) return "0 Bytes";
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
-};
 
 async function listObjectsByPage(
   bucketName: string,
@@ -74,6 +70,7 @@ async function listObjectsByPage(
     Bucket: bucketName,
     MaxKeys: pageSize,
     StartAfter: startAfter,
+    Delimiter: "/",
   });
 
   return s3Client.send(command);
@@ -247,6 +244,7 @@ function FileList() {
                 Delete
               </LoadingButton>
             )}
+            <CreateFolder />
             <LoadingButton
               loading={isUploading}
               component="label"
@@ -284,7 +282,8 @@ function FileList() {
         //   }}
         // />
         <CardContent>
-          <ListCard rows={data?.Contents} columns={listCardColumns} />
+          <ListFolder />
+          <ListFile rows={data?.Contents} columns={listCardColumns} />
         </CardContent>
       )}
     </Card>
